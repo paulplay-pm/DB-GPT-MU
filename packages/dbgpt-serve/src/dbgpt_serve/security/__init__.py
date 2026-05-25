@@ -1,0 +1,1 @@
+"""Security module for user permission system."""
