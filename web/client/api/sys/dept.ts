@@ -1,4 +1,4 @@
-import { GET, POST, PUT, DELETE } from '@/client/api/request';
+import { GET, POST, PUT, DELETE } from '@/client/api';
 
 export interface DeptTreeNode {
   id: number;
