@@ -58,3 +58,14 @@ class DeptUpdateRequest(BaseModel):
     parent_id: Optional[int] = None
     level: Optional[int] = None
     sort: Optional[int] = None
+
+
+class PermissionTreeResponse(BaseModel):
+    """Permission tree response"""
+    id: int
+    code: str
+    name: str
+    parent_id: Optional[int]
+    level: int
+    sort: int
+    children: list = []
