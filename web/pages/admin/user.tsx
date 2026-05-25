@@ -1,20 +1,20 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { Table, Button, Modal, Form, Input, message, Space, Tag, Select } from 'antd';
-import { PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
+import { Button, Form, Input, Modal, Select, Space, Table, Tag, message } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
 
+import { RoleResponse, getRoles } from '@/client/api/sys/role';
 import {
-  getUsers,
+  UserCreateRequest,
+  UserResponse,
+  UserUpdateRequest,
   createUser,
+  getUsers,
   updateUser,
   updateUserRoles,
-  UserResponse,
-  UserCreateRequest,
-  UserUpdateRequest,
 } from '@/client/api/sys/user';
-import { getRoles, RoleResponse } from '@/client/api/sys/role';
 
 export default function UserManagementPage() {
   const [users, setUsers] = useState<UserResponse[]>([]);
@@ -141,11 +141,7 @@ export default function UserManagementPage() {
       dataIndex: 'is_active',
       key: 'is_active',
       width: 80,
-      render: (is_active: boolean) => (
-        <Tag color={is_active ? 'green' : 'red'}>
-          {is_active ? '正常' : '禁用'}
-        </Tag>
-      ),
+      render: (is_active: boolean) => <Tag color={is_active ? 'green' : 'red'}>{is_active ? '正常' : '禁用'}</Tag>,
     },
     {
       title: '超级管理员',
@@ -153,9 +149,7 @@ export default function UserManagementPage() {
       key: 'is_super_admin',
       width: 120,
       render: (is_super_admin: boolean) => (
-        <Tag color={is_super_admin ? 'blue' : 'default'}>
-          {is_super_admin ? '是' : '否'}
-        </Tag>
+        <Tag color={is_super_admin ? 'blue' : 'default'}>{is_super_admin ? '是' : '否'}</Tag>
       ),
     },
     {
@@ -163,19 +157,14 @@ export default function UserManagementPage() {
       key: 'action',
       width: 100,
       render: (_: any, record: UserResponse) => (
-        <Space size="small">
-          <Button
-            type="text"
-            size="small"
-            icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}
-          />
+        <Space size='small'>
+          <Button type='text' size='small' icon={<EditOutlined />} onClick={() => handleEdit(record)} />
         </Space>
       ),
     },
   ];
 
-  const handleTableChange: TableProps<UserResponse>['onChange'] = (pag) => {
+  const handleTableChange: TableProps<UserResponse>['onChange'] = pag => {
     setPagination(prev => ({
       ...prev,
       current: pag.current || 1,
@@ -186,7 +175,7 @@ export default function UserManagementPage() {
   return (
     <div style={{ padding: 24 }}>
       <div style={{ marginBottom: 16 }}>
-        <Button type="primary" icon={<PlusOutlined />} onClick={handleAdd}>
+        <Button type='primary' icon={<PlusOutlined />} onClick={handleAdd}>
           新增用户
         </Button>
       </div>
@@ -194,13 +183,13 @@ export default function UserManagementPage() {
       <Table
         columns={columns}
         dataSource={users}
-        rowKey="id"
+        rowKey='id'
         loading={loading}
         pagination={{
           ...pagination,
           showSizeChanger: true,
           showQuickJumper: true,
-          showTotal: (total) => `共 ${total} 条`,
+          showTotal: total => `共 ${total} 条`,
         }}
         onChange={handleTableChange}
       />
@@ -212,75 +201,49 @@ export default function UserManagementPage() {
         onCancel={() => setModalVisible(false)}
         width={500}
       >
-        <Form form={form} layout="vertical">
+        <Form form={form} layout='vertical'>
           {!editingUser && (
             <>
-              <Form.Item
-                name="user_id"
-                label="用户ID"
-                rules={[{ required: true, message: '请输入用户ID' }]}
-              >
-                <Input placeholder="请输入用户ID" />
+              <Form.Item name='user_id' label='用户ID' rules={[{ required: true, message: '请输入用户ID' }]}>
+                <Input placeholder='请输入用户ID' />
               </Form.Item>
-              <Form.Item
-                name="login_name"
-                label="登录名"
-                rules={[{ required: true, message: '请输入登录名' }]}
-              >
-                <Input placeholder="请输入登录名" />
+              <Form.Item name='login_name' label='登录名' rules={[{ required: true, message: '请输入登录名' }]}>
+                <Input placeholder='请输入登录名' />
               </Form.Item>
-              <Form.Item
-                name="password"
-                label="密码"
-                rules={[{ required: true, message: '请输入密码' }]}
-              >
-                <Input.Password placeholder="请输入密码" />
+              <Form.Item name='password' label='密码' rules={[{ required: true, message: '请输入密码' }]}>
+                <Input.Password placeholder='请输入密码' />
               </Form.Item>
             </>
           )}
-          <Form.Item
-            name="real_name"
-            label="真实姓名"
-          >
-            <Input placeholder="请输入真实姓名" />
+          <Form.Item name='real_name' label='真实姓名'>
+            <Input placeholder='请输入真实姓名' />
           </Form.Item>
-          <Form.Item
-            name="email"
-            label="邮箱"
-          >
-            <Input placeholder="请输入邮箱" />
+          <Form.Item name='email' label='邮箱'>
+            <Input placeholder='请输入邮箱' />
           </Form.Item>
-          <Form.Item
-            name="dept_id"
-            label="部门ID"
-          >
-            <Input type="number" placeholder="请输入部门ID" />
+          <Form.Item name='dept_id' label='部门ID'>
+            <Input type='number' placeholder='请输入部门ID' />
           </Form.Item>
           {editingUser && (
-            <Form.Item
-              name="is_active"
-              label="状态"
-            >
+            <Form.Item name='is_active' label='状态'>
               <Select
                 options={[
                   { value: true, label: '正常' },
                   { value: false, label: '禁用' },
                 ]}
-                placeholder="请选择状态"
+                placeholder='请选择状态'
               />
             </Form.Item>
           )}
-          <Form.Item
-            label="角色"
-          >
+          <Form.Item label='角色'>
             <Select
-              mode="multiple"
+              mode='multiple'
               open={roleSelectOpen}
               onFocus={() => setRoleSelectOpen(true)}
               onBlur={() => setRoleSelectOpen(false)}
               value={selectedRoleIds}
               onChange={setSelectedRoleIds}
-              placeholder="请选择角色"
+              placeholder='请选择角色'
               style={{ width: '100%' }}
               options={roles.map(role => ({
                 value: role.id,

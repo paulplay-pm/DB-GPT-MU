@@ -1,20 +1,20 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { Table, Button, Modal, Form, Input, message, Space, Tag, Select } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
+import { Button, Form, Input, Modal, Select, Space, Table, Tag, message } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
 
+import { DeptTreeNode, getDeptTree } from '@/client/api/sys/dept';
 import {
-  getRegistrations,
-  approveRegistration,
-  rejectRegistration,
-  RegistrationResponse,
   ApproveRequest,
+  RegistrationResponse,
   RejectRequest,
+  approveRegistration,
+  getRegistrations,
+  rejectRegistration,
 } from '@/client/api/sys/registration';
-import { getDeptTree, DeptTreeNode } from '@/client/api/sys/dept';
-import { getRoles, RoleResponse } from '@/client/api/sys/role';
+import { RoleResponse, getRoles } from '@/client/api/sys/role';
 
 export default function RegistrationManagementPage() {
   const [registrations, setRegistrations] = useState<RegistrationResponse[]>([]);
@@ -125,19 +125,27 @@ export default function RegistrationManagementPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'gold';
-      case 'approved': return 'green';
-      case 'rejected': return 'red';
-      default: return 'default';
+      case 'pending':
+        return 'gold';
+      case 'approved':
+        return 'green';
+      case 'rejected':
+        return 'red';
+      default:
+        return 'default';
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'pending': return '待审核';
-      case 'approved': return '已通过';
-      case 'rejected': return '已拒绝';
-      default: return status;
+      case 'pending':
+        return '待审核';
+      case 'approved':
+        return '已通过';
+      case 'rejected':
+        return '已拒绝';
+      default:
+        return status;
     }
   };
 
@@ -165,11 +173,7 @@ export default function RegistrationManagementPage() {
       dataIndex: 'status',
       key: 'status',
       width: 100,
-      render: (status: string) => (
-        <Tag color={getStatusColor(status)}>
-          {getStatusText(status)}
-        </Tag>
-      ),
+      render: (status: string) => <Tag color={getStatusColor(status)}>{getStatusText(status)}</Tag>,
     },
     {
       title: '拒绝原因',
@@ -192,22 +196,11 @@ export default function RegistrationManagementPage() {
           return <span style={{ color: '#999' }}>已处理</span>;
         }
         return (
-          <Space size="small">
-            <Button
-              type="text"
-              size="small"
-              icon={<CheckOutlined />}
-              onClick={() => handleApprove(record)}
-            >
+          <Space size='small'>
+            <Button type='text' size='small' icon={<CheckOutlined />} onClick={() => handleApprove(record)}>
               通过
             </Button>
-            <Button
-              type="text"
-              size="small"
-              danger
-              icon={<CloseOutlined />}
-              onClick={() => handleReject(record)}
-            >
+            <Button type='text' size='small' danger icon={<CloseOutlined />} onClick={() => handleReject(record)}>
               拒绝
             </Button>
           </Space>
@@ -237,10 +230,10 @@ export default function RegistrationManagementPage() {
           <span>状态筛选：</span>
           <Select
             allowClear
-            placeholder="全部"
+            placeholder='全部'
             style={{ width: 120 }}
             value={statusFilter}
-            onChange={(value) => setStatusFilter(value)}
+            onChange={value => setStatusFilter(value)}
             options={[
               { value: 'pending', label: '待审核' },
               { value: 'approved', label: '已通过' },
@@ -254,50 +247,36 @@ export default function RegistrationManagementPage() {
       <Table
         columns={columns}
         dataSource={registrations}
-        rowKey="id"
+        rowKey='id'
         loading={loading}
         pagination={{
           pageSize: 20,
           showSizeChanger: true,
           showQuickJumper: true,
-          showTotal: (total) => `共 ${total} 条`,
+          showTotal: total => `共 ${total} 条`,
         }}
       />
 
       <Modal
-        title="审核通过"
+        title='审核通过'
         open={approveModalVisible}
         onOk={handleApproveSubmit}
         onCancel={() => setApproveModalVisible(false)}
         width={500}
       >
-        <Form form={approveForm} layout="vertical">
-          <Form.Item
-            name="dept_id"
-            label="部门"
-          >
-            <Select
-              placeholder="请选择部门"
-              allowClear
-              style={{ width: '100%' }}
-            >
+        <Form form={approveForm} layout='vertical'>
+          <Form.Item name='dept_id' label='部门'>
+            <Select placeholder='请选择部门' allowClear style={{ width: '100%' }}>
               {flattenDepts(depts).map(dept => (
                 <Select.Option key={dept.id} value={dept.id}>
-                  {'　'.repeat(dept.level)}{dept.name}
+                  {'　'.repeat(dept.level)}
+                  {dept.name}
                 </Select.Option>
               ))}
             </Select>
           </Form.Item>
-          <Form.Item
-            name="role_ids"
-            label="角色"
-          >
-            <Select
-              mode="multiple"
-              placeholder="请选择角色"
-              allowClear
-              style={{ width: '100%' }}
-            >
+          <Form.Item name='role_ids' label='角色'>
+            <Select mode='multiple' placeholder='请选择角色' allowClear style={{ width: '100%' }}>
               {roles.map(role => (
                 <Select.Option key={role.id} value={role.id}>
                   {role.name}
@@ -309,19 +288,15 @@ export default function RegistrationManagementPage() {
       </Modal>
 
       <Modal
-        title="审核拒绝"
+        title='审核拒绝'
         open={rejectModalVisible}
         onOk={handleRejectSubmit}
         onCancel={() => setRejectModalVisible(false)}
         width={500}
       >
-        <Form form={rejectForm} layout="vertical">
-          <Form.Item
-            name="reason"
-            label="拒绝原因"
-            rules={[{ required: true, message: '请输入拒绝原因' }]}
-          >
-            <Input.TextArea rows={4} placeholder="请输入拒绝原因" />
+        <Form form={rejectForm} layout='vertical'>
+          <Form.Item name='reason' label='拒绝原因' rules={[{ required: true, message: '请输入拒绝原因' }]}>
+            <Input.TextArea rows={4} placeholder='请输入拒绝原因' />
           </Form.Item>
         </Form>
       </Modal>
