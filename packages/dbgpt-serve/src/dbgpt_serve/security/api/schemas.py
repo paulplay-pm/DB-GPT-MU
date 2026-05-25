@@ -1,5 +1,6 @@
+from datetime import datetime
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 
 class LoginRequest(BaseModel):
@@ -122,3 +123,35 @@ class UserUpdateRequest(BaseModel):
     email: Optional[str] = None
     dept_id: Optional[int] = None
     is_active: Optional[bool] = None
+
+
+class RegisterRequest(BaseModel):
+    """Registration request schema"""
+    login_name: str
+    password: str
+    real_name: Optional[str] = None
+    email: Optional[str] = None
+    dept_id: Optional[int] = None
+
+
+class RegistrationResponse(BaseModel):
+    """Registration response schema"""
+    id: int
+    login_name: str
+    real_name: Optional[str]
+    email: Optional[str]
+    dept_id: Optional[int]
+    status: str
+    reject_reason: Optional[str]
+    created_at: datetime
+
+
+class ApproveRequest(BaseModel):
+    """Approve registration request"""
+    dept_id: Optional[int] = None
+    role_ids: Optional[List[int]] = None
+
+
+class RejectRequest(BaseModel):
+    """Reject registration request"""
+    reason: str

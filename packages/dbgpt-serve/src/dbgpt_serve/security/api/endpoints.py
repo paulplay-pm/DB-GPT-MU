@@ -4,6 +4,7 @@ from .dept_endpoints import router as dept_router
 from .permission_endpoints import router as permission_router
 from .role_endpoints import router as role_router
 from .user_endpoints import router as user_router
+from .registration_endpoints import router as registration_router
 
 router = APIRouter()
 router.include_router(auth_router, prefix="/auth", tags=["认证"])
@@ -11,6 +12,7 @@ router.include_router(dept_router, prefix="", tags=["部门管理"])
 router.include_router(permission_router, prefix="", tags=["权限管理"])
 router.include_router(role_router, prefix="", tags=["角色管理"])
 router.include_router(user_router, prefix="", tags=["用户管理"])
+router.include_router(registration_router, prefix="", tags=["注册申请"])
 
 
 def init_endpoints(system_app, config):
