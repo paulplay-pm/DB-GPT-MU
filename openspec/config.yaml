@@ -1,0 +1,56 @@
+schema: spec-driven
+
+# Project context (optional)
+# This is shown to AI when creating artifacts.
+# Add your tech stack, conventions, style guides, domain knowledge, etc.
+# Example:
+context: |
+  语言：中文
+  所有产出物和模型输出的文本必须用简体中文。
+#     Tech stack: TypeScript, React, Node.js
+#     We use conventional commits
+#     Domain: e-commerce platform
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - 新增需求必须明确：**前后端测试范围、验收用例、安全检查项、编码规范**
+    - 每个功能点必须标注：单元测试、接口测试、E2E测试要求
+  specs:
+    # 后端规范
+    - 后端 API Spec 必须包含：请求/响应校验规则、异常用例、权限校验用例
+    - 数据库变更必须包含：数据回滚测试、多租户隔离测试用例、数据迁移SQL脚本
+    - 强制规范：Python 遵循 DB‑GPT 原生风格、SQLAlchemy ORM、异步编码、审计日志埋点
+    # 前端规范
+    - 前端 Spec 必须包含：页面交互用例、权限渲染校验、租户隔离渲染用例
+    - 强制规范：React 组件化、TypeScript 类型严格校验、Hooks 规范、状态隔离
+    # 通用质量规则
+    - 所有 Spec 必须绑定：单元测试覆盖率 ≥80%、接口 100% 覆盖、安全用例全覆盖
+  tasks:
+    - 每个编码 Task 必须配套对应自动化测试 Task，不要手工测试，Task 未完成测试，不允许归档
+    - 编码 Task 必须附带：规范校验清单、安全校验清单
+  design:
+    - 设计文档包含：测试架构、测试数据构造方案、CI 校验流程
+
+# 测试环境配置
+test_credentials:
+  e2e:
+    base_url: "http://localhost:5670"
+    username: "admin"
+    password: "Admin123!"
+  admin:
+    base_url: "http://localhost:5670"
+    username: "admin"
+    password: "Admin123!"
+  kk:
+    base_url: "http://localhost:5670"
+    username: "kk"
+    password: "kk123456"
