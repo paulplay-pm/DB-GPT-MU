@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { STORAGE_USERINFO_KEY } from '@/utils/constants/index';
 
 interface PermissionContextType {
   permissions: string[];
@@ -19,7 +20,7 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // 从登录响应或 cookie 获取权限列表
-    const userInfo = localStorage.getItem('user_info');
+    const userInfo = localStorage.getItem(STORAGE_USERINFO_KEY);
     if (userInfo) {
       const user = JSON.parse(userInfo);
       setPermissions(user.permissions || []);
@@ -28,7 +29,7 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
 
   const hasPermission = (code: string) => {
     // 超级管理员拥有所有权限
-    const userInfo = JSON.parse(localStorage.getItem('user_info') || '{}');
+    const userInfo = JSON.parse(localStorage.getItem(STORAGE_USERINFO_KEY) || '{}');
     if (userInfo.is_super_admin) return true;
     return permissions.includes(code);
   };

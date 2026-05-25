@@ -2,6 +2,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, message } from 'antd';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { STORAGE_USERINFO_KEY } from '@/utils/constants/index';
 
 interface LoginForm {
   login_name: string;
@@ -15,7 +16,7 @@ export default function LoginPage() {
   const onFinish = async (values: LoginForm) => {
     setLoading(true);
     try {
-      const res = await fetch('/api/v2/sys/login', {
+      const res = await fetch('/api/v2/sys/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
@@ -24,7 +25,7 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (data.success) {
-        localStorage.setItem('user_info', JSON.stringify(data.data));
+        localStorage.setItem(STORAGE_USERINFO_KEY, JSON.stringify(data.data));
         message.success('登录成功');
         router.push('/');
       } else {
