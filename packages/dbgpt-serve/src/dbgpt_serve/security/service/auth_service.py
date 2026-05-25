@@ -40,9 +40,19 @@ class AuthService:
         if not self.verify_password(password, user.password_hash):
             return None, "用户名或密码错误"
 
-        return self._user_to_dict(user), None
+        # Get user permissions via permission chain
+        permissions = []
+        if user.is_super_admin:
+            permissions = ["*"]
+        else:
+            from .permission_service import PermissionService
 
-    def _user_to_dict(self, user) -> dict:
+            ps = PermissionService()
+            permissions = ps.get_user_permissions(user.id)
+
+        return self._user_to_dict(user, permissions), None
+
+    def _user_to_dict(self, user, permissions: list = None) -> dict:
         """Convert user entity to dict (without password_hash)"""
         return {
             "id": user.id,
@@ -53,4 +63,5 @@ class AuthService:
             "dept_id": user.dept_id,
             "is_active": user.is_active,
             "is_super_admin": user.is_super_admin,
+            "permissions": permissions or [],
         }

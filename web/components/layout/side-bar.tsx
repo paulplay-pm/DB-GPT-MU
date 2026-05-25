@@ -6,18 +6,21 @@ import { usePermission } from '@/context/PermissionContext';
 import UserBar from '@/new-components/layout/UserBar';
 import type { IChatDialogueSchema } from '@/types/chat';
 import { STORAGE_LANG_KEY, STORAGE_THEME_KEY } from '@/utils/constants/index';
+import { PERMISSIONS } from '@/utils/constants/permissions';
 import Icon, {
   ApartmentOutlined,
   AppstoreOutlined,
   DeleteOutlined,
   EditOutlined,
   GlobalOutlined,
+  KeyOutlined,
   LineChartOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   MessageOutlined,
   PlusOutlined,
   RightOutlined,
+  UserAddOutlined,
 } from '@ant-design/icons';
 import { Popover, Skeleton, Tooltip, message } from 'antd';
 import cls from 'classnames';
@@ -36,6 +39,7 @@ type RouteItem = {
   activeIconSrc?: string;
   path: string;
   isActive?: boolean;
+  permissionKey?: string;
 };
 
 function smallMenuItemStyle(active?: boolean) {
@@ -145,6 +149,7 @@ function SideBar() {
       {
         key: 'explore',
         name: t('explore'),
+        permissionKey: 'chat.view',
         isActive: pathname === '/',
         iconSrc: '/pictures/explore.png',
         activeIconSrc: '/pictures/explore_active.png',
@@ -153,6 +158,7 @@ function SideBar() {
       {
         key: 'skills',
         name: t('skills'),
+        permissionKey: 'skills.view',
         isActive: pathname.startsWith('/construct/skills'),
         iconSrc: '/pictures/skills.svg',
         activeIconSrc: '/pictures/skills_active.svg',
@@ -161,6 +167,7 @@ function SideBar() {
       {
         key: 'datasources',
         name: t('datasources'),
+        permissionKey: 'datasources.view',
         isActive: pathname.startsWith('/construct/database'),
         iconSrc: '/pictures/datasource.svg',
         activeIconSrc: '/pictures/datasource_active.svg',
@@ -169,6 +176,7 @@ function SideBar() {
       {
         key: 'knowledge',
         name: t('knowledge'),
+        permissionKey: 'knowledge.view',
         isActive: pathname.startsWith('/construct/knowledge'),
         iconSrc: '/pictures/knowledge_sidebar.svg',
         activeIconSrc: '/pictures/knowledge_sidebar_active.svg',
@@ -176,13 +184,81 @@ function SideBar() {
       },
     ];
 
-    // 根据权限过滤
-    return items.filter(item => hasPermission(item.key));
+    // 根据权限过滤 - 如果没有 permissionKey，默认允许访问
+    return items.filter(item => !item.permissionKey || hasPermission(item.permissionKey));
   }, [t, pathname, hasPermission]);
 
   const settingsContent = (
     <div className='w-56 py-1'>
       <div className='px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider'>{t('management')}</div>
+      {hasPermission(PERMISSIONS.USER.MANAGEMENT) && (
+        <div
+          onClick={() => {
+            router.push('/admin/user');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/admin/user'),
+            },
+          )}
+        >
+          <AppstoreOutlined className='text-blue-500' />
+          <span>{t('user_management')}</span>
+        </div>
+      )}
+      {hasPermission(PERMISSIONS.DEPT.MANAGEMENT) && (
+        <div
+          onClick={() => {
+            router.push('/admin/dept');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/admin/dept'),
+            },
+          )}
+        >
+          <ApartmentOutlined className='text-green-500' />
+          <span>{t('dept_management')}</span>
+        </div>
+      )}
+      {hasPermission(PERMISSIONS.ROLE.MANAGEMENT) && (
+        <div
+          onClick={() => {
+            router.push('/admin/role');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/admin/role'),
+            },
+          )}
+        >
+          <KeyOutlined className='text-orange-500' />
+          <span>{t('role_management')}</span>
+        </div>
+      )}
+      {hasPermission(PERMISSIONS.REGISTRATION.APPROVE) && (
+        <div
+          onClick={() => {
+            router.push('/admin/registration');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/admin/registration'),
+            },
+          )}
+        >
+          <UserAddOutlined className='text-purple-500' />
+          <span>{t('registration_review')}</span>
+        </div>
+      )}
       <div
         onClick={() => {
           router.push('/construct/app');

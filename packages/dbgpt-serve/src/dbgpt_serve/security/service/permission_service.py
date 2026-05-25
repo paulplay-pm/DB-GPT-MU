@@ -64,3 +64,43 @@ class SysPermissionService:
                 SysPermission.id.in_(perm_ids)
             ).all()
             return [p.code for p in perms]
+
+    def get_role_permissions(self, role_id: int) -> List[int]:
+        """Get permission IDs for a role"""
+        base_dao = BaseDao()
+        with base_dao.session() as session:
+            role_perms = session.query(SysRolePermission).filter(
+                SysRolePermission.role_id == role_id
+            ).all()
+            return [rp.permission_id for rp in role_perms]
+
+    def add_permission_to_role(self, role_id: int, permission_id: int):
+        """Add permission to role"""
+        base_dao = BaseDao()
+        with base_dao.session() as session:
+            existing = session.query(SysRolePermission).filter(
+                SysRolePermission.role_id == role_id,
+                SysRolePermission.permission_id == permission_id
+            ).first()
+            if not existing:
+                rp = SysRolePermission(role_id=role_id, permission_id=permission_id)
+                session.add(rp)
+
+    def remove_permission_from_role(self, role_id: int, permission_id: int):
+        """Remove permission from role"""
+        base_dao = BaseDao()
+        with base_dao.session() as session:
+            session.query(SysRolePermission).filter(
+                SysRolePermission.role_id == role_id,
+                SysRolePermission.permission_id == permission_id
+            ).delete()
+
+    def update_role_permissions(self, role_id: int, permission_ids: List[int]):
+        """Update role's permissions (replace all)"""
+        base_dao = BaseDao()
+        with base_dao.session() as session:
+            session.query(SysRolePermission).filter(
+                SysRolePermission.role_id == role_id
+            ).delete()
+            for perm_id in permission_ids:
+                session.add(SysRolePermission(role_id=role_id, permission_id=perm_id))

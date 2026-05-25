@@ -55,3 +55,13 @@ async def delete_role(role_id: int):
     if not success:
         raise HTTPException(status_code=404, detail="Role not found")
     return Result.succ(None)
+
+
+@router.put("/roles/{role_id}/permissions", response_model=Result)
+async def update_role_permissions(role_id: int, permission_ids: List[int]):
+    """Update role's permissions (replace all)"""
+    from ..service.permission_service import SysPermissionService
+
+    service = SysPermissionService()
+    service.update_role_permissions(role_id, permission_ids)
+    return Result.succ(None)
