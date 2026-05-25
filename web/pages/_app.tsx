@@ -61,22 +61,23 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
 
   // 登录检测
   const handleAuth = async () => {
-    setIsLogin(false);
-    // 如果已有登录信息，直接展示首页
-    // if (localStorage.getItem(STORAGE_USERINFO_KEY)) {
-    //   setIsLogin(true);
-    //   return;
-    // }
+    const sessionData = document.cookie.includes('session=');
+    const userInfo = localStorage.getItem(STORAGE_USERINFO_KEY);
 
-    // MOCK User info
-    const user = {
-      user_channel: `dbgpt`,
-      user_no: `001`,
-      nick_name: `dbgpt`,
-    };
-    if (user) {
-      localStorage.setItem(STORAGE_USERINFO_KEY, JSON.stringify(user));
-      localStorage.setItem(STORAGE_USERINFO_VALID_TIME_KEY, Date.now().toString());
+    // If not logged in and trying to access protected page, redirect to login
+    if (!sessionData && !userInfo && router.pathname !== '/login' && router.pathname !== '/register') {
+      router.push('/login');
+      return;
+    }
+
+    // If logged in and accessing login page, redirect to home
+    if ((sessionData || userInfo) && router.pathname === '/login') {
+      router.push('/');
+      return;
+    }
+
+    // User is logged in or on public page
+    if (sessionData || userInfo) {
       setIsLogin(true);
     }
   };
@@ -85,7 +86,8 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
     handleAuth();
   }, []);
 
-  if (!isLogin && !router.pathname.startsWith('/share')) {
+  const isPublicPage = router.pathname === '/login' || router.pathname === '/register' || router.pathname.startsWith('/share');
+  if (!isLogin && !isPublicPage) {
     return null;
   }
 
