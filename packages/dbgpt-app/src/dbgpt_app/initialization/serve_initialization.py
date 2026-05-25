@@ -310,7 +310,7 @@ def register_serve_apps(
     # ################################ Model Serve Register End #######################
 
     # ################################ Security Serve Register Begin #################
-    from dbgpt_serve.security.serve import Serve as SecurityServe
+    from dbgpt_serve.security.serve import SecurityServe
 
     # Register serve security
     system_app.register(
