@@ -1,24 +1,23 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { Tree, Button, Modal, Form, Input, message, Space } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { TreeSelect } from 'antd';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Modal, Space, Tree, TreeSelect, message } from 'antd';
 import type { DataNode } from 'antd/es/tree';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
-  getDeptTree,
-  createDept,
-  updateDept,
-  deleteDept,
-  DeptTreeNode,
   DeptCreateRequest,
+  DeptTreeNode,
   DeptUpdateRequest,
+  createDept,
+  deleteDept,
+  getDeptTree,
+  updateDept,
 } from '@/client/api/sys/dept';
 
 export default function DeptManagementPage() {
   const [deptTree, setDeptTree] = useState<DeptTreeNode[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [_loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState('新增部门');
   const [editingDept, setEditingDept] = useState<DeptTreeNode | null>(null);
@@ -42,7 +41,7 @@ export default function DeptManagementPage() {
   }, [loadDeptTree]);
 
   const convertToTreeData = (depts: DeptTreeNode[]): DataNode[] => {
-    return depts.map((dept) => ({
+    return depts.map(dept => ({
       key: dept.id,
       title: dept.name,
       code: dept.code,
@@ -54,11 +53,12 @@ export default function DeptManagementPage() {
 
   const convertToTreeSelectData = (depts: DeptTreeNode[], excludeId?: number): any[] => {
     return depts
-      .filter((d) => d.id !== excludeId)
-      .map((dept) => ({
+      .filter(d => d.id !== excludeId)
+      .map(dept => ({
         value: dept.id,
         title: dept.name,
-        children: dept.children && dept.children.length > 0 ? convertToTreeSelectData(dept.children, excludeId) : undefined,
+        children:
+          dept.children && dept.children.length > 0 ? convertToTreeSelectData(dept.children, excludeId) : undefined,
       }));
   };
 
@@ -138,7 +138,7 @@ export default function DeptManagementPage() {
   return (
     <div style={{ padding: 24 }}>
       <div style={{ marginBottom: 16 }}>
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => handleAdd()}>
+        <Button type='primary' icon={<PlusOutlined />} onClick={() => handleAdd()}>
           新增部门
         </Button>
       </div>
@@ -151,33 +151,41 @@ export default function DeptManagementPage() {
         titleRender={(nodeData: any) => {
           const dept = findDeptById(deptTree, nodeData.key as number);
           return (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '4px 0' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                padding: '4px 0',
+              }}
+            >
               <span>{nodeData.title}</span>
-              <Space size="small">
+              <Space size='small'>
                 <Button
-                  type="text"
-                  size="small"
+                  type='text'
+                  size='small'
                   icon={<PlusOutlined />}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     handleAdd(nodeData.key as number);
                   }}
                 />
                 <Button
-                  type="text"
-                  size="small"
+                  type='text'
+                  size='small'
                   icon={<EditOutlined />}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     if (dept) handleEdit(dept);
                   }}
                 />
                 <Button
-                  type="text"
-                  size="small"
+                  type='text'
+                  size='small'
                   danger
                   icon={<DeleteOutlined />}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     if (dept) handleDelete(dept);
                   }}
@@ -195,32 +203,24 @@ export default function DeptManagementPage() {
         onCancel={() => setModalVisible(false)}
         width={400}
       >
-        <Form form={form} layout="vertical">
-          <Form.Item
-            name="name"
-            label="部门名称"
-            rules={[{ required: true, message: '请输入部门名称' }]}
-          >
-            <Input placeholder="请输入部门名称" />
+        <Form form={form} layout='vertical'>
+          <Form.Item name='name' label='部门名称' rules={[{ required: true, message: '请输入部门名称' }]}>
+            <Input placeholder='请输入部门名称' />
           </Form.Item>
-          <Form.Item
-            name="code"
-            label="部门编码"
-            rules={[{ required: true, message: '请输入部门编码' }]}
-          >
-            <Input placeholder="请输入部门编码" />
+          <Form.Item name='code' label='部门编码' rules={[{ required: true, message: '请输入部门编码' }]}>
+            <Input placeholder='请输入部门编码' />
           </Form.Item>
-          <Form.Item name="parent_id" label="上级部门">
+          <Form.Item name='parent_id' label='上级部门'>
             <TreeSelect
               style={{ width: '100%' }}
               treeData={treeSelectData}
-              placeholder="请选择上级部门"
+              placeholder='请选择上级部门'
               allowClear
               treeDefaultExpandAll
             />
           </Form.Item>
-          <Form.Item name="sort" label="排序">
-            <Input type="number" placeholder="请输入排序值" />
+          <Form.Item name='sort' label='排序'>
+            <Input type='number' placeholder='请输入排序值' />
           </Form.Item>
         </Form>
       </Modal>

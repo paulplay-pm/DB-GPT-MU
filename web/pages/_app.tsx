@@ -1,7 +1,7 @@
 import { ChatContext, ChatContextProvider } from '@/app/chat-context';
 import SideBar from '@/components/layout/side-bar';
 import FloatHelper from '@/new-components/layout/FloatHelper';
-import { STORAGE_LANG_KEY, STORAGE_USERINFO_KEY, STORAGE_USERINFO_VALID_TIME_KEY } from '@/utils/constants/index';
+import { STORAGE_LANG_KEY, STORAGE_USERINFO_KEY } from '@/utils/constants/index';
 import { App, ConfigProvider, MappingAlgorithm, theme } from 'antd';
 import enUS from 'antd/locale/en_US';
 import zhCN from 'antd/locale/zh_CN';
@@ -86,7 +86,8 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
     handleAuth();
   }, []);
 
-  const isPublicPage = router.pathname === '/login' || router.pathname === '/register' || router.pathname.startsWith('/share');
+  const isPublicPage =
+    router.pathname === '/login' || router.pathname === '/register' || router.pathname.startsWith('/share');
   if (!isLogin && !isPublicPage) {
     return null;
   }

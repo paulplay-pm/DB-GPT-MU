@@ -1,8 +1,8 @@
 import { ChatContext } from '@/app/chat-context';
-import { usePermission } from '@/context/PermissionContext';
 import { delDialogue, getDialogueList } from '@/client/api/request';
 import { apiInterceptors } from '@/client/api/tools/interceptors';
 import { DarkSvg, ModelSvg, SunnySvg } from '@/components/icons';
+import { usePermission } from '@/context/PermissionContext';
 import UserBar from '@/new-components/layout/UserBar';
 import type { IChatDialogueSchema } from '@/types/chat';
 import { STORAGE_LANG_KEY, STORAGE_THEME_KEY } from '@/utils/constants/index';
