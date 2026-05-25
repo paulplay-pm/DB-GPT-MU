@@ -1,8 +1,10 @@
 from fastapi import APIRouter
 from .auth_endpoints import router as auth_router
+from .dept_endpoints import router as dept_router
 
 router = APIRouter()
 router.include_router(auth_router, prefix="/auth", tags=["认证"])
+router.include_router(dept_router, prefix="", tags=["部门管理"])
 
 
 def init_endpoints(system_app, config):
