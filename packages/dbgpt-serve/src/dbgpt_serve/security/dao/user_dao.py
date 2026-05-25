@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from dbgpt.storage.metadata import BaseDao
 from ..models.user import SysUser
 
@@ -22,18 +22,20 @@ class SysUserDao(BaseDao):
         with self.session() as session:
             return session.query(SysUser).filter(SysUser.id == id).first()
 
+    def get_all(self) -> List[SysUser]:
+        with self.session() as session:
+            return session.query(SysUser).all()
+
+    def update(self, id: int, **kwargs) -> Optional[SysUser]:
+        with self.session() as session:
+            user = session.query(SysUser).filter(SysUser.id == id).first()
+            if user:
+                for key, value in kwargs.items():
+                    setattr(user, key, value)
+            return user
+
     def create(self, **kwargs) -> SysUser:
         with self.session() as session:
             user = SysUser(**kwargs)
             session.add(user)
             return user
-
-    def update_roles(self, user_id: int, role_ids: list[int]):
-        """Update user roles via sys_user_role table"""
-        from ..models.role import SysUserRole
-        with self.session() as session:
-            # Delete existing roles
-            session.query(SysUserRole).filter(SysUserRole.user_id == user_id).delete()
-            # Add new roles
-            for role_id in role_ids:
-                session.add(SysUserRole(user_id=user_id, role_id=role_id))

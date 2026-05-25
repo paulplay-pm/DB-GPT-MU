@@ -92,3 +92,33 @@ class RoleUpdateRequest(BaseModel):
     code: Optional[str] = None
     name: Optional[str] = None
     description: Optional[str] = None
+
+
+class UserResponse(BaseModel):
+    """User response schema"""
+    id: int
+    user_id: str
+    login_name: str
+    real_name: Optional[str]
+    email: Optional[str]
+    dept_id: Optional[int]
+    is_active: bool
+    is_super_admin: bool
+
+
+class UserCreateRequest(BaseModel):
+    """Create user request"""
+    user_id: str
+    login_name: str
+    password: str
+    real_name: Optional[str] = None
+    email: Optional[str] = None
+    dept_id: Optional[int] = None
+
+
+class UserUpdateRequest(BaseModel):
+    """Update user request"""
+    real_name: Optional[str] = None
+    email: Optional[str] = None
+    dept_id: Optional[int] = None
+    is_active: Optional[bool] = None
