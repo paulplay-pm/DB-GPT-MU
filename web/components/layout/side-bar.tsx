@@ -1,4 +1,5 @@
 import { ChatContext } from '@/app/chat-context';
+import { usePermission } from '@/context/PermissionContext';
 import { delDialogue, getDialogueList } from '@/client/api/request';
 import { apiInterceptors } from '@/client/api/tools/interceptors';
 import { DarkSvg, ModelSvg, SunnySvg } from '@/components/icons';
@@ -137,6 +138,8 @@ function SideBar() {
     localStorage.setItem(STORAGE_LANG_KEY, language);
   }, [i18n]);
 
+  const { hasPermission } = usePermission();
+
   const functions = useMemo(() => {
     const items: RouteItem[] = [
       {
@@ -172,8 +175,10 @@ function SideBar() {
         path: '/construct/knowledge',
       },
     ];
-    return items;
-  }, [t, pathname]);
+
+    // 根据权限过滤
+    return items.filter(item => hasPermission(item.key));
+  }, [t, pathname, hasPermission]);
 
   const settingsContent = (
     <div className='w-56 py-1'>
