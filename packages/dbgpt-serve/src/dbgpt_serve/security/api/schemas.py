@@ -69,3 +69,26 @@ class PermissionTreeResponse(BaseModel):
     level: int
     sort: int
     children: list = []
+
+
+class RoleResponse(BaseModel):
+    """Role response schema"""
+    id: int
+    code: str
+    name: str
+    description: Optional[str]
+    is_active: bool
+
+
+class RoleCreateRequest(BaseModel):
+    """Create role request"""
+    code: str
+    name: str
+    description: Optional[str] = None
+
+
+class RoleUpdateRequest(BaseModel):
+    """Update role request"""
+    code: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
