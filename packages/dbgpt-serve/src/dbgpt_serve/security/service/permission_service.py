@@ -1,6 +1,9 @@
 from typing import Optional, List
 from ..dao.permission_dao import SysPermissionDao
 from ..models.permission import SysPermission
+from ..models.user_role import SysUserRole
+from ..models.role_permission import SysRolePermission
+from dbgpt.storage.metadata import BaseDao
 
 
 class SysPermissionService:
@@ -38,6 +41,26 @@ class SysPermissionService:
 
     def get_user_permissions(self, user_id: int) -> List[str]:
         """Get user's effective permission codes from roles"""
-        # This will be implemented after role system is ready
-        # For now, return empty list
-        return []
+        base_dao = BaseDao()
+        with base_dao.session() as session:
+            # 1. Query user's role IDs
+            user_roles = session.query(SysUserRole).filter(
+                SysUserRole.user_id == user_id
+            ).all()
+            role_ids = [ur.role_id for ur in user_roles]
+            if not role_ids:
+                return []
+
+            # 2. Query permissions for these roles
+            role_perms = session.query(SysRolePermission).filter(
+                SysRolePermission.role_id.in_(role_ids)
+            ).all()
+            perm_ids = [rp.permission_id for rp in role_perms]
+            if not perm_ids:
+                return []
+
+            # 3. Query permission codes
+            perms = session.query(SysPermission).filter(
+                SysPermission.id.in_(perm_ids)
+            ).all()
+            return [p.code for p in perms]
