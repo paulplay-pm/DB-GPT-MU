@@ -1,11 +1,10 @@
 from fastapi import Request, HTTPException
-from fastapi.security import HTTPBearer, HTTPCookie
+from fastapi.security import HTTPBearer
 from typing import Optional
 import json
 
 
 security = HTTPBearer(auto_error=False)
-cookie_auth = HTTPCookie()
 
 
 async def get_current_user_from_request(request: Request) -> dict:
