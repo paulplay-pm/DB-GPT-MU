@@ -1,8 +1,8 @@
+import { STORAGE_USERINFO_KEY } from '@/utils/constants/index';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, message } from 'antd';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { STORAGE_USERINFO_KEY } from '@/utils/constants/index';
 
 interface LoginForm {
   login_name: string;

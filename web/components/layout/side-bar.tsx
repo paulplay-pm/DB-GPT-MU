@@ -251,7 +251,8 @@ function SideBar() {
           className={cls(
             'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
             {
-              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/admin/registration'),
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400':
+                pathname.startsWith('/admin/registration'),
             },
           )}
         >
