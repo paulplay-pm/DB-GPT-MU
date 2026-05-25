@@ -13,12 +13,12 @@ import {
   ApproveRequest,
   RejectRequest,
 } from '@/client/api/sys/registration';
-import { getDepts, DeptTreeResponse } from '@/client/api/sys/dept';
+import { getDeptTree, DeptTreeNode } from '@/client/api/sys/dept';
 import { getRoles, RoleResponse } from '@/client/api/sys/role';
 
 export default function RegistrationManagementPage() {
   const [registrations, setRegistrations] = useState<RegistrationResponse[]>([]);
-  const [depts, setDepts] = useState<DeptTreeResponse[]>([]);
+  const [depts, setDepts] = useState<DeptTreeNode[]>([]);
   const [roles, setRoles] = useState<RoleResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
@@ -47,7 +47,7 @@ export default function RegistrationManagementPage() {
 
   const loadDepts = useCallback(async () => {
     try {
-      const data = await getDepts();
+      const data = await getDeptTree();
       setDepts(data);
     } catch (e: any) {
       message.error(e.message || '加载部门失败');
@@ -216,9 +216,9 @@ export default function RegistrationManagementPage() {
     },
   ];
 
-  const flattenDepts = (deptList: DeptTreeResponse[]): DeptTreeResponse[] => {
-    const result: DeptTreeResponse[] = [];
-    const flatten = (list: DeptTreeResponse[], level: number) => {
+  const flattenDepts = (deptList: DeptTreeNode[]): DeptTreeNode[] => {
+    const result: DeptTreeNode[] = [];
+    const flatten = (list: DeptTreeNode[], level: number) => {
       for (const dept of list) {
         result.push({ ...dept, level });
         if (dept.children && dept.children.length > 0) {
