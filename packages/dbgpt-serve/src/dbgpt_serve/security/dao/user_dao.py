@@ -35,6 +35,8 @@ class SysUserDao(BaseDao):
             if user:
                 for key, value in kwargs.items():
                     setattr(user, key, value)
+                session.commit()
+                session.refresh(user)
             return user
 
     def create(self, **kwargs) -> SysUser:
