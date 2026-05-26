@@ -51,8 +51,8 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
         method: 'POST',
         credentials: 'include',
       });
-    } catch {
-      // ignore
+    } catch (e) {
+      console.error('Logout API failed:', e);
     }
     localStorage.removeItem(STORAGE_USERINFO_KEY);
     router.push('/login');
