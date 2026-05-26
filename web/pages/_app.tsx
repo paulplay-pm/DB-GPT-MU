@@ -1,7 +1,7 @@
 import { ChatContext, ChatContextProvider } from '@/app/chat-context';
 import SideBar from '@/components/layout/side-bar';
 import FloatHelper from '@/new-components/layout/FloatHelper';
-import { STORAGE_LANG_KEY, STORAGE_USERINFO_KEY } from '@/utils/constants/index';
+import { STORAGE_LANG_KEY } from '@/utils/constants/index';
 import { App, ConfigProvider, MappingAlgorithm, theme } from 'antd';
 import enUS from 'antd/locale/en_US';
 import zhCN from 'antd/locale/zh_CN';
@@ -69,10 +69,10 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    // Check session cookie for authentication
     const sessionData = document.cookie.includes('session=');
-    const userInfo = localStorage.getItem(STORAGE_USERINFO_KEY);
 
-    if (!sessionData && !userInfo) {
+    if (!sessionData) {
       setIsChecking(false);
       router.push('/login');
       return;
