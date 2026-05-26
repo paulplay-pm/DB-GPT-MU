@@ -89,6 +89,11 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
     );
   }
 
+  // Public pages render without layout wrapper (no sidebar, no float helper)
+  if (isPublicPage) {
+    return <>{children}</>;
+  }
+
   const renderContent = () => {
     if (router.pathname.includes('mobile') || router.pathname.startsWith('/share')) {
       return <>{children}</>;
