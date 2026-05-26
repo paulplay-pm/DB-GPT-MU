@@ -17,6 +17,7 @@ async def submit_registration(request: RegisterRequest):
             login_name=request.login_name,
             password=request.password,
             user_name=request.user_name,
+            real_name=request.real_name,
             email=request.email,
             apply_dept_id=request.apply_dept_id
         )
