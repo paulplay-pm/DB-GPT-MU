@@ -13,7 +13,6 @@ class SysRegistration(Model):
     password_hash = Column(String(256), nullable=False)
     real_name = Column(String(128), nullable=True)
     email = Column(String(128), nullable=True)
-    dept_id = Column(BigInteger, nullable=True)
     status = Column(String(16), default="pending")  # pending, approved, rejected
     reject_reason = Column(String(256), nullable=True)
     created_at = Column(DateTime, default=datetime.now)

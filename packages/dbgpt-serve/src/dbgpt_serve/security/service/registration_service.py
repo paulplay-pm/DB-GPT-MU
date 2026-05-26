@@ -37,7 +37,6 @@ class RegistrationService:
             password_hash=password_hash,
             real_name=real_name,
             email=email,
-            dept_id=dept_id,
             status="pending"
         )
 
