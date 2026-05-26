@@ -34,6 +34,8 @@ class SysRegistrationDao(BaseDao):
         with self.session() as session:
             reg = SysRegistration(**kwargs)
             session.add(reg)
+            session.commit()
+            session.refresh(reg)
             return reg
 
     def update_status(self, id: int, status: str, reject_reason: str = None) -> bool:
@@ -45,5 +47,6 @@ class SysRegistrationDao(BaseDao):
                 reg.status = status
                 if reject_reason:
                     reg.reject_reason = reject_reason
+                session.commit()
                 return True
             return False
