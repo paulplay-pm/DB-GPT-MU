@@ -19,10 +19,10 @@ class RegistrationService:
             bcrypt.gensalt()
         ).decode('utf-8')
 
-    def create_application(self, login_name: str, password: str, real_name: str = None,
-                          email: str = None, dept_id: int = None) -> SysRegistration:
+    def create_application(self, login_name: str, password: str, user_name: str = None,
+                          email: str = None, apply_dept_id: int = None) -> SysRegistration:
         """Create new registration application"""
-        # Check if login_name already exists
+        # Check if login_name already exists in sys_user
         existing = self._user_dao.get_by_login_name(login_name)
         if existing:
             raise ValueError("用户名已存在")
@@ -33,10 +33,12 @@ class RegistrationService:
 
         password_hash = self.hash_password(password)
         return self._dao.create(
+            user_name=user_name or login_name,
             login_name=login_name,
             password_hash=password_hash,
-            real_name=real_name,
+            real_name=user_name,
             email=email,
+            apply_dept_id=apply_dept_id,
             status="pending"
         )
 
@@ -46,7 +48,7 @@ class RegistrationService:
             return self._dao.get_by_status(status)
         return self._dao.get_all()
 
-    def approve(self, registration_id: int, dept_id: int = None, role_ids: List[int] = None) -> SysUser:
+    def approve(self, registration_id: int, approved_dept_id: int = None, role_ids: List[int] = None) -> SysUser:
         """Approve registration and create user"""
         reg = self._dao.get_by_id(registration_id)
         if not reg:
@@ -61,11 +63,11 @@ class RegistrationService:
             password_hash=reg.password_hash,
             real_name=reg.real_name,
             email=reg.email,
-            dept_id=dept_id or reg.dept_id
+            dept_id=approved_dept_id or reg.approved_dept_id
         )
 
         # Update registration status
-        self._dao.update_status(registration_id, "approved")
+        self._dao.update_status(registration_id, "approved", approved_dept_id=approved_dept_id)
 
         # TODO: Assign roles if role_ids provided
 

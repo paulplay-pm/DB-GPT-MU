@@ -36,7 +36,7 @@ class SysRegistrationDao(BaseDao):
             session.refresh(reg)
             return reg
 
-    def update_status(self, id: int, status: str, reject_reason: str = None) -> bool:
+    def update_status(self, id: int, status: str, reject_reason: str = None, approved_dept_id: int = None, approved_by: int = None) -> bool:
         with self.session() as session:
             reg = session.query(SysRegistration).filter(
                 SysRegistration.id == id
@@ -45,6 +45,13 @@ class SysRegistrationDao(BaseDao):
                 reg.status = status
                 if reject_reason:
                     reg.reject_reason = reject_reason
+                if approved_dept_id is not None:
+                    reg.approved_dept_id = approved_dept_id
+                if approved_by is not None:
+                    reg.approved_by = approved_by
+                if status == "approved":
+                    from datetime import datetime
+                    reg.approved_time = datetime.now()
                 session.commit()
                 return True
             return False

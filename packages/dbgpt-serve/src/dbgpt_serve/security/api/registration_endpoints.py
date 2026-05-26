@@ -16,9 +16,10 @@ async def submit_registration(request: RegisterRequest):
         service.create_application(
             login_name=request.login_name,
             password=request.password,
+            user_name=request.user_name,
             real_name=request.real_name,
             email=request.email,
-            dept_id=request.dept_id
+            apply_dept_id=request.apply_dept_id
         )
         return Result.succ({"message": "申请已提交，请等待审核"})
     except ValueError as e:

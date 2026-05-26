@@ -142,9 +142,10 @@ class RegisterRequest(BaseModel):
     """Registration request schema"""
     login_name: str
     password: str
+    user_name: Optional[str] = None  # 申请人姓名
     real_name: Optional[str] = None
     email: Optional[str] = None
-    dept_id: Optional[int] = None
+    apply_dept_id: Optional[int] = None  # 申请部门ID
 
 
 class RegistrationResponse(BaseModel):
