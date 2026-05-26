@@ -6,7 +6,7 @@ from dbgpt.storage.metadata import Model
 class SysRegistration(Model):
     """Registration application entity"""
 
-    __tablename__ = "sys_registration"
+    __tablename__ = "sys_user_registration"
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     login_name = Column(String(64), nullable=False, unique=True)
