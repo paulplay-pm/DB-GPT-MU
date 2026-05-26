@@ -55,14 +55,14 @@ function CssWrapper({ children }: { children: React.ReactElement }) {
 function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const { isMenuExpand, mode } = useContext(ChatContext);
   const { i18n } = useTranslation();
-  const [isChecking, setIsChecking] = useState(true);
 
   const router = useRouter();
+  const [isChecking, setIsChecking] = useState(true);
 
   const isPublicPage =
     router.pathname === '/login' || router.pathname === '/register' || router.pathname.startsWith('/share');
 
-  // 登录检测 - 简化逻辑，立即处理公开页面
+  // 登录检测 - always call useEffect, but check isPublicPage inside
   useEffect(() => {
     if (isPublicPage) {
       setIsChecking(false);
@@ -80,6 +80,11 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
     setIsChecking(false);
   }, []);
 
+  // Public pages render immediately without layout
+  if (isPublicPage) {
+    return <>{children}</>;
+  }
+
   // Loading state while checking auth
   if (isChecking) {
     return (
@@ -87,11 +92,6 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
         <div>Loading...</div>
       </div>
     );
-  }
-
-  // Public pages render without layout wrapper (no sidebar, no float helper)
-  if (isPublicPage) {
-    return <>{children}</>;
   }
 
   const renderContent = () => {
