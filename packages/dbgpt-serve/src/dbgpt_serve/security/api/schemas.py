@@ -151,18 +151,22 @@ class RegisterRequest(BaseModel):
 class RegistrationResponse(BaseModel):
     """Registration response schema"""
     id: int
+    user_name: str
     login_name: str
     real_name: Optional[str]
     email: Optional[str]
-    dept_id: Optional[int]
+    apply_dept_id: Optional[int]
     status: str
+    apply_time: Optional[datetime]
+    approved_by: Optional[int]
+    approved_time: Optional[datetime]
+    approved_dept_id: Optional[int]
     reject_reason: Optional[str]
-    created_at: datetime
 
 
 class ApproveRequest(BaseModel):
     """Approve registration request"""
-    dept_id: Optional[int] = None
+    approved_dept_id: Optional[int] = None
     role_ids: Optional[List[int]] = None
 
 
