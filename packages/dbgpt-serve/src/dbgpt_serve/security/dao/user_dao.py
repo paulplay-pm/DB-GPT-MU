@@ -43,4 +43,6 @@ class SysUserDao(BaseDao):
         with self.session() as session:
             user = SysUser(**kwargs)
             session.add(user)
+            session.commit()
+            session.refresh(user)
             return user
