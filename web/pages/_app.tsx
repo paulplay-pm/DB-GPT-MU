@@ -73,6 +73,7 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
     const userInfo = localStorage.getItem(STORAGE_USERINFO_KEY);
 
     if (!sessionData && !userInfo) {
+      setIsChecking(false);
       router.push('/login');
       return;
     }
