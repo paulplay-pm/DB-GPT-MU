@@ -8,9 +8,12 @@ class SysUserDao(BaseDao):
 
     def get_by_login_name(self, login_name: str) -> Optional[SysUser]:
         with self.session() as session:
-            return session.query(SysUser).filter(
+            user = session.query(SysUser).filter(
                 SysUser.login_name == login_name
             ).first()
+            if user:
+                session.expunge(user)
+            return user
 
     def get_by_user_id(self, user_id: str) -> Optional[SysUser]:
         with self.session() as session:

@@ -40,28 +40,24 @@ class AuthService:
         if not self.verify_password(password, user.password_hash):
             return None, "用户名或密码错误"
 
-        # Get user permissions via permission chain
-        permissions = []
-        if user.is_super_admin:
-            permissions = ["*"]
-        else:
-            from .permission_service import PermissionService
+        # Capture all scalar attributes immediately
+        user_id = int(user.id)
+        user_code = str(user.user_id)
+        user_login_name = str(user.login_name)
+        real_name = str(user.real_name) if user.real_name else ""
+        email = str(user.email) if user.email else ""
+        dept_id = int(user.dept_id) if user.dept_id else None
+        is_active = bool(user.is_active)
+        is_super_admin = bool(user.is_super_admin)
 
-            ps = PermissionService()
-            permissions = ps.get_user_permissions(user.id)
-
-        return self._user_to_dict(user, permissions), None
-
-    def _user_to_dict(self, user, permissions: list = None) -> dict:
-        """Convert user entity to dict (without password_hash)"""
         return {
-            "id": user.id,
-            "user_id": user.user_id,
-            "login_name": user.login_name,
-            "real_name": user.real_name,
-            "email": user.email,
-            "dept_id": user.dept_id,
-            "is_active": user.is_active,
-            "is_super_admin": user.is_super_admin,
-            "permissions": permissions or [],
-        }
+            "id": user_id,
+            "user_id": user_code,
+            "login_name": user_login_name,
+            "real_name": real_name,
+            "email": email,
+            "dept_id": dept_id,
+            "is_active": is_active,
+            "is_super_admin": is_super_admin,
+            "permissions": ["*"] if is_super_admin else [],
+        }, None
