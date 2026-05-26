@@ -55,41 +55,38 @@ function CssWrapper({ children }: { children: React.ReactElement }) {
 function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const { isMenuExpand, mode } = useContext(ChatContext);
   const { i18n } = useTranslation();
-  const [isLogin, setIsLogin] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
 
   const router = useRouter();
 
-  // 登录检测
-  const handleAuth = async () => {
+  const isPublicPage =
+    router.pathname === '/login' || router.pathname === '/register' || router.pathname.startsWith('/share');
+
+  // 登录检测 - 简化逻辑，立即处理公开页面
+  useEffect(() => {
+    if (isPublicPage) {
+      setIsChecking(false);
+      return;
+    }
+
     const sessionData = document.cookie.includes('session=');
     const userInfo = localStorage.getItem(STORAGE_USERINFO_KEY);
 
-    // If not logged in and trying to access protected page, redirect to login
-    if (!sessionData && !userInfo && router.pathname !== '/login' && router.pathname !== '/register') {
+    if (!sessionData && !userInfo) {
       router.push('/login');
       return;
     }
 
-    // If logged in and accessing login page, redirect to home
-    if ((sessionData || userInfo) && router.pathname === '/login') {
-      router.push('/');
-      return;
-    }
-
-    // User is logged in or on public page
-    if (sessionData || userInfo) {
-      setIsLogin(true);
-    }
-  };
-
-  useEffect(() => {
-    handleAuth();
+    setIsChecking(false);
   }, []);
 
-  const isPublicPage =
-    router.pathname === '/login' || router.pathname === '/register' || router.pathname.startsWith('/share');
-  if (!isLogin && !isPublicPage) {
-    return null;
+  // Loading state while checking auth
+  if (isChecking) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <div>Loading...</div>
+      </div>
+    );
   }
 
   const renderContent = () => {

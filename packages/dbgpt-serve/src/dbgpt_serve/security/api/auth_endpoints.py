@@ -35,13 +35,7 @@ async def login(request: LoginRequest, response: Response):
     if error:
         raise HTTPException(status_code=401, detail=error)
 
-    # Get user permissions - placeholder for now, will be implemented with PermissionService later
-    # For super admin, grant all permissions
-    if user.get("is_super_admin"):
-        user["permissions"] = ["*"]  # Super admin has all permissions
-    else:
-        user["permissions"] = []  # Will be populated by PermissionService when available
-
+    # Permissions are already calculated in AuthService.authenticate() via PermissionService
     create_session(response, user)
     return Result.succ(LoginResponse(**user))
 
