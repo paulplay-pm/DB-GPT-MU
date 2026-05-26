@@ -32,6 +32,19 @@ class CurrentUserResponse(BaseModel):
     permissions: list[str] = []
 
 
+class ProfileUpdateRequest(BaseModel):
+    """Update profile request"""
+    real_name: Optional[str] = None
+    email: Optional[str] = None
+    dept_id: Optional[int] = None
+
+
+class PasswordChangeRequest(BaseModel):
+    """Change password request"""
+    old_password: str
+    new_password: str
+
+
 class DeptTreeResponse(BaseModel):
     """Department tree response"""
     id: int

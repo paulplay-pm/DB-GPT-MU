@@ -1,6 +1,6 @@
 import json
 from fastapi import APIRouter, HTTPException, Response, Request
-from .schemas import LoginRequest, LoginResponse, CurrentUserResponse
+from .schemas import LoginRequest, LoginResponse, CurrentUserResponse, ProfileUpdateRequest, PasswordChangeRequest
 from ..service.auth_service import AuthService
 from ...core import Result
 
@@ -56,3 +56,40 @@ async def get_current_user(request: Request):
 
     user_data = json.loads(session_data)
     return Result.succ(CurrentUserResponse(**user_data))
+
+
+@router.put("/profile", response_model=Result[CurrentUserResponse])
+async def update_profile(request: Request, body: ProfileUpdateRequest):
+    """Update current user's profile"""
+    session_data = request.cookies.get("session")
+    if not session_data:
+        raise HTTPException(status_code=401, detail="Not logged in")
+
+    user_data = json.loads(session_data)
+    updated_user, error = auth_service.update_profile(
+        user_id=user_data["id"],
+        real_name=body.real_name,
+        email=body.email,
+        dept_id=body.dept_id,
+    )
+    if error:
+        raise HTTPException(status_code=400, detail=error)
+    return Result.succ(CurrentUserResponse(**updated_user))
+
+
+@router.put("/password", response_model=Result)
+async def change_password(request: Request, body: PasswordChangeRequest):
+    """Change current user's password"""
+    session_data = request.cookies.get("session")
+    if not session_data:
+        raise HTTPException(status_code=401, detail="Not logged in")
+
+    user_data = json.loads(session_data)
+    success, error = auth_service.change_password(
+        user_id=user_data["id"],
+        old_password=body.old_password,
+        new_password=body.new_password,
+    )
+    if not success:
+        raise HTTPException(status_code=400, detail=error)
+    return Result.succ(None)
