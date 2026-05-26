@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, BigInteger, String, Integer, DateTime
+from sqlalchemy import Column, BigInteger, String, DateTime
 from dbgpt.storage.metadata import Model
 
 
@@ -15,5 +15,3 @@ class SysRegistration(Model):
     email = Column(String(128), nullable=True)
     status = Column(String(16), default="pending")  # pending, approved, rejected
     reject_reason = Column(String(256), nullable=True)
-    created_at = Column(DateTime, default=datetime.now)
-    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)

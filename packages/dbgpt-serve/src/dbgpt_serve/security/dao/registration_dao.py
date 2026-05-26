@@ -26,9 +26,7 @@ class SysRegistrationDao(BaseDao):
 
     def get_all(self) -> List[SysRegistration]:
         with self.session() as session:
-            return session.query(SysRegistration).order_by(
-                SysRegistration.created_at.desc()
-            ).all()
+            return session.query(SysRegistration).all()
 
     def create(self, **kwargs) -> SysRegistration:
         with self.session() as session:
