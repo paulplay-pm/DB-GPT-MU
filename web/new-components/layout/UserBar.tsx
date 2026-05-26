@@ -1,6 +1,6 @@
 import { STORAGE_USERINFO_KEY } from '@/utils/constants/storage';
 import { LockOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Dropdown, MenuProps, message } from 'antd';
+import { Avatar, Dropdown, Form, Input, MenuProps, Modal, message } from 'antd';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
@@ -17,6 +17,10 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [menuVisible, setMenuVisible] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [form] = Form.useForm();
+  const [passwordForm] = Form.useForm();
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -59,9 +63,11 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
     if (key === 'logout') {
       handleLogout();
     } else if (key === 'profile') {
-      message.info('个人信息功能开发中');
+      form.setFieldsValue({ real_name: userInfo?.real_name, email: userInfo?.email });
+      setProfileModalOpen(true);
     } else if (key === 'password') {
-      message.info('修改密码功能开发中');
+      passwordForm.resetFields();
+      setPasswordModalOpen(true);
     }
   };
 
@@ -109,6 +115,93 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       >
         {triggerArea}
       </Dropdown>
+      <Modal
+        title='个人信息'
+        open={profileModalOpen}
+        onCancel={() => setProfileModalOpen(false)}
+        onOk={() => {
+          form.validateFields().then(async values => {
+            try {
+              const res = await fetch('/api/v2/sys/auth/profile', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(values),
+                credentials: 'include',
+              });
+              const data = await res.json();
+              if (data.success) {
+                const updated = { ...userInfo, ...values };
+                localStorage.setItem(STORAGE_USERINFO_KEY, JSON.stringify(updated));
+                setUserInfo(updated);
+                setProfileModalOpen(false);
+                message.success('个人信息已更新');
+              } else {
+                message.error(data.detail || '更新失败');
+              }
+            } catch {
+              message.error('更新失败');
+            }
+          });
+        }}
+      >
+        <Form form={form} layout='vertical'>
+          <Form.Item label='登录名'>
+            <Input value={userInfo?.login_name || ''} disabled />
+          </Form.Item>
+          <Form.Item name='real_name' label='真实姓名'>
+            <Input />
+          </Form.Item>
+          <Form.Item name='email' label='邮箱'>
+            <Input />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
+        title='修改密码'
+        open={passwordModalOpen}
+        onCancel={() => setPasswordModalOpen(false)}
+        onOk={() => {
+          passwordForm.validateFields().then(async values => {
+            if (values.new_password !== values.confirm_password) {
+              message.error('两次输入的密码不一致');
+              return;
+            }
+            try {
+              const res = await fetch('/api/v2/sys/auth/password', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  old_password: values.old_password,
+                  new_password: values.new_password,
+                }),
+                credentials: 'include',
+              });
+              const data = await res.json();
+              if (data.success) {
+                setPasswordModalOpen(false);
+                message.success('密码已更新');
+                passwordForm.resetFields();
+              } else {
+                message.error(data.detail || '修改失败');
+              }
+            } catch {
+              message.error('修改失败');
+            }
+          });
+        }}
+      >
+        <Form form={passwordForm} layout='vertical'>
+          <Form.Item name='old_password' label='原密码' rules={[{ required: true }]}>
+            <Input.Password />
+          </Form.Item>
+          <Form.Item name='new_password' label='新密码' rules={[{ required: true, min: 6 }]}>
+            <Input.Password />
+          </Form.Item>
+          <Form.Item name='confirm_password' label='确认密码' rules={[{ required: true }]}>
+            <Input.Password />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 }
