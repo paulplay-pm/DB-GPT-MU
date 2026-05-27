@@ -1,3 +1,4 @@
+import bcrypt
 from typing import Optional, List
 from dbgpt.storage.metadata import BaseDao
 from ..dao.user_dao import SysUserDao
@@ -24,6 +25,17 @@ class SysUserService:
     def get_all(self) -> List[SysUser]:
         """Get all users"""
         return self._dao.get_all()
+
+    def create_user(self, **kwargs) -> SysUser:
+        """Create new user"""
+        # Hash the password if provided
+        if 'password' in kwargs:
+            password = kwargs.pop('password')
+            kwargs['password_hash'] = bcrypt.hashpw(
+                password.encode('utf-8'),
+                bcrypt.gensalt()
+            ).decode('utf-8')
+        return self._dao.create(**kwargs)
 
     def update_user(self, id: int, **kwargs) -> Optional[SysUser]:
         """Update user"""

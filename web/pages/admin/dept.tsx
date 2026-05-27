@@ -4,6 +4,7 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Space, Tree, TreeSelect, message } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   DeptCreateRequest,
@@ -16,10 +17,11 @@ import {
 } from '@/client/api/sys/dept';
 
 export default function DeptManagementPage() {
+  const { t } = useTranslation();
   const [deptTree, setDeptTree] = useState<DeptTreeNode[]>([]);
   const [_loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalTitle, setModalTitle] = useState('新增部门');
+  const [modalTitle, setModalTitle] = useState(t('Add_Dept'));
   const [editingDept, setEditingDept] = useState<DeptTreeNode | null>(null);
   const [form] = Form.useForm();
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
@@ -30,11 +32,11 @@ export default function DeptManagementPage() {
       const data = await getDeptTree();
       setDeptTree(data);
     } catch (e: any) {
-      message.error(e.message || '加载部门失败');
+      message.error(e.message || t('Load_Dept_Failed'));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     loadDeptTree();
@@ -75,7 +77,7 @@ export default function DeptManagementPage() {
 
   const handleAdd = (parentId?: number) => {
     setEditingDept(null);
-    setModalTitle('新增部门');
+    setModalTitle(t('Add_Dept'));
     form.resetFields();
     if (parentId !== undefined) {
       form.setFieldsValue({ parent_id: parentId });
@@ -85,7 +87,7 @@ export default function DeptManagementPage() {
 
   const handleEdit = (dept: DeptTreeNode) => {
     setEditingDept(dept);
-    setModalTitle('编辑部门');
+    setModalTitle(t('Edit_Dept'));
     form.setFieldsValue({
       code: dept.code,
       name: dept.name,
@@ -98,15 +100,15 @@ export default function DeptManagementPage() {
 
   const handleDelete = async (dept: DeptTreeNode) => {
     Modal.confirm({
-      title: '确认删除',
-      content: `确定要删除部门"${dept.name}"吗？`,
+      title: t('Delete_Confirm'),
+      content: t('Dept_Delete_Confirm', { name: dept.name }),
       onOk: async () => {
         try {
           await deleteDept(dept.id);
-          message.success('删除成功');
+          message.success(t('Delete_Success'));
           loadDeptTree();
         } catch (e: any) {
-          message.error(e.message || '删除失败');
+          message.error(e.message || t('Delete_Failed'));
         }
       },
     });
@@ -117,10 +119,10 @@ export default function DeptManagementPage() {
       const values = await form.validateFields();
       if (editingDept) {
         await updateDept(editingDept.id, values as DeptUpdateRequest);
-        message.success('更新成功');
+        message.success(t('update_success'));
       } else {
         await createDept(values as DeptCreateRequest);
-        message.success('创建成功');
+        message.success(t('create_success'));
       }
       setModalVisible(false);
       loadDeptTree();
@@ -128,7 +130,7 @@ export default function DeptManagementPage() {
       if (e.errorFields) {
         return;
       }
-      message.error(e.message || '操作失败');
+      message.error(e.message || t('Operation_Failed'));
     }
   };
 
@@ -139,7 +141,7 @@ export default function DeptManagementPage() {
     <div style={{ padding: 24 }}>
       <div style={{ marginBottom: 16 }}>
         <Button type='primary' icon={<PlusOutlined />} onClick={() => handleAdd()}>
-          新增部门
+          {t('Add_Dept')}
         </Button>
       </div>
 
@@ -148,6 +150,7 @@ export default function DeptManagementPage() {
         expandedKeys={expandedKeys}
         onExpand={setExpandedKeys}
         defaultExpandAll
+        style={{ maxHeight: 400, overflow: 'auto' }}
         titleRender={(nodeData: any) => {
           const dept = findDeptById(deptTree, nodeData.key as number);
           return (
@@ -204,23 +207,23 @@ export default function DeptManagementPage() {
         width={400}
       >
         <Form form={form} layout='vertical'>
-          <Form.Item name='name' label='部门名称' rules={[{ required: true, message: '请输入部门名称' }]}>
-            <Input placeholder='请输入部门名称' />
+          <Form.Item name='name' label={t('Dept_Name')} rules={[{ required: true, message: t('Dept_Name_Required') }]}>
+            <Input placeholder={t('Dept_Name_Required')} />
           </Form.Item>
-          <Form.Item name='code' label='部门编码' rules={[{ required: true, message: '请输入部门编码' }]}>
-            <Input placeholder='请输入部门编码' />
+          <Form.Item name='code' label={t('Dept_Code')} rules={[{ required: true, message: t('Dept_Code_Required') }]}>
+            <Input placeholder={t('Dept_Code_Required')} />
           </Form.Item>
-          <Form.Item name='parent_id' label='上级部门'>
+          <Form.Item name='parent_id' label={t('Parent_Dept')}>
             <TreeSelect
               style={{ width: '100%' }}
               treeData={treeSelectData}
-              placeholder='请选择上级部门'
+              placeholder={t('Parent_Dept_Placeholder')}
               allowClear
               treeDefaultExpandAll
             />
           </Form.Item>
-          <Form.Item name='sort' label='排序'>
-            <Input type='number' placeholder='请输入排序值' />
+          <Form.Item name='sort' label={t('Dept_Sort')}>
+            <Input type='number' placeholder={t('Dept_Sort_Placeholder')} />
           </Form.Item>
         </Form>
       </Modal>

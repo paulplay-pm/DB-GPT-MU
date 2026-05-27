@@ -34,7 +34,8 @@ class SysDeptDao(BaseDao):
         with self.session() as session:
             dept = SysDept(**kwargs)
             session.add(dept)
-            session.commit()
+            session.flush()
+            session.refresh(dept)
             session.expunge(dept)
             return dept
 

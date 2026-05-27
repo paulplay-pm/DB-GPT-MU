@@ -149,7 +149,7 @@ const Prompt = () => {
 
   return (
     <ConstructLayout>
-      <div className={`px-6 py-2 ${styles['prompt-container']} md:p-6 h-[90vh] overflow-y-auto`}>
+      <div className={`px-6 pt-6 ${styles['prompt-container']} md:p-6 h-[90vh] overflow-y-auto`}>
         <div className='flex justify-between items-center mb-6'>
           <div className='flex items-center gap-4'>
             <Segmented

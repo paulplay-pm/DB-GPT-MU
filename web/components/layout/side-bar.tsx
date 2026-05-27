@@ -20,6 +20,7 @@ import Icon, {
   MessageOutlined,
   PlusOutlined,
   RightOutlined,
+  SafetyOutlined,
   UserAddOutlined,
 } from '@ant-design/icons';
 import { Popover, Skeleton, Tooltip, message } from 'antd';
@@ -167,7 +168,7 @@ function SideBar() {
       {
         key: 'datasources',
         name: t('datasources'),
-        permissionKey: 'datasources.view',
+        permissionKey: 'datasources',
         isActive: pathname.startsWith('/construct/database'),
         iconSrc: '/pictures/datasource.svg',
         activeIconSrc: '/pictures/datasource_active.svg',
@@ -176,7 +177,7 @@ function SideBar() {
       {
         key: 'knowledge',
         name: t('knowledge'),
-        permissionKey: 'knowledge.view',
+        permissionKey: 'knowledge',
         isActive: pathname.startsWith('/construct/knowledge'),
         iconSrc: '/pictures/knowledge_sidebar.svg',
         activeIconSrc: '/pictures/knowledge_sidebar_active.svg',
@@ -190,7 +191,130 @@ function SideBar() {
 
   const settingsContent = (
     <div className='w-56 py-1'>
+      {hasPermission('settings.app_management') && (
+        <div
+          onClick={() => {
+            router.push('/construct/app');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/construct/app'),
+            },
+          )}
+        >
+          <AppstoreOutlined className='text-blue-500' />
+          <span>{t('app_management')}</span>
+        </div>
+      )}
+      {hasPermission('settings.model_manage') && (
+        <div
+          onClick={() => {
+            router.push('/construct/models');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400':
+                pathname.startsWith('/construct/models'),
+            },
+          )}
+        >
+          <Icon component={ModelSvg} className='text-cyan-500' />
+          <span>{t('model_manage')}</span>
+        </div>
+      )}
+      {hasPermission('settings.awel_workflow') && (
+        <div
+          onClick={() => {
+            router.push('/construct/flow');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/construct/flow'),
+            },
+          )}
+        >
+          <ApartmentOutlined className='text-green-500' />
+          <span>{t('awel_workflow')}</span>
+        </div>
+      )}
+      {hasPermission('settings.prompts') && (
+        <div
+          onClick={() => {
+            router.push('/construct/prompt');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400':
+                pathname.startsWith('/construct/prompt'),
+            },
+          )}
+        >
+          <EditOutlined className='text-orange-500' />
+          <span>{t('prompts')}</span>
+        </div>
+      )}
+      {hasPermission('settings.dbgpts_community') && (
+        <div
+          onClick={() => {
+            router.push('/construct/dbgpts');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400':
+                pathname.startsWith('/construct/dbgpts'),
+            },
+          )}
+        >
+          <GlobalOutlined className='text-purple-500' />
+          <span>{t('dbgpts_community')}</span>
+        </div>
+      )}
+      {hasPermission('settings.models_evaluation') && (
+        <div
+          onClick={() => {
+            router.push('/models_evaluation');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname === '/models_evaluation',
+            },
+          )}
+        >
+          <LineChartOutlined className='text-red-500' />
+          <span>{t('models_evaluation')}</span>
+        </div>
+      )}
       <div className='px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider'>{t('management')}</div>
+      {hasPermission(PERMISSIONS.REGISTRATION.APPROVE) && (
+        <div
+          onClick={() => {
+            router.push('/admin/registration');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400':
+                pathname.startsWith('/admin/registration'),
+            },
+          )}
+        >
+          <UserAddOutlined className='text-purple-500' />
+          <span>{t('registration_review')}</span>
+        </div>
+      )}
       {hasPermission(PERMISSIONS.USER.MANAGEMENT) && (
         <div
           onClick={() => {
@@ -206,23 +330,6 @@ function SideBar() {
         >
           <AppstoreOutlined className='text-blue-500' />
           <span>{t('user_management')}</span>
-        </div>
-      )}
-      {hasPermission(PERMISSIONS.DEPT.MANAGEMENT) && (
-        <div
-          onClick={() => {
-            router.push('/admin/dept');
-            setSettingsOpen(false);
-          }}
-          className={cls(
-            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
-            {
-              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/admin/dept'),
-            },
-          )}
-        >
-          <ApartmentOutlined className='text-green-500' />
-          <span>{t('dept_management')}</span>
         </div>
       )}
       {hasPermission(PERMISSIONS.ROLE.MANAGEMENT) && (
@@ -242,114 +349,41 @@ function SideBar() {
           <span>{t('role_management')}</span>
         </div>
       )}
-      {hasPermission(PERMISSIONS.REGISTRATION.APPROVE) && (
+      {hasPermission(PERMISSIONS.DEPT.MANAGEMENT) && (
         <div
           onClick={() => {
-            router.push('/admin/registration');
+            router.push('/admin/dept');
+            setSettingsOpen(false);
+          }}
+          className={cls(
+            'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
+            {
+              'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/admin/dept'),
+            },
+          )}
+        >
+          <ApartmentOutlined className='text-green-500' />
+          <span>{t('dept_management')}</span>
+        </div>
+      )}
+      {hasPermission(PERMISSIONS.PERMISSION.VIEW) && (
+        <div
+          onClick={() => {
+            router.push('/admin/permission');
             setSettingsOpen(false);
           }}
           className={cls(
             'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
             {
               'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400':
-                pathname.startsWith('/admin/registration'),
+                pathname.startsWith('/admin/permission'),
             },
           )}
         >
-          <UserAddOutlined className='text-purple-500' />
-          <span>{t('registration_review')}</span>
+          <SafetyOutlined className='text-red-500' />
+          <span>{t('permission_management')}</span>
         </div>
       )}
-      <div
-        onClick={() => {
-          router.push('/construct/app');
-          setSettingsOpen(false);
-        }}
-        className={cls(
-          'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
-          {
-            'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/construct/app'),
-          },
-        )}
-      >
-        <AppstoreOutlined className='text-blue-500' />
-        <span>{t('app_management')}</span>
-      </div>
-      <div
-        onClick={() => {
-          router.push('/construct/models');
-          setSettingsOpen(false);
-        }}
-        className={cls(
-          'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
-          {
-            'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/construct/models'),
-          },
-        )}
-      >
-        <Icon component={ModelSvg} className='text-cyan-500' />
-        <span>{t('model_manage')}</span>
-      </div>
-      <div
-        onClick={() => {
-          router.push('/construct/flow');
-          setSettingsOpen(false);
-        }}
-        className={cls(
-          'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
-          {
-            'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/construct/flow'),
-          },
-        )}
-      >
-        <ApartmentOutlined className='text-green-500' />
-        <span>{t('awel_workflow')}</span>
-      </div>
-      <div
-        onClick={() => {
-          router.push('/construct/prompt');
-          setSettingsOpen(false);
-        }}
-        className={cls(
-          'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
-          {
-            'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/construct/prompt'),
-          },
-        )}
-      >
-        <EditOutlined className='text-orange-500' />
-        <span>{t('prompts')}</span>
-      </div>
-      <div
-        onClick={() => {
-          router.push('/construct/dbgpts');
-          setSettingsOpen(false);
-        }}
-        className={cls(
-          'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
-          {
-            'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname.startsWith('/construct/dbgpts'),
-          },
-        )}
-      >
-        <GlobalOutlined className='text-purple-500' />
-        <span>{t('dbgpts_community')}</span>
-      </div>
-      <div
-        onClick={() => {
-          router.push('/models_evaluation');
-          setSettingsOpen(false);
-        }}
-        className={cls(
-          'flex items-center gap-3 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors',
-          {
-            'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': pathname === '/models_evaluation',
-          },
-        )}
-      >
-        <LineChartOutlined className='text-red-500' />
-        <span>{t('models_evaluation')}</span>
-      </div>
     </div>
   );
 

@@ -6,6 +6,7 @@ export interface UserResponse {
   login_name: string;
   real_name?: string;
   email?: string;
+  phone?: string;
   dept_id?: number;
   is_active: boolean;
   is_super_admin: boolean;
@@ -17,12 +18,14 @@ export interface UserCreateRequest {
   password: string;
   real_name?: string;
   email?: string;
+  phone?: string;
   dept_id?: number;
 }
 
 export interface UserUpdateRequest {
   real_name?: string;
   email?: string;
+  phone?: string;
   dept_id?: number;
   is_active?: boolean;
 }
@@ -59,7 +62,7 @@ export async function updateUser(id: number, data: UserUpdateRequest): Promise<v
 }
 
 export async function updateUserRoles(id: number, roleIds: number[]): Promise<void> {
-  const res = await PUT<{ role_ids: number[] }, null>(`/api/v2/sys/users/${id}/roles`, { role_ids: roleIds });
+  const res = await PUT<number[], null>(`/api/v2/sys/users/${id}/roles`, roleIds);
   if (!res.data?.success) {
     throw new Error(res.data?.err_msg || '更新用户角色失败');
   }

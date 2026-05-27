@@ -23,18 +23,18 @@ class SysPermissionService:
         all_perms = self._dao.get_all()
         return self._build_tree(all_perms, None)
 
-    def _build_tree(self, perms: List[SysPermission], parent_id: int) -> List[dict]:
+    def _build_tree(self, perms: List[SysPermission], parent_code: str) -> List[dict]:
         result = []
         for perm in perms:
-            if perm.parent_id == parent_id:
+            if perm.parent_code == parent_code:
                 node = {
                     "id": perm.id,
                     "code": perm.code,
                     "name": perm.name,
-                    "parent_id": perm.parent_id,
-                    "level": perm.level,
+                    "parent_code": perm.parent_code,
+                    "perm_type": perm.perm_type,
                     "sort": perm.sort,
-                    "children": self._build_tree(perms, perm.id)
+                    "children": self._build_tree(perms, perm.code)
                 }
                 result.append(node)
         return result
@@ -104,3 +104,4 @@ class SysPermissionService:
             ).delete()
             for perm_id in permission_ids:
                 session.add(SysRolePermission(role_id=role_id, permission_id=perm_id))
+            session.commit()

@@ -4,6 +4,7 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import type { TableProps } from 'antd';
 import { Button, Form, Input, Modal, Select, Space, Table, Tag, message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { DeptTreeNode, getDeptTree } from '@/client/api/sys/dept';
 import {
@@ -17,6 +18,7 @@ import {
 import { RoleResponse, getRoles } from '@/client/api/sys/role';
 
 export default function RegistrationManagementPage() {
+  const { t } = useTranslation();
   const [registrations, setRegistrations] = useState<RegistrationResponse[]>([]);
   const [depts, setDepts] = useState<DeptTreeNode[]>([]);
   const [roles, setRoles] = useState<RoleResponse[]>([]);
@@ -39,29 +41,29 @@ export default function RegistrationManagementPage() {
       const data = await getRegistrations(statusFilter);
       setRegistrations(data);
     } catch (e: any) {
-      message.error(e.message || '加载注册申请失败');
+      message.error(e.message || t('Load_Registration_Failed'));
     } finally {
       setLoading(false);
     }
-  }, [statusFilter]);
+  }, [statusFilter, t]);
 
   const loadDepts = useCallback(async () => {
     try {
       const data = await getDeptTree();
       setDepts(data);
     } catch (e: any) {
-      message.error(e.message || '加载部门失败');
+      message.error(e.message || t('Load_Dept_Failed'));
     }
-  }, []);
+  }, [t]);
 
   const loadRoles = useCallback(async () => {
     try {
       const data = await getRoles();
       setRoles(data);
     } catch (e: any) {
-      message.error(e.message || '加载角色失败');
+      message.error(e.message || t('Load_Role_Failed'));
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     loadRegistrations();
@@ -90,7 +92,7 @@ export default function RegistrationManagementPage() {
         role_ids: values.role_ids,
       };
       await approveRegistration(currentRegId, data);
-      message.success('审核通过成功');
+      message.success(t('Approve_Success'));
       setApproveModalVisible(false);
       approveForm.resetFields();
       loadRegistrations();
@@ -98,7 +100,7 @@ export default function RegistrationManagementPage() {
       if (e.errorFields) {
         return;
       }
-      message.error(e.message || '操作失败');
+      message.error(e.message || t('Operation_Failed'));
     }
   };
 
@@ -111,7 +113,7 @@ export default function RegistrationManagementPage() {
         reason: values.reason,
       };
       await rejectRegistration(rejectRegId, data);
-      message.success('审核拒绝成功');
+      message.success(t('Reject_Success'));
       setRejectModalVisible(false);
       rejectForm.resetFields();
       loadRegistrations();
@@ -119,7 +121,7 @@ export default function RegistrationManagementPage() {
       if (e.errorFields) {
         return;
       }
-      message.error(e.message || '操作失败');
+      message.error(e.message || t('Operation_Failed'));
     }
   };
 
@@ -139,11 +141,11 @@ export default function RegistrationManagementPage() {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'pending':
-        return '待审核';
+        return t('Pending');
       case 'approved':
-        return '已通过';
+        return t('Approved');
       case 'rejected':
-        return '已拒绝';
+        return t('Rejected');
       default:
         return status;
     }
@@ -151,57 +153,57 @@ export default function RegistrationManagementPage() {
 
   const columns: TableProps<RegistrationResponse>['columns'] = [
     {
-      title: '登录名',
+      title: t('Admin_Login_Name'),
       dataIndex: 'login_name',
       key: 'login_name',
       width: 150,
     },
     {
-      title: '真实姓名',
+      title: t('Admin_Real_Name'),
       dataIndex: 'real_name',
       key: 'real_name',
       width: 120,
     },
     {
-      title: '邮箱',
+      title: t('Admin_Email'),
       dataIndex: 'email',
       key: 'email',
       width: 180,
     },
     {
-      title: '状态',
+      title: t('Admin_Status'),
       dataIndex: 'status',
       key: 'status',
       width: 100,
       render: (status: string) => <Tag color={getStatusColor(status)}>{getStatusText(status)}</Tag>,
     },
     {
-      title: '拒绝原因',
+      title: t('Registration_Reject_Reason'),
       dataIndex: 'reject_reason',
       key: 'reject_reason',
       width: 200,
     },
     {
-      title: '申请时间',
+      title: t('Registration_Apply_Time'),
       dataIndex: 'created_at',
       key: 'created_at',
       width: 180,
     },
     {
-      title: '操作',
+      title: t('Admin_Operation'),
       key: 'action',
       width: 150,
       render: (_: any, record: RegistrationResponse) => {
         if (record.status !== 'pending') {
-          return <span style={{ color: '#999' }}>已处理</span>;
+          return <span style={{ color: '#999' }}>{t('Registration_Processed')}</span>;
         }
         return (
           <Space size='small'>
             <Button type='text' size='small' icon={<CheckOutlined />} onClick={() => handleApprove(record)}>
-              通过
+              {t('Approve')}
             </Button>
             <Button type='text' size='small' danger icon={<CloseOutlined />} onClick={() => handleReject(record)}>
-              拒绝
+              {t('Reject')}
             </Button>
           </Space>
         );
@@ -227,20 +229,20 @@ export default function RegistrationManagementPage() {
     <div style={{ padding: 24 }}>
       <div style={{ marginBottom: 16 }}>
         <Space>
-          <span>状态筛选：</span>
+          <span>{t('Registration_Status_Filter')}：</span>
           <Select
             allowClear
-            placeholder='全部'
+            placeholder={t('Registration_All')}
             style={{ width: 120 }}
             value={statusFilter}
             onChange={value => setStatusFilter(value)}
             options={[
-              { value: 'pending', label: '待审核' },
-              { value: 'approved', label: '已通过' },
-              { value: 'rejected', label: '已拒绝' },
+              { value: 'pending', label: t('Pending') },
+              { value: 'approved', label: t('Approved') },
+              { value: 'rejected', label: t('Rejected') },
             ]}
           />
-          <Button onClick={loadRegistrations}>刷新</Button>
+          <Button onClick={loadRegistrations}>{t('refresh_list')}</Button>
         </Space>
       </div>
 
@@ -249,24 +251,25 @@ export default function RegistrationManagementPage() {
         dataSource={registrations}
         rowKey='id'
         loading={loading}
+        scroll={{ y: 400 }}
         pagination={{
           pageSize: 20,
           showSizeChanger: true,
           showQuickJumper: true,
-          showTotal: total => `共 ${total} 条`,
+          showTotal: total => t('Total_Records', { total }),
         }}
       />
 
       <Modal
-        title='审核通过'
+        title={t('Registration_Approve_Title')}
         open={approveModalVisible}
         onOk={handleApproveSubmit}
         onCancel={() => setApproveModalVisible(false)}
         width={500}
       >
         <Form form={approveForm} layout='vertical'>
-          <Form.Item name='dept_id' label='部门'>
-            <Select placeholder='请选择部门' allowClear style={{ width: '100%' }}>
+          <Form.Item name='dept_id' label={t('Admin_Department')}>
+            <Select placeholder={t('Admin_Department_Placeholder')} allowClear style={{ width: '100%' }}>
               {flattenDepts(depts).map(dept => (
                 <Select.Option key={dept.id} value={dept.id}>
                   {'　'.repeat(dept.level)}
@@ -275,8 +278,8 @@ export default function RegistrationManagementPage() {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name='role_ids' label='角色'>
-            <Select mode='multiple' placeholder='请选择角色' allowClear style={{ width: '100%' }}>
+          <Form.Item name='role_ids' label={t('Admin_Role')}>
+            <Select mode='multiple' placeholder={t('Admin_Role_Placeholder')} allowClear style={{ width: '100%' }}>
               {roles.map(role => (
                 <Select.Option key={role.id} value={role.id}>
                   {role.name}
@@ -288,15 +291,19 @@ export default function RegistrationManagementPage() {
       </Modal>
 
       <Modal
-        title='审核拒绝'
+        title={t('Registration_Reject_Title')}
         open={rejectModalVisible}
         onOk={handleRejectSubmit}
         onCancel={() => setRejectModalVisible(false)}
         width={500}
       >
         <Form form={rejectForm} layout='vertical'>
-          <Form.Item name='reason' label='拒绝原因' rules={[{ required: true, message: '请输入拒绝原因' }]}>
-            <Input.TextArea rows={4} placeholder='请输入拒绝原因' />
+          <Form.Item
+            name='reason'
+            label={t('Registration_Reject_Reason')}
+            rules={[{ required: true, message: t('Please_Input') }]}
+          >
+            <Input.TextArea rows={4} placeholder={t('Please_Input')} />
           </Form.Item>
         </Form>
       </Modal>

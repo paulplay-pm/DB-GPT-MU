@@ -103,7 +103,7 @@ function Agent() {
 
   return (
     <ConstructLayout>
-      <div className='px-6'>
+      <div className='px-6 pt-6'>
         <Spin spinning={loading}>
           <div className='flex justify-between items-center mb-6'>
             <div className='flex items-center gap-4'>

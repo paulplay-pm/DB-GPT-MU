@@ -1,9 +1,11 @@
 import bcrypt
 from typing import Optional, List
+from dbgpt.storage.metadata import BaseDao
 from ..dao.registration_dao import SysRegistrationDao
 from ..dao.user_dao import SysUserDao
 from ..models.registration import SysRegistration
 from ..models.user import SysUser
+from ..models.user_role import SysUserRole
 
 
 class RegistrationService:
@@ -72,7 +74,13 @@ class RegistrationService:
         # Update registration status
         self._dao.update_status(registration_id, "approved", approved_dept_id=approved_dept_id)
 
-        # TODO: Assign roles if role_ids provided
+        # Assign roles if role_ids provided
+        if role_ids:
+            base_dao = BaseDao()
+            with base_dao.session() as session:
+                for role_id in role_ids:
+                    session.add(SysUserRole(user_id=user.id, role_id=role_id))
+                session.commit()
 
         return user
 

@@ -1,6 +1,10 @@
 import bcrypt
+import logging
 from typing import Optional, Tuple
 from .user_service import SysUserService
+from .permission_service import SysPermissionService
+
+logger = logging.getLogger(__name__)
 
 
 class AuthService:
@@ -8,6 +12,7 @@ class AuthService:
 
     def __init__(self):
         self._user_service = SysUserService()
+        self._permission_service = SysPermissionService()
 
     def verify_password(self, raw_password: str, password_hash: str) -> bool:
         """Verify password against bcrypt hash"""
@@ -51,6 +56,16 @@ class AuthService:
         is_active = bool(user.is_active)
         is_super_admin = bool(user.is_super_admin)
 
+        # Get user's permission codes from roles
+        print(f"DEBUG authenticate: is_super_admin={is_super_admin}, user_id={user_id}", flush=True)
+        logger.info(f"authenticate: is_super_admin={is_super_admin}, user_id={user_id}")
+        if is_super_admin:
+            permissions = ["*"]
+        else:
+            permissions = self._permission_service.get_user_permissions(user_id)
+            print(f"DEBUG authenticate: permissions result: {permissions}", flush=True)
+            logger.info(f"authenticate: permissions result: {permissions}")
+
         return {
             "id": user_id,
             "user_id": user_code,
@@ -61,7 +76,7 @@ class AuthService:
             "dept_id": dept_id,
             "is_active": is_active,
             "is_super_admin": is_super_admin,
-            "permissions": ["*"] if is_super_admin else [],
+            "permissions": permissions,
         }, None
 
     def update_profile(self, user_id: int, real_name: str, email: str, phone: str, dept_id: Optional[int]) -> Tuple[Optional[dict], Optional[str]]:

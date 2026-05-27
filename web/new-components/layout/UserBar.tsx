@@ -130,7 +130,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       onClick={handleMenuToggle}
     >
       <Avatar src={userInfo?.avatar_url} className='bg-gradient-to-tr from-[#31afff] to-[#1677ff]'>
-        {userInfo?.nick_name || userInfo?.real_name || userInfo?.login_name?.[0] || '?'}
+        {userInfo?.real_name?.[0] || userInfo?.nick_name?.[0] || userInfo?.login_name?.[0] || '?'}
       </Avatar>
       {!onlyAvatar && (
         <span className='text-sm truncate max-w-[80px]'>
@@ -203,7 +203,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
               size={72}
               className='bg-gradient-to-tr from-[#31afff] to-[#1677ff]'
             >
-              {userInfo?.nick_name || userInfo?.real_name || userInfo?.login_name?.[0] || '?'}
+              {userInfo?.real_name?.[0] || userInfo?.nick_name?.[0] || userInfo?.login_name?.[0] || '?'}
             </Avatar>
             <span className='text-xs text-gray-400'>点击更换头像</span>
           </div>

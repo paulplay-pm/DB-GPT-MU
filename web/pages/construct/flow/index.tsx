@@ -150,7 +150,7 @@ function Flow() {
   return (
     <ConstructLayout>
       <Spin spinning={loading}>
-        <div className='relative h-screen w-full p-4 md:p-6 overflow-y-auto' ref={scrollRef}>
+        <div className='relative h-screen w-full p-4 md:pt-6 md:px-6 overflow-y-auto' ref={scrollRef}>
           <div className='flex justify-between items-center mb-6'>
             <div className='flex items-center gap-4'>
               {/* <Input

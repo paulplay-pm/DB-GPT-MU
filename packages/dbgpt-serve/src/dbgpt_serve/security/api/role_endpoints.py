@@ -57,6 +57,16 @@ async def delete_role(role_id: int):
     return Result.succ(None)
 
 
+@router.get("/roles/{role_id}/permissions", response_model=Result[List[int]])
+async def get_role_permissions(role_id: int):
+    """Get role's permission IDs"""
+    from ..service.permission_service import SysPermissionService
+
+    service = SysPermissionService()
+    perm_ids = service.get_role_permissions(role_id)
+    return Result.succ(perm_ids)
+
+
 @router.put("/roles/{role_id}/permissions", response_model=Result)
 async def update_role_permissions(role_id: int, permission_ids: List[int]):
     """Update role's permissions (replace all)"""

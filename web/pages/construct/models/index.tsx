@@ -102,7 +102,7 @@ function Models() {
 
   return (
     <ConstructLayout>
-      <div className='px-6 overflow-y-auto'>
+      <div className='px-6 pt-6 overflow-y-auto'>
         <div className='flex justify-between items-center mb-6'>
           <div className='flex items-center gap-4'>
             {/* <Input

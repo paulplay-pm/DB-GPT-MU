@@ -82,8 +82,8 @@ class PermissionTreeResponse(BaseModel):
     id: int
     code: str
     name: str
-    parent_id: Optional[int]
-    level: int
+    parent_code: Optional[str] = None
+    perm_type: str
     sort: int
     children: list = []
 
@@ -131,6 +131,7 @@ class UserCreateRequest(BaseModel):
     password: str
     real_name: Optional[str] = None
     email: Optional[str] = None
+    phone: Optional[str] = None
     dept_id: Optional[int] = None
 
 
@@ -138,6 +139,7 @@ class UserUpdateRequest(BaseModel):
     """Update user request"""
     real_name: Optional[str] = None
     email: Optional[str] = None
+    phone: Optional[str] = None
     dept_id: Optional[int] = None
     is_active: Optional[bool] = None
 

@@ -57,3 +57,18 @@ export async function deleteRole(roleId: number): Promise<void> {
     throw new Error(res.data?.err_msg || '删除角色失败');
   }
 }
+
+export async function getRolePermissions(roleId: number): Promise<number[]> {
+  const res = await GET(`/api/v2/sys/roles/${roleId}/permissions`);
+  if (res.data?.success) {
+    return res.data.data || [];
+  }
+  return [];
+}
+
+export async function updateRolePermissions(roleId: number, permissionIds: number[]): Promise<void> {
+  const res = await PUT(`/api/v2/sys/roles/${roleId}/permissions`, permissionIds);
+  if (!res.data?.success) {
+    throw new Error(res.data?.err_msg || '更新角色权限失败');
+  }
+}

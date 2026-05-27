@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from typing import List
 from .schemas import UserResponse, UserCreateRequest, UserUpdateRequest
 from ..service.user_service import SysUserService
+from ..service.permission_service import SysPermissionService
 from ...core import Result
 
 router = APIRouter()
@@ -29,7 +30,7 @@ async def get_user(user_id: int):
 async def create_user(request: UserCreateRequest):
     """Create new user"""
     service = SysUserService()
-    user = service.create(**request.dict())
+    user = service.create_user(**request.dict())
     return Result.succ({"id": user.id})
 
 
@@ -54,8 +55,8 @@ async def update_user_roles(user_id: int, role_ids: List[int]):
 @router.get("/users/{user_id}/permissions", response_model=Result[List[str]])
 async def get_user_permissions(user_id: int):
     """Get user's effective permissions"""
-    service = SysUserService()
-    permissions = service.get_user_permissions(user_id)
+    permission_service = SysPermissionService()
+    permissions = permission_service.get_user_permissions(user_id)
     return Result.succ(permissions)
 
 

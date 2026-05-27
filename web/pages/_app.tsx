@@ -64,15 +64,19 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
     router.pathname === '/login' || router.pathname === '/register' || router.pathname.startsWith('/share');
 
   // 登录检测 - always call useEffect, but check isPublicPage inside
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (isPublicPage) {
       setIsChecking(false);
       return;
     }
 
+    const controller = new AbortController();
+
     // Check session via /me API endpoint (session cookie is HttpOnly, cannot be read by JS)
     fetch('/api/v2/sys/auth/me', {
       credentials: 'include',
+      signal: controller.signal,
     })
       .then(res => {
         if (res.ok) {
@@ -84,7 +88,9 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
       .catch(() => {
         router.push('/login');
       });
-  }, []);
+
+    return () => controller.abort();
+  }, [isPublicPage, router]);
 
   // Public pages render immediately without layout
   if (isPublicPage) {

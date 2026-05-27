@@ -128,7 +128,7 @@ const Knowledge = () => {
   return (
     <ConstructLayout>
       <Spin spinning={loading}>
-        <div className='page-body p-4 md:p-6 h-[90vh] overflow-auto'>
+        <div className='page-body p-4 md:pt-6 md:px-6 h-[90vh] overflow-auto'>
           {/* <Button
             type="primary"
             className="flex items-center"

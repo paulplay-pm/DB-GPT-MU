@@ -1,3 +1,4 @@
+import { usePermission } from '@/context/PermissionContext';
 import { STORAGE_USERINFO_KEY } from '@/utils/constants/index';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, message } from 'antd';
@@ -12,6 +13,7 @@ interface LoginForm {
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { refreshPermissions } = usePermission();
 
   const onFinish = async (values: LoginForm) => {
     setLoading(true);
@@ -26,6 +28,8 @@ export default function LoginPage() {
 
       if (data.success) {
         localStorage.setItem(STORAGE_USERINFO_KEY, JSON.stringify(data.data));
+        // Fetch fresh permissions from API after login
+        await refreshPermissions();
         message.success('登录成功');
         router.push('/');
       } else {

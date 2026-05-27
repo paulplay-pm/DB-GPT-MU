@@ -29,10 +29,10 @@ class SysPermissionDao(BaseDao):
                 session.expunge(perm)
             return perms
 
-    def get_children(self, parent_id: int) -> List[SysPermission]:
+    def get_children(self, parent_code: str) -> List[SysPermission]:
         with self.session() as session:
             perms = session.query(SysPermission).filter(
-                SysPermission.parent_id == parent_id
+                SysPermission.parent_code == parent_code
             ).all()
             for perm in perms:
                 session.expunge(perm)

@@ -11,8 +11,8 @@ class SysPermission(Model):
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     code = Column(String(128), nullable=False, unique=True)  # Permission code like "user.view"
     name = Column(String(128), nullable=False)  # Permission name
-    parent_id = Column(BigInteger, nullable=True)  # Parent permission for grouping
-    level = Column(Integer, default=1)
+    parent_code = Column(String(128), nullable=True)  # Parent permission code for grouping
+    perm_type = Column(String(32), default='menu')  # Type: menu/button/api
     sort = Column(Integer, default=0)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime)
+    is_active = Column(Integer, default=1)
+    created_at = Column(DateTime, default=datetime.now)

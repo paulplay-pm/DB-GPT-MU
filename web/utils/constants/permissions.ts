@@ -3,21 +3,25 @@ export const PERMISSIONS = {
   USER: {
     VIEW: 'user.view',
     EDIT: 'user.edit',
-    MANAGEMENT: 'user.management',
+    MANAGEMENT: 'management.user_management',
   },
   DEPT: {
     VIEW: 'dept.view',
     EDIT: 'dept.edit',
-    MANAGEMENT: 'dept.management',
+    MANAGEMENT: 'management.dept_management',
   },
   ROLE: {
     VIEW: 'role.view',
     EDIT: 'role.edit',
-    MANAGEMENT: 'role.management',
+    MANAGEMENT: 'management.role_management',
+  },
+  PERMISSION: {
+    VIEW: 'management.permission_management',
+    MANAGEMENT: 'management.permission_management',
   },
   REGISTRATION: {
     VIEW: 'registration.view',
-    APPROVE: 'registration.approve',
+    APPROVE: 'management.registration_review',
     REJECT: 'registration.reject',
   },
 } as const;

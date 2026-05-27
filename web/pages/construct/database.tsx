@@ -159,7 +159,7 @@ function Database() {
 
   return (
     <ConstructLayout>
-      <div className='relative min-h-full overflow-y-auto px-6 max-h-[90vh]'>
+      <div className='relative min-h-full overflow-y-auto px-6 pt-6 max-h-[90vh]'>
         <MuiLoading visible={loading} />
         <div className='flex justify-between items-center mb-6'>
           <div className='flex items-center gap-4'></div>

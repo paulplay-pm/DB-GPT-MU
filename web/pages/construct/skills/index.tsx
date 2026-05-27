@@ -341,7 +341,7 @@ function Skills() {
   return (
     <ConstructLayout>
       <Spin spinning={listLoading}>
-        <div className='h-screen w-full p-4 md:p-6 overflow-y-auto'>
+        <div className='h-screen w-full p-4 md:pt-6 md:px-6 overflow-y-auto'>
           {/* Header */}
           <div className='mb-6'>
             <h1 className='text-2xl font-bold text-gray-900 dark:text-white mb-1'>{t('skills')}</h1>

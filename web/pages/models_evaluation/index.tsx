@@ -24,7 +24,7 @@ const ModelsEvaluation = () => {
       }}
     >
       <EvaluationProvider filterValue={filterValue} type={activeKey}>
-        <div className='flex flex-col h-full w-full  dark:bg-gradient-dark bg-gradient-light bg-cover bg-center px-6 py-2 pt-12'>
+        <div className='flex flex-col h-full w-full dark:bg-gradient-dark bg-gradient-light bg-cover bg-center px-6 py-6 pt-12'>
           <EvaluationHeader
             activeKey={activeKey}
             onTabChange={setActiveKey}
