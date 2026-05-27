@@ -16,6 +16,8 @@ import {
   rejectRegistration,
 } from '@/client/api/sys/registration';
 import { RoleResponse, getRoles } from '@/client/api/sys/role';
+import '@/styles/chatbi-variables.css';
+import PageHeader from '@/new-components/common/PageHeader';
 
 export default function RegistrationManagementPage() {
   const { t } = useTranslation();
@@ -226,10 +228,15 @@ export default function RegistrationManagementPage() {
   };
 
   return (
-    <div style={{ padding: 24 }}>
-      <div style={{ marginBottom: 16 }}>
-        <Space>
-          <span>{t('Registration_Status_Filter')}：</span>
+    <div className='bg-[--bg-primary] min-h-screen p-6'>
+      <PageHeader
+        title={t('Registration_Management')}
+        description={t('Registration_Management_Desc')}
+      />
+
+      <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+        <div className='flex items-center gap-4 mb-4'>
+          <span className='text-[--text-secondary]'>{t('Registration_Status_Filter')}：</span>
           <Select
             allowClear
             placeholder={t('Registration_All')}
@@ -242,23 +249,23 @@ export default function RegistrationManagementPage() {
               { value: 'rejected', label: t('Rejected') },
             ]}
           />
-          <Button onClick={loadRegistrations}>{t('refresh_list')}</Button>
-        </Space>
-      </div>
+          <Button onClick={loadRegistrations} className='rounded-[8px]'>{t('refresh_list')}</Button>
+        </div>
 
-      <Table
-        columns={columns}
-        dataSource={registrations}
-        rowKey='id'
-        loading={loading}
-        scroll={{ y: 400 }}
-        pagination={{
-          pageSize: 20,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          showTotal: total => t('Total_Records', { total }),
-        }}
-      />
+        <Table
+          columns={columns}
+          dataSource={registrations}
+          rowKey='id'
+          loading={loading}
+          scroll={{ y: 400 }}
+          pagination={{
+            pageSize: 20,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: total => t('Total_Records', { total }),
+          }}
+        />
+      </div>
 
       <Modal
         title={t('Registration_Approve_Title')}

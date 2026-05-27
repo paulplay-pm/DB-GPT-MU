@@ -7,6 +7,9 @@ import { Card, Spin, Tree } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import '@/styles/chatbi-variables.css';
+import PageHeader from '@/new-components/common/PageHeader';
+
 export default function PermissionManagementPage() {
   const { t } = useTranslation();
   const [permissionTree, setPermissionTree] = useState<PermissionTreeNode[]>([]);
@@ -51,24 +54,31 @@ export default function PermissionManagementPage() {
   }
 
   return (
-    <div style={{ padding: 24 }}>
-      <Card
-        title={t('Permission_List')}
-        extra={
-          <span className='text-gray-400 text-sm'>{t('Permission_Total_Count', { count: permissionTree.length })}</span>
-        }
-      >
-        {permissionTree.length > 0 ? (
-          <Tree
-            showLine={{ showLeafIcon: false }}
-            treeData={convertToTreeData(permissionTree)}
-            defaultExpandAll
-            blockNode
-          />
-        ) : (
-          <div className='text-center text-gray-400 py-8'>{t('No_Permission_Data')}</div>
-        )}
-      </Card>
+    <div className='bg-[--bg-primary] min-h-screen p-6'>
+      <PageHeader
+        title={t('Permission_Management')}
+        description={t('Permission_Management_Desc')}
+      />
+
+      <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+        <Card
+          title={t('Permission_List')}
+          extra={
+            <span className='text-gray-400 text-sm'>{t('Permission_Total_Count', { count: permissionTree.length })}</span>
+          }
+        >
+          {permissionTree.length > 0 ? (
+            <Tree
+              showLine={{ showLeafIcon: false }}
+              treeData={convertToTreeData(permissionTree)}
+              defaultExpandAll
+              blockNode
+            />
+          ) : (
+            <div className='text-center text-gray-400 py-8'>{t('No_Permission_Data')}</div>
+          )}
+        </Card>
+      </div>
     </div>
   );
 }

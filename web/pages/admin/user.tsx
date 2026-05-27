@@ -18,6 +18,8 @@ import {
   updateUser,
   updateUserRoles,
 } from '@/client/api/sys/user';
+import '@/styles/chatbi-variables.css';
+import PageHeader from '@/new-components/common/PageHeader';
 
 export default function UserManagementPage() {
   const { t } = useTranslation();
@@ -219,27 +221,33 @@ export default function UserManagementPage() {
   };
 
   return (
-    <div style={{ padding: 24 }}>
-      <div style={{ marginBottom: 16 }}>
-        <Button type='primary' icon={<PlusOutlined />} onClick={handleAdd}>
-          {t('Add_User')}
-        </Button>
-      </div>
-
-      <Table
-        columns={columns}
-        dataSource={users}
-        rowKey='id'
-        loading={loading}
-        scroll={{ y: 400 }}
-        pagination={{
-          ...pagination,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          showTotal: total => t('Total_Records', { total }),
-        }}
-        onChange={handleTableChange}
+    <div className='bg-[--bg-primary] min-h-screen p-6'>
+      <PageHeader
+        title={t('User_Management')}
+        description={t('User_Management_Desc')}
+        actions={
+          <Button type='primary' icon={<PlusOutlined />} onClick={handleAdd} className='rounded-[8px]'>
+            {t('Add_User')}
+          </Button>
+        }
       />
+
+      <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+        <Table
+          columns={columns}
+          dataSource={users}
+          rowKey='id'
+          loading={loading}
+          scroll={{ y: 400 }}
+          pagination={{
+            ...pagination,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: total => t('Total_Records', { total }),
+          }}
+          onChange={handleTableChange}
+        />
+      </div>
 
       <Modal
         title={modalTitle}

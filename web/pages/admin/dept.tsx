@@ -15,6 +15,8 @@ import {
   getDeptTree,
   updateDept,
 } from '@/client/api/sys/dept';
+import '@/styles/chatbi-variables.css';
+import PageHeader from '@/new-components/common/PageHeader';
 
 export default function DeptManagementPage() {
   const { t } = useTranslation();
@@ -138,66 +140,72 @@ export default function DeptManagementPage() {
   const treeSelectData = convertToTreeSelectData(deptTree, editingDept?.id);
 
   return (
-    <div style={{ padding: 24 }}>
-      <div style={{ marginBottom: 16 }}>
-        <Button type='primary' icon={<PlusOutlined />} onClick={() => handleAdd()}>
-          {t('Add_Dept')}
-        </Button>
-      </div>
-
-      <Tree
-        treeData={treeData}
-        expandedKeys={expandedKeys}
-        onExpand={setExpandedKeys}
-        defaultExpandAll
-        style={{ maxHeight: 400, overflow: 'auto' }}
-        titleRender={(nodeData: any) => {
-          const dept = findDeptById(deptTree, nodeData.key as number);
-          return (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '100%',
-                padding: '4px 0',
-              }}
-            >
-              <span>{nodeData.title}</span>
-              <Space size='small'>
-                <Button
-                  type='text'
-                  size='small'
-                  icon={<PlusOutlined />}
-                  onClick={e => {
-                    e.stopPropagation();
-                    handleAdd(nodeData.key as number);
-                  }}
-                />
-                <Button
-                  type='text'
-                  size='small'
-                  icon={<EditOutlined />}
-                  onClick={e => {
-                    e.stopPropagation();
-                    if (dept) handleEdit(dept);
-                  }}
-                />
-                <Button
-                  type='text'
-                  size='small'
-                  danger
-                  icon={<DeleteOutlined />}
-                  onClick={e => {
-                    e.stopPropagation();
-                    if (dept) handleDelete(dept);
-                  }}
-                />
-              </Space>
-            </div>
-          );
-        }}
+    <div className='bg-[--bg-primary] min-h-screen p-6'>
+      <PageHeader
+        title={t('Dept_Management')}
+        description={t('Dept_Management_Desc')}
+        actions={
+          <Button type='primary' icon={<PlusOutlined />} onClick={() => handleAdd()} className='rounded-[8px]'>
+            {t('Add_Dept')}
+          </Button>
+        }
       />
+
+      <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+        <Tree
+          treeData={treeData}
+          expandedKeys={expandedKeys}
+          onExpand={setExpandedKeys}
+          defaultExpandAll
+          style={{ maxHeight: 400, overflow: 'auto' }}
+          titleRender={(nodeData: any) => {
+            const dept = findDeptById(deptTree, nodeData.key as number);
+            return (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  padding: '4px 0',
+                }}
+              >
+                <span>{nodeData.title}</span>
+                <Space size='small'>
+                  <Button
+                    type='text'
+                    size='small'
+                    icon={<PlusOutlined />}
+                    onClick={e => {
+                      e.stopPropagation();
+                      handleAdd(nodeData.key as number);
+                    }}
+                  />
+                  <Button
+                    type='text'
+                    size='small'
+                    icon={<EditOutlined />}
+                    onClick={e => {
+                      e.stopPropagation();
+                      if (dept) handleEdit(dept);
+                    }}
+                  />
+                  <Button
+                    type='text'
+                    size='small'
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={e => {
+                      e.stopPropagation();
+                      if (dept) handleDelete(dept);
+                    }}
+                  />
+                </Space>
+              </div>
+            );
+          }}
+        />
+      </div>
 
       <Modal
         title={modalTitle}

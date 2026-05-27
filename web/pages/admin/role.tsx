@@ -18,6 +18,8 @@ import {
   updateRole,
   updateRolePermissions,
 } from '@/client/api/sys/role';
+import '@/styles/chatbi-variables.css';
+import PageHeader from '@/new-components/common/PageHeader';
 
 export default function RoleManagementPage() {
   const { t } = useTranslation();
@@ -216,27 +218,33 @@ export default function RoleManagementPage() {
   };
 
   return (
-    <div style={{ padding: 24 }}>
-      <div style={{ marginBottom: 16 }}>
-        <Button type='primary' icon={<PlusOutlined />} onClick={handleAdd}>
-          {t('Add_Role')}
-        </Button>
-      </div>
-
-      <Table
-        columns={columns}
-        dataSource={roles}
-        rowKey='id'
-        loading={loading}
-        scroll={{ y: 400 }}
-        pagination={{
-          ...pagination,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          showTotal: total => t('Total_Records', { total }),
-        }}
-        onChange={handleTableChange}
+    <div className='bg-[--bg-primary] min-h-screen p-6'>
+      <PageHeader
+        title={t('Role_Management')}
+        description={t('Role_Management_Desc')}
+        actions={
+          <Button type='primary' icon={<PlusOutlined />} onClick={handleAdd} className='rounded-[8px]'>
+            {t('Add_Role')}
+          </Button>
+        }
       />
+
+      <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+        <Table
+          columns={columns}
+          dataSource={roles}
+          rowKey='id'
+          loading={loading}
+          scroll={{ y: 400 }}
+          pagination={{
+            ...pagination,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: total => t('Total_Records', { total }),
+          }}
+          onChange={handleTableChange}
+        />
+      </div>
 
       <Modal
         title={modalTitle}

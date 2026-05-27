@@ -3,6 +3,7 @@ import GPTCard from '@/components/common/gpt-card';
 import MuiLoading from '@/components/common/loading';
 import FormDialog from '@/components/database/form-dialog';
 import ConstructLayout from '@/new-components/layout/Construct';
+import PageHeader from '@/new-components/common/PageHeader';
 import { DBOption, DBType, DbListResponse, DbSupportTypeResponse } from '@/types/db';
 import { dbMapper } from '@/utils';
 import { DeleteFilled, EditFilled, PlusOutlined, RedoOutlined } from '@ant-design/icons';
@@ -10,6 +11,7 @@ import { useAsyncEffect } from 'ahooks';
 import { Badge, Button, Card, Drawer, Empty, Modal, Spin, message } from 'antd';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import '@/styles/chatbi-variables.css';
 
 type DBItem = DbListResponse[0];
 
@@ -159,45 +161,47 @@ function Database() {
 
   return (
     <ConstructLayout>
-      <div className='relative min-h-full overflow-y-auto px-6 pt-6 max-h-[90vh]'>
+      <div className='bg-[--bg-primary] min-h-screen p-6'>
         <MuiLoading visible={loading} />
-        <div className='flex justify-between items-center mb-6'>
-          <div className='flex items-center gap-4'></div>
-
-          <div className='flex items-center gap-4'>
+        <PageHeader
+          title={t('Datasource_Management')}
+          description={t('Datasource_Management_Desc')}
+          actions={
             <Button
-              className='border-none text-white bg-button-gradient'
+              type='primary'
               icon={<PlusOutlined />}
               onClick={() => {
                 console.log(dbList);
                 console.log(dbTypeList);
-
                 setModal({ open: true, dbTypeData: dbTypeList });
               }}
+              className='rounded-[8px]'
             >
               {t('Add_Datasource')}
             </Button>
-          </div>
-        </div>
+          }
+        />
 
-        <div className='flex flex-wrap mx-[-8px] gap-2 md:gap-4'>
-          {dbTypeList.map(item => {
-            return (
-              <Badge key={item.value} count={dbListByType[item.value]?.length} className='min-h-fit'>
-                <GPTCard
-                  className='h-full'
-                  title={item.label}
-                  desc={item.desc ?? ''}
-                  disabled={item.disabled}
-                  icon={item.icon}
-                  onClick={() => {
-                    if (item.disabled) return;
-                    handleDbTypeClick(item);
-                  }}
-                />
-              </Badge>
-            );
-          })}
+        <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+          <div className='flex flex-wrap mx-[-8px] gap-2 md:gap-4'>
+            {dbTypeList.map(item => {
+              return (
+                <Badge key={item.value} count={dbListByType[item.value]?.length} className='min-h-fit'>
+                  <GPTCard
+                    className='h-full'
+                    title={item.label}
+                    desc={item.desc ?? ''}
+                    disabled={item.disabled}
+                    icon={item.icon}
+                    onClick={() => {
+                      if (item.disabled) return;
+                      handleDbTypeClick(item);
+                    }}
+                  />
+                </Badge>
+              );
+            })}
+          </div>
         </div>
         <FormDialog
           open={modal.open}
