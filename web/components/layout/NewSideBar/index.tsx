@@ -2,6 +2,7 @@
 
 import { usePermission } from '@/context/PermissionContext';
 import UserBar from '@/new-components/layout/UserBar';
+import { STORAGE_VERSION_KEY, UI_VERSION_NEW, UI_VERSION_OLD } from '@/utils/constants';
 import {
   ApartmentOutlined,
   AppstoreOutlined,
@@ -20,7 +21,7 @@ import {
   UserAddOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Badge } from 'antd';
+import { Badge, Segmented } from 'antd';
 import cls from 'classnames';
 import { useRouter } from 'next/router';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
@@ -59,7 +60,8 @@ function NavMenuItem({
   isActive: boolean;
   badgeCount?: number;
   onNavigate: (path: string) => void;
-  t: (key: string) => string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  t: any;
 }) {
   const icon = ICON_MAP[item.icon] || <AppstoreOutlined />;
 
@@ -75,9 +77,7 @@ function NavMenuItem({
       onClick={() => onNavigate(item.path)}
     >
       {/* Active indicator - blue vertical line on left */}
-      {isActive && (
-        <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-primary rounded-r' />
-      )}
+      {isActive && <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-primary rounded-r' />}
 
       {/* Icon */}
       <span
@@ -113,13 +113,7 @@ function NavMenuItem({
 }
 
 // Group section with title
-function NavGroupSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: ReactNode;
-}) {
+function NavGroupSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className='mb-4'>
       <div className='px-4 mb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider'>{title}</div>
@@ -152,6 +146,17 @@ export default function NewSideBar() {
 
   const [pendingCount, setPendingCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
+  const [uiVersion, setUiVersion] = useState(localStorage.getItem(STORAGE_VERSION_KEY) || UI_VERSION_NEW);
+
+  const handleVersionToggle = (version: string) => {
+    localStorage.setItem(STORAGE_VERSION_KEY, version);
+    setUiVersion(version);
+    if (version === UI_VERSION_NEW) {
+      router.push('/');
+    } else {
+      router.push('/chat');
+    }
+  };
 
   // Fetch pending registration count for badge
   useEffect(() => {
@@ -209,7 +214,10 @@ export default function NewSideBar() {
       }
 
       return (
-        <NavGroupSection key={group.title} title={t(group.title, group.title)}>
+        <NavGroupSection
+          key={group.title}
+          title={t(group.title as Parameters<typeof t>[0], { defaultValue: group.title })}
+        >
           {visibleItems.map(item => (
             <NavMenuItem
               key={item.key}
@@ -217,7 +225,7 @@ export default function NewSideBar() {
               isActive={isItemActive(item.path)}
               badgeCount={item.key === 'registration' ? pendingCount : undefined}
               onNavigate={handleNavigate}
-              t={t as (key: string) => string}
+              t={t}
             />
           ))}
         </NavGroupSection>
@@ -234,8 +242,18 @@ export default function NewSideBar() {
     return (
       <div className='flex flex-col h-screen w-16 min-w-16 bg-white dark:bg-[#232734] border-r border-gray-200 dark:border-gray-700'>
         {/* Logo area */}
-        <div className='flex items-center justify-center h-16 border-b border-gray-200 dark:border-gray-700'>
+        <div className='flex flex-col items-center justify-center h-16 border-b border-gray-200 dark:border-gray-700 gap-1'>
           <div className='text-lg font-bold text-primary'>DB</div>
+          <Segmented
+            value={uiVersion}
+            onChange={val => handleVersionToggle(val as string)}
+            options={[
+              { label: '新', value: UI_VERSION_NEW },
+              { label: '老', value: UI_VERSION_OLD },
+            ]}
+            size='small'
+            style={{ height: 20, fontSize: 10 }}
+          />
         </div>
 
         {/* Collapsed nav items */}
@@ -317,11 +335,20 @@ export default function NewSideBar() {
     <div className='flex flex-col h-screen w-60 min-w-60 bg-white dark:bg-[#232734] border-r border-gray-200 dark:border-gray-700'>
       {/* Header with logo */}
       <div className='flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700'>
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-3'>
           <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
             <span className='text-white font-bold text-sm'>DB</span>
           </div>
           <span className='font-semibold text-gray-800 dark:text-gray-200'>DB-GPT</span>
+          <Segmented
+            value={uiVersion}
+            onChange={val => handleVersionToggle(val as string)}
+            options={[
+              { label: '新', value: UI_VERSION_NEW },
+              { label: '老', value: UI_VERSION_OLD },
+            ]}
+            size='small'
+          />
         </div>
         <div
           className='flex items-center justify-center w-7 h-7 cursor-pointer text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300 rounded transition-colors'
