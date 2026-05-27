@@ -15,6 +15,7 @@ class SysUser(Model):
     password_hash = Column(String(256), nullable=False)  # bcrypt hash
     real_name = Column(String(128), nullable=True)
     email = Column(String(128), nullable=True)
+    phone = Column(String(32), nullable=True)  # 手机号
     dept_id = Column(BigInteger, nullable=True)
     is_active = Column(Boolean, default=True, nullable=False)
     is_super_admin = Column(Boolean, default=False, nullable=False)

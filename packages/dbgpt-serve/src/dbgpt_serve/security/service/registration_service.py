@@ -20,7 +20,8 @@ class RegistrationService:
         ).decode('utf-8')
 
     def create_application(self, login_name: str, password: str, user_name: str = None,
-                          real_name: str = None, email: str = None, apply_dept_id: int = None) -> SysRegistration:
+                          real_name: str = None, email: str = None, phone: str = None,
+                          apply_dept_id: int = None) -> SysRegistration:
         """Create new registration application"""
         # Check if login_name already exists in sys_user
         existing = self._user_dao.get_by_login_name(login_name)
@@ -38,6 +39,7 @@ class RegistrationService:
             password_hash=password_hash,
             real_name=real_name,
             email=email,
+            phone=phone,
             apply_dept_id=apply_dept_id,
             status="pending"
         )
@@ -63,6 +65,7 @@ class RegistrationService:
             password_hash=reg.password_hash,
             real_name=reg.real_name,
             email=reg.email,
+            phone=reg.phone,
             dept_id=approved_dept_id or reg.approved_dept_id
         )
 

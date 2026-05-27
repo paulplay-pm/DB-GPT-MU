@@ -1,5 +1,6 @@
 import { ChatContext, ChatContextProvider } from '@/app/chat-context';
 import SideBar from '@/components/layout/side-bar';
+import { PermissionProvider } from '@/context/PermissionContext';
 import FloatHelper from '@/new-components/layout/FloatHelper';
 import { STORAGE_LANG_KEY } from '@/utils/constants/index';
 import { App, ConfigProvider, MappingAlgorithm, theme } from 'antd';
@@ -69,16 +70,20 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    // Check session cookie for authentication
-    const sessionData = document.cookie.includes('session=');
-
-    if (!sessionData) {
-      setIsChecking(false);
-      router.push('/login');
-      return;
-    }
-
-    setIsChecking(false);
+    // Check session via /me API endpoint (session cookie is HttpOnly, cannot be read by JS)
+    fetch('/api/v2/sys/auth/me', {
+      credentials: 'include',
+    })
+      .then(res => {
+        if (res.ok) {
+          setIsChecking(false);
+        } else {
+          router.push('/login');
+        }
+      })
+      .catch(() => {
+        router.push('/login');
+      });
   }, []);
 
   // Public pages render immediately without layout
@@ -134,11 +139,13 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChatContextProvider>
-      <CssWrapper>
-        <LayoutWrapper>
-          <Component {...pageProps} />
-        </LayoutWrapper>
-      </CssWrapper>
+      <PermissionProvider>
+        <CssWrapper>
+          <LayoutWrapper>
+            <Component {...pageProps} />
+          </LayoutWrapper>
+        </CssWrapper>
+      </PermissionProvider>
     </ChatContextProvider>
   );
 }

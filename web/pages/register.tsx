@@ -1,4 +1,4 @@
-import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, message } from 'antd';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ interface RegisterForm {
   password: string;
   real_name?: string;
   email?: string;
+  phone?: string;
 }
 
 export default function RegisterPage() {
@@ -69,6 +70,10 @@ export default function RegisterPage() {
 
           <Form.Item name='email' rules={[{ type: 'email', message: '请输入有效邮箱' }]}>
             <Input prefix={<MailOutlined />} placeholder='邮箱（选填）' />
+          </Form.Item>
+
+          <Form.Item name='phone'>
+            <Input prefix={<PhoneOutlined />} placeholder='手机号（选填）' />
           </Form.Item>
 
           <Form.Item>

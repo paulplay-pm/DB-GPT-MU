@@ -13,6 +13,7 @@ class SysRegistration(Model):
     password_hash = Column(String(256), nullable=False)  # bcrypt加密密码
     real_name = Column(String(128), nullable=True)  # 真实姓名
     email = Column(String(128), nullable=True)  # 邮箱
+    phone = Column(String(32), nullable=True)  # 手机号
     apply_dept_id = Column(BigInteger, nullable=True)  # 申请部门ID
     status = Column(String(32), default="pending")  # pending, approved, rejected
     apply_time = Column(DateTime, nullable=True)  # 申请时间

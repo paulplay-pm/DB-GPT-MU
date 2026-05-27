@@ -16,6 +16,7 @@ class LoginResponse(BaseModel):
     login_name: str
     real_name: Optional[str]
     email: Optional[str]
+    phone: Optional[str]
     is_super_admin: bool
     permissions: list[str] = []  # permission codes
 
@@ -27,6 +28,7 @@ class CurrentUserResponse(BaseModel):
     login_name: str
     real_name: Optional[str]
     email: Optional[str]
+    phone: Optional[str]
     dept_id: Optional[int]
     is_super_admin: bool
     permissions: list[str] = []
@@ -36,6 +38,7 @@ class ProfileUpdateRequest(BaseModel):
     """Update profile request"""
     real_name: Optional[str] = None
     email: Optional[str] = None
+    phone: Optional[str] = None
     dept_id: Optional[int] = None
 
 
@@ -115,6 +118,7 @@ class UserResponse(BaseModel):
     login_name: str
     real_name: Optional[str]
     email: Optional[str]
+    phone: Optional[str]
     dept_id: Optional[int]
     is_active: bool
     is_super_admin: bool
@@ -145,6 +149,7 @@ class RegisterRequest(BaseModel):
     user_name: Optional[str] = None  # 申请人姓名
     real_name: Optional[str] = None
     email: Optional[str] = None
+    phone: Optional[str] = None  # 手机号
     apply_dept_id: Optional[int] = None  # 申请部门ID
 
 
@@ -155,6 +160,7 @@ class RegistrationResponse(BaseModel):
     login_name: str
     real_name: Optional[str]
     email: Optional[str]
+    phone: Optional[str]
     apply_dept_id: Optional[int]
     status: str
     apply_time: Optional[datetime]
@@ -166,6 +172,7 @@ class RegistrationResponse(BaseModel):
 
 class ApproveRequest(BaseModel):
     """Approve registration request"""
+    dept_id: Optional[int] = None
     approved_dept_id: Optional[int] = None
     role_ids: Optional[List[int]] = None
 

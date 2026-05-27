@@ -70,6 +70,7 @@ async def update_profile(request: Request, body: ProfileUpdateRequest):
         user_id=user_data["id"],
         real_name=body.real_name,
         email=body.email,
+        phone=body.phone,
         dept_id=body.dept_id,
     )
     if error:

@@ -19,6 +19,7 @@ async def submit_registration(request: RegisterRequest):
             user_name=request.user_name,
             real_name=request.real_name,
             email=request.email,
+            phone=request.phone,
             apply_dept_id=request.apply_dept_id
         )
         return Result.succ({"message": "申请已提交，请等待审核"})

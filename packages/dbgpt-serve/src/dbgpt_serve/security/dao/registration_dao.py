@@ -8,25 +8,37 @@ class SysRegistrationDao(BaseDao):
 
     def get_by_id(self, id: int) -> Optional[SysRegistration]:
         with self.session() as session:
-            return session.query(SysRegistration).filter(
+            reg = session.query(SysRegistration).filter(
                 SysRegistration.id == id
             ).first()
+            if reg:
+                session.expunge(reg)
+            return reg
 
     def get_by_login_name(self, login_name: str) -> Optional[SysRegistration]:
         with self.session() as session:
-            return session.query(SysRegistration).filter(
+            reg = session.query(SysRegistration).filter(
                 SysRegistration.login_name == login_name
             ).first()
+            if reg:
+                session.expunge(reg)
+            return reg
 
     def get_by_status(self, status: str) -> List[SysRegistration]:
         with self.session() as session:
-            return session.query(SysRegistration).filter(
+            regs = session.query(SysRegistration).filter(
                 SysRegistration.status == status
             ).all()
+            for reg in regs:
+                session.expunge(reg)
+            return regs
 
     def get_all(self) -> List[SysRegistration]:
         with self.session() as session:
-            return session.query(SysRegistration).all()
+            regs = session.query(SysRegistration).all()
+            for reg in regs:
+                session.expunge(reg)
+            return regs
 
     def create(self, **kwargs) -> SysRegistration:
         with self.session() as session:
@@ -34,6 +46,7 @@ class SysRegistrationDao(BaseDao):
             session.add(reg)
             session.commit()
             session.refresh(reg)
+            session.expunge(reg)
             return reg
 
     def update_status(self, id: int, status: str, reject_reason: str = None, approved_dept_id: int = None, approved_by: int = None) -> bool:

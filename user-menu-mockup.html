@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Menu Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .dropdown-transition {
+      transition: all 0.2s ease-in-out;
+      transform-origin: top;
+    }
+    .dropdown-hidden {
+      opacity: 0;
+      transform: scaleY(0);
+      pointer-events: none;
+    }
+    .dropdown-visible {
+      opacity: 1;
+      transform: scaleY(1);
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+
+  <!-- Sidebar at bottom-left with user avatar -->
+  <div class="fixed bottom-6 left-6 z-50">
+    <div class="relative">
+      <!-- User Button -->
+      <button
+        id="userMenuBtn"
+        class="flex items-center gap-3 bg-white rounded-xl px-4 py-3 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer border border-gray-100"
+      >
+        <!-- Avatar -->
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
+          张
+        </div>
+        <!-- Name -->
+        <span class="text-gray-700 font-medium text-sm">张三</span>
+        <!-- Chevron -->
+        <i id="chevronIcon" class="fas fa-chevron-up text-gray-400 text-xs transition-transform duration-200"></i>
+      </button>
+
+      <!-- Dropdown Menu -->
+      <div
+        id="userDropdown"
+        class="absolute bottom-full left-0 mb-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 dropdown-transition dropdown-hidden"
+      >
+        <div class="py-2">
+          <!-- 个人信息 -->
+          <button class="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors duration-150 rounded-t-xl">
+            <i class="fas fa-user text-gray-400 w-5 text-center"></i>
+            <span class="text-sm font-medium">个人信息</span>
+          </button>
+
+          <!-- 修改密码 -->
+          <button class="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors duration-150">
+            <i class="fas fa-lock text-gray-400 w-5 text-center"></i>
+            <span class="text-sm font-medium">修改密码</span>
+          </button>
+
+          <!-- Divider -->
+          <div class="border-t border-gray-100 my-1"></div>
+
+          <!-- 退出 -->
+          <button class="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors duration-150 rounded-b-xl">
+            <i class="fas fa-sign-out-alt text-gray-400 w-5 text-center"></i>
+            <span class="text-sm font-medium">退出</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background overlay to show context -->
+  <div class="text-gray-400 text-lg">
+    <i class="fas fa-arrow-left mr-2"></i>点击左下角用户菜单
+  </div>
+
+  <script>
+    const btn = document.getElementById('userMenuBtn');
+    const dropdown = document.getElementById('userDropdown');
+    const chevron = document.getElementById('chevronIcon');
+    let isOpen = false;
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isOpen = !isOpen;
+
+      if (isOpen) {
+        dropdown.classList.remove('dropdown-hidden');
+        dropdown.classList.add('dropdown-visible');
+        chevron.style.transform = 'rotate(180deg)';
+      } else {
+        dropdown.classList.remove('dropdown-visible');
+        dropdown.classList.add('dropdown-hidden');
+        chevron.style.transform = 'rotate(0deg)';
+      }
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', () => {
+      if (isOpen) {
+        isOpen = false;
+        dropdown.classList.remove('dropdown-visible');
+        dropdown.classList.add('dropdown-hidden');
+        chevron.style.transform = 'rotate(0deg)';
+      }
+    });
+
+    // Prevent dropdown click from closing
+    dropdown.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  </script>
+
+</body>
+</html>

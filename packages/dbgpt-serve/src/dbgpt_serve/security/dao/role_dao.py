@@ -8,15 +8,24 @@ class SysRoleDao(BaseDao):
 
     def get_by_id(self, id: int) -> Optional[SysRole]:
         with self.session() as session:
-            return session.query(SysRole).filter(SysRole.id == id).first()
+            role = session.query(SysRole).filter(SysRole.id == id).first()
+            if role:
+                session.expunge(role)
+            return role
 
     def get_by_code(self, code: str) -> Optional[SysRole]:
         with self.session() as session:
-            return session.query(SysRole).filter(SysRole.code == code).first()
+            role = session.query(SysRole).filter(SysRole.code == code).first()
+            if role:
+                session.expunge(role)
+            return role
 
     def get_all(self) -> List[SysRole]:
         with self.session() as session:
-            return session.query(SysRole).filter(SysRole.is_active == True).all()
+            roles = session.query(SysRole).filter(SysRole.is_active == True).all()
+            for role in roles:
+                session.expunge(role)
+            return roles
 
     def create(self, **kwargs) -> SysRole:
         with self.session() as session:
@@ -24,6 +33,7 @@ class SysRoleDao(BaseDao):
             session.add(role)
             session.commit()
             session.refresh(role)
+            session.expunge(role)
             return role
 
     def update(self, id: int, **kwargs) -> Optional[SysRole]:
@@ -35,6 +45,7 @@ class SysRoleDao(BaseDao):
                         setattr(role, key, value)
                 session.commit()
                 session.refresh(role)
+                session.expunge(role)
             return role
 
     def delete(self, id: int) -> bool:

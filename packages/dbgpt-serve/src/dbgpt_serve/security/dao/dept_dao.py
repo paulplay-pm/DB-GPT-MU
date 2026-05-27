@@ -8,24 +8,34 @@ class SysDeptDao(BaseDao):
 
     def get_by_id(self, id: int) -> Optional[SysDept]:
         with self.session() as session:
-            return session.query(SysDept).filter(SysDept.id == id).first()
+            dept = session.query(SysDept).filter(SysDept.id == id).first()
+            if dept:
+                session.expunge(dept)
+            return dept
 
     def get_all(self) -> List[SysDept]:
         with self.session() as session:
-            return session.query(SysDept).filter(SysDept.is_active == True).all()
+            depts = session.query(SysDept).filter(SysDept.is_active == True).all()
+            for dept in depts:
+                session.expunge(dept)
+            return depts
 
     def get_children(self, parent_id: int) -> List[SysDept]:
         with self.session() as session:
-            return session.query(SysDept).filter(
+            depts = session.query(SysDept).filter(
                 SysDept.parent_id == parent_id,
                 SysDept.is_active == True
             ).all()
+            for dept in depts:
+                session.expunge(dept)
+            return depts
 
     def create(self, **kwargs) -> SysDept:
         with self.session() as session:
             dept = SysDept(**kwargs)
             session.add(dept)
             session.commit()
+            session.expunge(dept)
             return dept
 
     def update(self, id: int, **kwargs) -> Optional[SysDept]:
@@ -35,6 +45,7 @@ class SysDeptDao(BaseDao):
                 for key, value in kwargs.items():
                     setattr(dept, key, value)
                 session.commit()
+                session.expunge(dept)
             return dept
 
     def delete(self, id: int) -> bool:

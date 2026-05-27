@@ -1,6 +1,6 @@
 import { STORAGE_USERINFO_KEY } from '@/utils/constants/storage';
 import { LockOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Dropdown, Form, Input, MenuProps, Modal, message } from 'antd';
+import { Avatar, Menu, MenuProps, message, Modal, Form, Input, Progress, Divider } from 'antd';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
@@ -10,6 +10,7 @@ interface UserInfo {
   real_name?: string;
   nick_name?: string;
   email?: string;
+  phone?: string;
   avatar_url?: string;
 }
 
@@ -23,6 +24,27 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
   const [passwordForm] = Form.useForm();
   const menuRef = useRef<HTMLDivElement>(null);
 
+  // Password strength calculation
+  const getPasswordStrength = (password: string): { level: number; percent: number; label: string } => {
+    if (!password) return { level: 0, percent: 0, label: '' };
+    let strength = 0;
+    if (password.length >= 8) strength += 25;
+    if (password.length >= 12) strength += 25;
+    if (/[A-Z]/.test(password) && /[a-z]/.test(password)) strength += 20;
+    if (/[0-9]/.test(password)) strength += 15;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 15;
+    let label = '';
+    if (strength <= 25) label = '弱';
+    else if (strength <= 50) label = '中等';
+    else if (strength <= 75) label = '良好';
+    else label = '强';
+    return { level: strength, percent: Math.min(strength, 100), label };
+  };
+
+  useEffect(() => {
+    console.log('UserBar rendered, build time: 2026-05-26-20:30');
+  }, []);
+
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_USERINFO_KEY);
     if (stored) {
@@ -35,40 +57,36 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
   }, []);
 
   // Close menu when clicking outside
+  const handleMenuToggle = () => {
+    console.log('toggle menu, current:', menuVisible);
+    setMenuVisible(!menuVisible);
+  };
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuVisible(false);
-      }
+      const trigger = document.getElementById('user-avatar-trigger');
+      const menu = document.getElementById('user-dropdown-menu');
+      if (trigger && trigger.contains(e.target as Node)) return;
+      if (menu && menu.contains(e.target as Node)) return;
+      setMenuVisible(false);
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/v2/sys/auth/logout', {
-        method: 'POST',
-        credentials: 'include',
+  const handleLogout = () => {
+    fetch('/api/v2/sys/auth/logout', {
+      method: 'POST',
+      credentials: 'include',
+    })
+      .then(() => {
+        localStorage.removeItem(STORAGE_USERINFO_KEY);
+        router.push('/login');
+      })
+      .catch(() => {
+        localStorage.removeItem(STORAGE_USERINFO_KEY);
+        router.push('/login');
       });
-    } catch (e) {
-      console.error('Logout API failed:', e);
-    }
-    localStorage.removeItem(STORAGE_USERINFO_KEY);
-    router.push('/login');
-  };
-
-  const handleMenuClick: MenuProps['onClick'] = async ({ key }) => {
-    setMenuVisible(false);
-    if (key === 'logout') {
-      handleLogout();
-    } else if (key === 'profile') {
-      form.setFieldsValue({ real_name: userInfo?.real_name, email: userInfo?.email });
-      setProfileModalOpen(true);
-    } else if (key === 'password') {
-      passwordForm.resetFields();
-      setPasswordModalOpen(true);
-    }
   };
 
   const menuItems: MenuProps['items'] = [
@@ -76,11 +94,21 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       key: 'profile',
       icon: <UserOutlined />,
       label: '个人信息',
+      onClick: () => {
+        setMenuVisible(false);
+        form.setFieldsValue({ real_name: userInfo?.real_name, email: userInfo?.email, phone: userInfo?.phone });
+        setProfileModalOpen(true);
+      },
     },
     {
       key: 'password',
       icon: <LockOutlined />,
       label: '修改密码',
+      onClick: () => {
+        setMenuVisible(false);
+        passwordForm.resetFields();
+        setPasswordModalOpen(true);
+      },
     },
     { type: 'divider' },
     {
@@ -88,11 +116,19 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       icon: <LogoutOutlined />,
       label: '退出',
       danger: true,
+      onClick: () => {
+        setMenuVisible(false);
+        handleLogout();
+      },
     },
   ];
 
   const triggerArea = (
-    <div className='flex items-center gap-2 cursor-pointer px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700'>
+    <div
+      id='user-avatar-trigger'
+      className='flex items-center gap-2 cursor-pointer px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700'
+      onClick={handleMenuToggle}
+    >
       <Avatar src={userInfo?.avatar_url} className='bg-gradient-to-tr from-[#31afff] to-[#1677ff]'>
         {userInfo?.nick_name || userInfo?.real_name || userInfo?.login_name?.[0] || '?'}
       </Avatar>
@@ -105,20 +141,36 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
   );
 
   return (
-    <div ref={menuRef} className='flex flex-1 items-center justify-center'>
-      <Dropdown
-        menu={{ items: menuItems, onClick: handleMenuClick }}
-        trigger={['click']}
-        open={menuVisible}
-        onOpenChange={setMenuVisible}
-        placement='topLeft'
+    <div style={{ position: 'relative' }}>
+      {triggerArea}
+      <div
+        id='user-dropdown-menu'
+        style={{
+          position: 'absolute',
+          bottom: '100%',
+          left: 0,
+          background: 'white',
+          border: '1px solid #ddd',
+          borderRadius: 4,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+          zIndex: 1000,
+          minWidth: 120,
+          display: menuVisible ? 'block' : 'none',
+        }}
       >
-        {triggerArea}
-      </Dropdown>
+        <Menu mode='vertical' items={menuItems} style={{ border: 'none', boxShadow: 'none' }} />
+      </div>
       <Modal
-        title='个人信息'
+        title={
+          <span className='flex items-center gap-2'>
+            <UserOutlined className='text-[#1677ff]' />
+            <span>个人信息</span>
+          </span>
+        }
         open={profileModalOpen}
         onCancel={() => setProfileModalOpen(false)}
+        okText='保存'
+        cancelText='取消'
         onOk={() => {
           form.validateFields().then(async values => {
             try {
@@ -144,22 +196,50 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
           });
         }}
       >
-        <Form form={form} layout='vertical'>
-          <Form.Item label='登录名'>
-            <Input value={userInfo?.login_name || ''} disabled />
-          </Form.Item>
-          <Form.Item name='real_name' label='真实姓名'>
-            <Input />
-          </Form.Item>
-          <Form.Item name='email' label='邮箱'>
-            <Input />
-          </Form.Item>
-        </Form>
+        <div className='flex gap-6 py-4'>
+          <div className='flex flex-col items-center gap-3 min-w-[100px]'>
+            <Avatar
+              src={userInfo?.avatar_url}
+              size={72}
+              className='bg-gradient-to-tr from-[#31afff] to-[#1677ff]'
+            >
+              {userInfo?.nick_name || userInfo?.real_name || userInfo?.login_name?.[0] || '?'}
+            </Avatar>
+            <span className='text-xs text-gray-400'>点击更换头像</span>
+          </div>
+          <Divider type='vertical' className='h-full my-0' />
+          <div className='flex-1'>
+            <Form form={form} layout='vertical' size='middle'>
+              <Form.Item label='登录账号'>
+                <Input value={userInfo?.login_name || ''} disabled className='bg-gray-50' />
+              </Form.Item>
+              <Form.Item name='real_name' label='真实姓名' rules={[{ required: true, message: '请输入真实姓名' }]}>
+                <Input placeholder='请输入真实姓名' />
+              </Form.Item>
+              <Form.Item name='email' label='邮箱' rules={[
+                { type: 'email', message: '请输入有效的邮箱地址' },
+                { required: true, message: '请输入邮箱' }
+              ]}>
+                <Input placeholder='请输入邮箱' />
+              </Form.Item>
+              <Form.Item name='phone' label='手机号'>
+                <Input placeholder='请输入手机号' />
+              </Form.Item>
+            </Form>
+          </div>
+        </div>
       </Modal>
       <Modal
-        title='修改密码'
+        title={
+          <span className='flex items-center gap-2'>
+            <LockOutlined className='text-[#1677ff]' />
+            <span>修改密码</span>
+          </span>
+        }
         open={passwordModalOpen}
         onCancel={() => setPasswordModalOpen(false)}
+        okText='确认修改'
+        cancelText='取消'
         onOk={() => {
           passwordForm.validateFields().then(async values => {
             if (values.new_password !== values.confirm_password) {
@@ -190,17 +270,71 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
           });
         }}
       >
-        <Form form={passwordForm} layout='vertical'>
-          <Form.Item name='old_password' label='原密码' rules={[{ required: true }]}>
-            <Input.Password />
-          </Form.Item>
-          <Form.Item name='new_password' label='新密码' rules={[{ required: true, min: 6 }]}>
-            <Input.Password />
-          </Form.Item>
-          <Form.Item name='confirm_password' label='确认密码' rules={[{ required: true }]}>
-            <Input.Password />
-          </Form.Item>
-        </Form>
+        <div className='py-4'>
+          <Form form={passwordForm} layout='vertical' size='middle'>
+            <Form.Item
+              name='old_password'
+              label='当前密码'
+              rules={[{ required: true, message: '请输入当前密码' }]}
+            >
+              <Input.Password placeholder='请输入当前密码' />
+            </Form.Item>
+            <Form.Item
+              name='new_password'
+              label='新密码'
+              rules={[{ required: true, message: '请输入新密码' }, { min: 6, message: '密码至少6位' }]}
+            >
+              <Input.Password
+                placeholder='请输入新密码'
+                onChange={(e) => {
+                  const strength = getPasswordStrength(e.target.value);
+                  passwordForm.setFieldsValue({ passwordStrength: strength });
+                }}
+              />
+            </Form.Item>
+            {passwordForm.getFieldValue('new_password') && (
+              <div className='mb-4 -mt-2'>
+                <div className='flex items-center gap-2 mb-1'>
+                  <span className='text-xs text-gray-500'>密码强度：</span>
+                  <span className={`text-xs font-medium ${
+                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 25 ? 'text-red-500' :
+                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 50 ? 'text-orange-500' :
+                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 75 ? 'text-blue-500' :
+                    'text-green-500'
+                  }`}>
+                    {getPasswordStrength(passwordForm.getFieldValue('new_password') || '').label}
+                  </span>
+                </div>
+                <Progress
+                  percent={getPasswordStrength(passwordForm.getFieldValue('new_password') || '').percent}
+                  size='small'
+                  showInfo={false}
+                  strokeColor={
+                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 25 ? '#ef4444' :
+                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 50 ? '#f97316' :
+                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 75 ? '#3b82f6' :
+                    '#22c55e'
+                  }
+                />
+              </div>
+            )}
+            <Form.Item
+              name='confirm_password'
+              label='确认新密码'
+              rules={[{ required: true, message: '请确认新密码' }]}
+            >
+              <Input.Password placeholder='请再次输入新密码' />
+            </Form.Item>
+          </Form>
+          <div className='mt-4 p-3 bg-gray-50 rounded-lg'>
+            <div className='text-xs text-gray-500 mb-2'>密码要求：</div>
+            <ul className='text-xs text-gray-400 space-y-1'>
+              <li>• 至少6位字符</li>
+              <li>• 建议包含大小写字母、数字和特殊字符</li>
+              <li>• 不要使用与其他网站相同的密码</li>
+            </ul>
+          </div>
+        </div>
       </Modal>
     </div>
   );

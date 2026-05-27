@@ -17,17 +17,26 @@ class SysUserDao(BaseDao):
 
     def get_by_user_id(self, user_id: str) -> Optional[SysUser]:
         with self.session() as session:
-            return session.query(SysUser).filter(
+            user = session.query(SysUser).filter(
                 SysUser.user_id == user_id
             ).first()
+            if user:
+                session.expunge(user)
+            return user
 
     def get_by_id(self, id: int) -> Optional[SysUser]:
         with self.session() as session:
-            return session.query(SysUser).filter(SysUser.id == id).first()
+            user = session.query(SysUser).filter(SysUser.id == id).first()
+            if user:
+                session.expunge(user)
+            return user
 
     def get_all(self) -> List[SysUser]:
         with self.session() as session:
-            return session.query(SysUser).all()
+            users = session.query(SysUser).all()
+            for user in users:
+                session.expunge(user)
+            return users
 
     def update(self, id: int, **kwargs) -> Optional[SysUser]:
         with self.session() as session:
@@ -37,6 +46,7 @@ class SysUserDao(BaseDao):
                     setattr(user, key, value)
                 session.commit()
                 session.refresh(user)
+                session.expunge(user)
             return user
 
     def create(self, **kwargs) -> SysUser:
@@ -45,4 +55,5 @@ class SysUserDao(BaseDao):
             session.add(user)
             session.commit()
             session.refresh(user)
+            session.expunge(user)
             return user
