@@ -606,4 +606,28 @@ export const CommonZh: Resources['translation'] = {
   // Permission page
   Permission_List: '权限列表',
   Permission_Total_Count: '共 {{count}} 个一级权限',
+  // Reports page
+  reports: '我的报告',
+  reports_desc: '查看和管理您的分析报告',
+  reports_search: '搜索报告...',
+  reports_empty: '暂无报告',
+  // Favorites page
+  favorites: '收藏夹',
+  favorites_desc: '查看和管理您收藏的内容',
+  favorites_search: '搜索收藏...',
+  favorites_empty: '暂无收藏',
+  // Templates page
+  templates: '模板广场',
+  templates_desc: '发现和使用优秀的报告模板',
+  templates_search: '搜索模板...',
+  templates_empty: '暂无模板',
+  templates_category_all: '全部',
+  templates_category_report: '报表',
+  templates_category_dashboard: '仪表盘',
+  templates_category_chart: '图表',
+  // Team page
+  team: '团队共享',
+  team_desc: '查看团队成员共享的内容',
+  team_search: '搜索共享内容...',
+  team_empty: '暂无共享内容',
 } as const;

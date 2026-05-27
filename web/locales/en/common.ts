@@ -603,4 +603,28 @@ export const CommonEn = {
   // Permission page
   Permission_List: 'Permission List',
   Permission_Total_Count: '{{count}} top-level permissions',
+  // Reports page
+  reports: 'My Reports',
+  reports_desc: 'View and manage your analysis reports',
+  reports_search: 'Search reports...',
+  reports_empty: 'No reports yet',
+  // Favorites page
+  favorites: 'Favorites',
+  favorites_desc: 'View and manage your favorites',
+  favorites_search: 'Search favorites...',
+  favorites_empty: 'No favorites yet',
+  // Templates page
+  templates: 'Template Marketplace',
+  templates_desc: 'Discover and use excellent report templates',
+  templates_search: 'Search templates...',
+  templates_empty: 'No templates yet',
+  templates_category_all: 'All',
+  templates_category_report: 'Report',
+  templates_category_dashboard: 'Dashboard',
+  templates_category_chart: 'Chart',
+  // Team page
+  team: 'Team Sharing',
+  team_desc: 'View content shared by team members',
+  team_search: 'Search shared content...',
+  team_empty: 'No shared content yet',
 } as const;
