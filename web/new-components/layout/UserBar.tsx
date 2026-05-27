@@ -26,7 +26,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
   const [theme, setTheme] = useState(localStorage.getItem(STORAGE_THEME_KEY) || 'light');
   const [form] = Form.useForm();
   const [passwordForm] = Form.useForm();
-  const menuRef = useRef<HTMLDivElement>(null);
+  const _menuRef = useRef<HTMLDivElement>(null);
 
   // Password strength calculation
   const getPasswordStrength = (password: string): { level: number; percent: number; label: string } => {
