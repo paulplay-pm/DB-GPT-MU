@@ -1,8 +1,9 @@
-import { STORAGE_USERINFO_KEY } from '@/utils/constants/storage';
+import { STORAGE_LANG_KEY, STORAGE_THEME_KEY, STORAGE_USERINFO_KEY } from '@/utils/constants/storage';
 import { LockOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, MenuProps, message, Modal, Form, Input, Progress, Divider } from 'antd';
+import { Avatar, Divider, Form, Input, Menu, MenuProps, Modal, Progress, message } from 'antd';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface UserInfo {
   id?: number;
@@ -16,10 +17,13 @@ interface UserInfo {
 
 export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }) {
   const router = useRouter();
+  const { i18n } = useTranslation();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [menuVisible, setMenuVisible] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [lang, setLang] = useState(localStorage.getItem(STORAGE_LANG_KEY) || 'zh');
+  const [theme, setTheme] = useState(localStorage.getItem(STORAGE_THEME_KEY) || 'light');
   const [form] = Form.useForm();
   const [passwordForm] = Form.useForm();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -112,6 +116,73 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
     },
     { type: 'divider' },
     {
+      key: 'language',
+      label: (
+        <div className='flex items-center justify-between w-full px-1'>
+          <span className='text-sm'>语言</span>
+          <div className='flex gap-1'>
+            <button
+              className={`px-2 py-0.5 text-xs rounded ${lang === 'zh' ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              onClick={e => {
+                e.stopPropagation();
+                setLang('zh');
+                localStorage.setItem(STORAGE_LANG_KEY, 'zh');
+                i18n.changeLanguage('zh');
+              }}
+            >
+              中文
+            </button>
+            <button
+              className={`px-2 py-0.5 text-xs rounded ${lang === 'en' ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              onClick={e => {
+                e.stopPropagation();
+                setLang('en');
+                localStorage.setItem(STORAGE_LANG_KEY, 'en');
+                i18n.changeLanguage('en');
+              }}
+            >
+              EN
+            </button>
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: 'theme',
+      label: (
+        <div className='flex items-center justify-between w-full px-1'>
+          <span className='text-sm'>主题</span>
+          <div className='flex gap-1'>
+            <button
+              className={`px-2 py-0.5 text-xs rounded ${theme === 'light' ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              onClick={e => {
+                e.stopPropagation();
+                setTheme('light');
+                localStorage.setItem(STORAGE_THEME_KEY, 'light');
+                document.body?.classList?.remove('dark');
+                document.body?.classList?.add('light');
+              }}
+            >
+              浅色
+            </button>
+            <button
+              className={`px-2 py-0.5 text-xs rounded ${theme === 'dark' ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              onClick={e => {
+                e.stopPropagation();
+                setTheme('dark');
+                localStorage.setItem(STORAGE_THEME_KEY, 'dark');
+                document.body?.classList?.remove('light');
+                document.body?.classList?.add('dark');
+              }}
+            >
+              深色
+            </button>
+          </div>
+        </div>
+      ),
+    },
+    { type: 'divider' },
+    {
       key: 'logout',
       icon: <LogoutOutlined />,
       label: '退出',
@@ -198,11 +269,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       >
         <div className='flex gap-6 py-4'>
           <div className='flex flex-col items-center gap-3 min-w-[100px]'>
-            <Avatar
-              src={userInfo?.avatar_url}
-              size={72}
-              className='bg-gradient-to-tr from-[#31afff] to-[#1677ff]'
-            >
+            <Avatar src={userInfo?.avatar_url} size={72} className='bg-gradient-to-tr from-[#31afff] to-[#1677ff]'>
               {userInfo?.real_name?.[0] || userInfo?.nick_name?.[0] || userInfo?.login_name?.[0] || '?'}
             </Avatar>
             <span className='text-xs text-gray-400'>点击更换头像</span>
@@ -216,10 +283,14 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
               <Form.Item name='real_name' label='真实姓名' rules={[{ required: true, message: '请输入真实姓名' }]}>
                 <Input placeholder='请输入真实姓名' />
               </Form.Item>
-              <Form.Item name='email' label='邮箱' rules={[
-                { type: 'email', message: '请输入有效的邮箱地址' },
-                { required: true, message: '请输入邮箱' }
-              ]}>
+              <Form.Item
+                name='email'
+                label='邮箱'
+                rules={[
+                  { type: 'email', message: '请输入有效的邮箱地址' },
+                  { required: true, message: '请输入邮箱' },
+                ]}
+              >
                 <Input placeholder='请输入邮箱' />
               </Form.Item>
               <Form.Item name='phone' label='手机号'>
@@ -272,21 +343,20 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       >
         <div className='py-4'>
           <Form form={passwordForm} layout='vertical' size='middle'>
-            <Form.Item
-              name='old_password'
-              label='当前密码'
-              rules={[{ required: true, message: '请输入当前密码' }]}
-            >
+            <Form.Item name='old_password' label='当前密码' rules={[{ required: true, message: '请输入当前密码' }]}>
               <Input.Password placeholder='请输入当前密码' />
             </Form.Item>
             <Form.Item
               name='new_password'
               label='新密码'
-              rules={[{ required: true, message: '请输入新密码' }, { min: 6, message: '密码至少6位' }]}
+              rules={[
+                { required: true, message: '请输入新密码' },
+                { min: 6, message: '密码至少6位' },
+              ]}
             >
               <Input.Password
                 placeholder='请输入新密码'
-                onChange={(e) => {
+                onChange={e => {
                   const strength = getPasswordStrength(e.target.value);
                   passwordForm.setFieldsValue({ passwordStrength: strength });
                 }}
@@ -296,12 +366,17 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
               <div className='mb-4 -mt-2'>
                 <div className='flex items-center gap-2 mb-1'>
                   <span className='text-xs text-gray-500'>密码强度：</span>
-                  <span className={`text-xs font-medium ${
-                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 25 ? 'text-red-500' :
-                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 50 ? 'text-orange-500' :
-                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 75 ? 'text-blue-500' :
-                    'text-green-500'
-                  }`}>
+                  <span
+                    className={`text-xs font-medium ${
+                      getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 25
+                        ? 'text-red-500'
+                        : getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 50
+                          ? 'text-orange-500'
+                          : getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 75
+                            ? 'text-blue-500'
+                            : 'text-green-500'
+                    }`}
+                  >
                     {getPasswordStrength(passwordForm.getFieldValue('new_password') || '').label}
                   </span>
                 </div>
@@ -310,19 +385,18 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
                   size='small'
                   showInfo={false}
                   strokeColor={
-                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 25 ? '#ef4444' :
-                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 50 ? '#f97316' :
-                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 75 ? '#3b82f6' :
-                    '#22c55e'
+                    getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 25
+                      ? '#ef4444'
+                      : getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 50
+                        ? '#f97316'
+                        : getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 75
+                          ? '#3b82f6'
+                          : '#22c55e'
                   }
                 />
               </div>
             )}
-            <Form.Item
-              name='confirm_password'
-              label='确认新密码'
-              rules={[{ required: true, message: '请确认新密码' }]}
-            >
+            <Form.Item name='confirm_password' label='确认新密码' rules={[{ required: true, message: '请确认新密码' }]}>
               <Input.Password placeholder='请再次输入新密码' />
             </Form.Item>
           </Form>
