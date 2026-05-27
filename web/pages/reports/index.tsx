@@ -1,7 +1,6 @@
 'use client';
 
 import { apiInterceptors, delDialogue, getDialogueListPaged } from '@/client/api';
-import MyEmpty from '@/new-components/common/MyEmpty';
 import PageHeader from '@/new-components/common/PageHeader';
 import Toolbar from '@/new-components/common/Toolbar';
 import { IChatDialogueSchema } from '@/types/chat';
@@ -19,9 +18,9 @@ function ReportsPage() {
   const [activeTab, setActiveTab] = useState<'reports' | 'conversations'>('reports');
   const [searchKeyword, setSearchKeyword] = useState('');
 
-  const tabItems = [
+  const tabItems: { key: string; label: React.ReactNode }[] = [
     { key: 'reports', label: t('reports') || '我的报告' },
-    { key: 'conversations', label: t('conversations') || '会话记录' },
+    { key: 'conversations', label: '会话记录' },
   ];
 
   return (
@@ -47,7 +46,7 @@ function ReportsTab({ t }: { t: any }) {
     <>
       <Toolbar searchPlaceholder={t('reports_search') || '搜索报告...'} />
       <div className='flex-1 flex items-center justify-center'>
-        <MyEmpty description={t('reports_empty') || '暂无报告'} />
+        <Empty description={t('reports_empty') || '暂无报告'} className='py-16' />
       </div>
     </>
   );
