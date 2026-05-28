@@ -3152,9 +3152,9 @@ const Playground: NextPage = () => {
                           {/* Send Button */}
                           <div
                             onClick={() => handleStart()}
-                            className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors cursor-pointer ${
+                            className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
                               (query.trim() || uploadedFile) && !loading
-                                ? 'bg-primary hover:bg-primary/90 text-white cursor-pointer'
+                                ? 'bg-blue-500 hover:bg-blue-600 text-white cursor-pointer'
                                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                             }`}
                           >
