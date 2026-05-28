@@ -47,3 +47,33 @@
   text-align: start;
   line-height: normal;
 }
+
+/* Dark mode overrides */
+.create-app-modal-container :global .ant-modal-content {
+  background-color: var(--bg-secondary);
+}
+
+.create-app-modal-container :global .ant-modal-header {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.create-app-modal-container :global .ant-modal-body {
+  background-color: var(--bg-secondary);
+}
+
+.create-app-modal-container :global .ant-modal-footer {
+  border-top: 1px solid var(--border-color);
+}
+
+.create-app-modal-container :global .ant-modal-title {
+  color: var(--text-primary);
+}
+
+.create-app-modal-container :global .ant-modal-close {
+  color: var(--text-secondary);
+}
+
+.create-app-modal-container :global .ant-modal-close:hover {
+  color: var(--text-primary);
+}
