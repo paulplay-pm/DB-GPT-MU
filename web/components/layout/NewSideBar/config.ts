@@ -114,13 +114,6 @@ export const NAV_GROUPS: NavGroup[] = [
         permission: 'skills.view',
       },
       {
-        key: 'model_management',
-        label: 'model_manage',
-        icon: 'DatabaseOutlined',
-        path: '/construct/models',
-        permission: PERMISSION_KEYS.MODEL_MANAGE,
-      },
-      {
         key: 'prompts',
         label: 'prompts',
         icon: 'EditOutlined',
@@ -140,6 +133,13 @@ export const NAV_GROUPS: NavGroup[] = [
         icon: 'AppstoreOutlined',
         path: '/construct/app',
         permission: PERMISSION_KEYS.APP_MANAGEMENT,
+      },
+      {
+        key: 'model_management',
+        label: 'model_manage',
+        icon: 'DatabaseOutlined',
+        path: '/construct/models',
+        permission: PERMISSION_KEYS.MODEL_MANAGE,
       },
       {
         key: 'models_evaluation',
