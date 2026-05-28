@@ -429,6 +429,7 @@ const convertToManusFormat = (
 const EXAMPLE_CARDS = [
   {
     id: 'walmart_sales',
+    gradientColors: 'from-blue-500 to-cyan-400',
     icon: '📊',
     title: '沃尔玛销售数据分析',
     description: '分析沃尔玛销售CSV数据，生成可视化网页报告',
@@ -444,6 +445,7 @@ const EXAMPLE_CARDS = [
   },
   {
     id: 'db_profile_report',
+    gradientColors: 'from-emerald-500 to-teal-400',
     icon: '🗄️',
     title: '数据库画像与分析报告',
     description: '连接数据库后，生成数据库画像并生成可视化网页报告',
@@ -456,6 +458,7 @@ const EXAMPLE_CARDS = [
   },
   {
     id: 'fin_report',
+    gradientColors: 'from-violet-500 to-purple-400',
     icon: '📈',
     title: '金融财报深度分析',
     description: '分析浙江海翔药业年度报告，生成数据可视化报告',
@@ -471,6 +474,7 @@ const EXAMPLE_CARDS = [
   },
   {
     id: 'create_sql_skill',
+    gradientColors: 'from-amber-500 to-orange-400',
     icon: '🛠️',
     title: '创建SQL分析技能',
     description: '使用skill-creator创建一个实用的SQL数据分析技能',
