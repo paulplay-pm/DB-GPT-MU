@@ -45,9 +45,24 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
     return { level: strength, percent: Math.min(strength, 100), label };
   };
 
+  // Sync theme state with actual body class on mount and body class changes
   useEffect(() => {
-    console.log('UserBar rendered, build time: 2026-05-26-20:30');
-  }, []);
+    const syncTheme = () => {
+      const isDark = document.body.classList.contains('dark');
+      const isLight = document.body.classList.contains('light');
+      if (isDark && theme !== 'dark') {
+        setTheme('dark');
+      } else if (isLight && theme !== 'light') {
+        setTheme('light');
+      }
+    };
+    syncTheme();
+
+    // Watch for body class changes
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, [theme]);
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_USERINFO_KEY);
@@ -197,7 +212,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
   const triggerArea = (
     <div
       id='user-avatar-trigger'
-      className='flex items-center gap-2 cursor-pointer px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700'
+      className='flex items-center gap-2 cursor-pointer px-2 py-1 rounded hover:bg-[var(--hover-bg)]'
       onClick={handleMenuToggle}
     >
       <Avatar src={userInfo?.avatar_url} className='bg-gradient-to-tr from-[#31afff] to-[#1677ff]'>
