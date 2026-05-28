@@ -233,7 +233,7 @@ export default function RegistrationManagementPage() {
 
       <div className='bg-[var(--card-bg)] rounded-[12px] p-4 shadow-sm'>
         <div className='flex items-center gap-4 mb-4'>
-          <span className='text-[--text-secondary]'>{t('Registration_Status_Filter')}：</span>
+          <span className='text-[var(--text-secondary)]'>{t('Registration_Status_Filter')}：</span>
           <Select
             allowClear
             placeholder={t('Registration_All')}
