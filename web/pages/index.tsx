@@ -2844,6 +2844,53 @@ const Playground: NextPage = () => {
                   {t('home_slogan')}
                 </h2>
 
+                {/* Recommended Examples */}
+                <div className='mt-10 w-full'>
+                  <div className='flex items-center justify-center gap-2 mb-4'>
+                    <div className='h-px flex-1 bg-gradient-to-r from-transparent to-gray-200 dark:to-gray-700' />
+                    <span className='text-xs font-medium text-gray-400 dark:text-gray-500 tracking-wider uppercase'>
+                      {t('recommend_examples')}
+                    </span>
+                    <div className='h-px flex-1 bg-gradient-to-l from-transparent to-gray-200 dark:to-gray-700' />
+                  </div>
+                  <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+                    {EXAMPLE_CARDS.map(example => (
+                      <div
+                        key={example.id}
+                        onClick={() => handleExampleClick(example)}
+                        className={`group relative bg-gradient-to-br ${example.color} border ${example.borderColor} rounded-2xl p-4 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300`}
+                      >
+                        <div className='flex items-start gap-3'>
+                          <div
+                            className={`w-10 h-10 ${example.iconBg} rounded-xl flex items-center justify-center text-xl flex-shrink-0`}
+                          >
+                            {example.icon}
+                          </div>
+                          <div className='flex-1 min-w-0'>
+                            <h3 className='text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                              {(() => {
+                                const key = `example_${example.id}_title`;
+                                const val = t(key) as string;
+                                return val && val !== key ? val : example.title;
+                              })()}
+                            </h3>
+                            <p className='text-xs text-gray-500 dark:text-gray-400 line-clamp-2'>
+                              {(() => {
+                                const key = `example_${example.id}_desc`;
+                                const val = t(key) as string;
+                                return val && val !== key ? val : example.description;
+                              })()}
+                            </p>
+                          </div>
+                        </div>
+                        <div className='absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity'>
+                          <RightOutlined className='text-xs text-gray-400' />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Input Box Container - Premium Layered Style */}
                 <div className='w-full relative'>
                   {/* Outer Frame - Floating Effect */}
@@ -3361,7 +3408,7 @@ const Playground: NextPage = () => {
                                   .dark .model-selector-premium .ant-select:hover .ant-select-selector { border-color: rgba(255,255,255,0.15) !important; }
                                   .model-selector-premium .ant-select-focused .ant-select-selector { border-color: #a78bfa !important; box-shadow: 0 0 0 2px rgba(167,139,250,0.15), inset 0 1px 0 rgba(255,255,255,1) !important; }
                                   .dark .model-selector-premium .ant-select-focused .ant-select-selector { box-shadow: 0 0 0 2px rgba(167,139,250,0.2), inset 0 1px 0 rgba(255,255,255,0.05) !important; }
-                                  
+
                                   /* Global Dropdown Item Styles for Model Selectors */
                                   .ant-select-dropdown .ant-select-item-option-selected { background-color: #f1f5f9 !important; color: #0f172a !important; font-weight: 500 !important; }
                                   .ant-select-dropdown .ant-select-item-option-active:not(.ant-select-item-option-selected) { background-color: #f8fafc !important; }
@@ -3424,53 +3471,6 @@ const Playground: NextPage = () => {
                         />
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                {/* Recommended Examples */}
-                <div className='mt-10 w-full'>
-                  <div className='flex items-center justify-center gap-2 mb-4'>
-                    <div className='h-px flex-1 bg-gradient-to-r from-transparent to-gray-200 dark:to-gray-700' />
-                    <span className='text-xs font-medium text-gray-400 dark:text-gray-500 tracking-wider uppercase'>
-                      {t('recommend_examples')}
-                    </span>
-                    <div className='h-px flex-1 bg-gradient-to-l from-transparent to-gray-200 dark:to-gray-700' />
-                  </div>
-                  <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
-                    {EXAMPLE_CARDS.map(example => (
-                      <div
-                        key={example.id}
-                        onClick={() => handleExampleClick(example)}
-                        className={`group relative bg-gradient-to-br ${example.color} border ${example.borderColor} rounded-2xl p-4 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300`}
-                      >
-                        <div className='flex items-start gap-3'>
-                          <div
-                            className={`w-10 h-10 ${example.iconBg} rounded-xl flex items-center justify-center text-xl flex-shrink-0`}
-                          >
-                            {example.icon}
-                          </div>
-                          <div className='flex-1 min-w-0'>
-                            <h3 className='text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                              {(() => {
-                                const key = `example_${example.id}_title`;
-                                const val = t(key) as string;
-                                return val && val !== key ? val : example.title;
-                              })()}
-                            </h3>
-                            <p className='text-xs text-gray-500 dark:text-gray-400 line-clamp-2'>
-                              {(() => {
-                                const key = `example_${example.id}_desc`;
-                                const val = t(key) as string;
-                                return val && val !== key ? val : example.description;
-                              })()}
-                            </p>
-                          </div>
-                        </div>
-                        <div className='absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity'>
-                          <RightOutlined className='text-xs text-gray-400' />
-                        </div>
-                      </div>
-                    ))}
                   </div>
                 </div>
               </div>
