@@ -414,6 +414,23 @@ For Docker, local GPU models (vLLM, llama.cpp), or manual source-code setup, see
 
 We protect data privacy and execution safety through private model deployment, proxy desensitization, and sandboxed execution mechanisms.
 
+### Multi-User Permission Management
+
+DB-GPT now includes a comprehensive user permission management system with the following capabilities:
+
+- **Department Management**: Hierarchical tree structure supporting up to 10 levels
+- **Permission Management**: Menu-based permission control for all system features
+- **Role Management**: Package permissions into roles for fine-grained access control
+- **User Management**: Full CRUD with enable/disable, role assignment, and super admin support
+- **User Authentication**: Secure login with bcrypt password hashing
+- **Registration & Approval**: New user registration requires admin approval before access
+
+**Default Admin Account:**
+- Username: `admin`
+- Password: `Admin123!`
+
+The system supports role-based access control (RBAC) where permissions are assigned to roles, and roles are assigned to users. All API endpoints require authentication, and menu visibility is controlled based on user permissions.
+
 ### Data Sources
 - [Datasources](http://docs.dbgpt.cn/docs/modules/connections)
 
