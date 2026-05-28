@@ -228,7 +228,7 @@ export default function RegistrationManagementPage() {
   };
 
   return (
-    <div className='bg-[--bg-primary] min-h-screen p-6'>
+    <div className='bg-[var(--bg-primary)] min-h-screen p-6'>
       <PageHeader title={t('registration_review')} description={t('registration_review')} />
 
       <div className='bg-[var(--card-bg)] rounded-[12px] p-4 shadow-sm'>
