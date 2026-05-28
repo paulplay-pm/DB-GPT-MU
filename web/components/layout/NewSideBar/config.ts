@@ -111,7 +111,7 @@ export const NAV_GROUPS: NavGroup[] = [
         label: 'skills',
         icon: 'ToolOutlined',
         path: '/construct/skills',
-        permission: PERMISSION_KEYS.SKILLS,
+        permission: 'skills.view',
       },
       {
         key: 'model_management',
