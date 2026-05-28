@@ -111,6 +111,19 @@ body {
   background-color: var(--bg-secondary) !important;
 }
 
+/* Modal title and close button dark mode */
+.dark .ant-modal-title {
+  color: var(--text-primary) !important;
+}
+
+.dark .ant-modal-close {
+  color: var(--text-secondary) !important;
+}
+
+.dark .ant-modal-close:hover {
+  color: var(--text-primary) !important;
+}
+
 @keyframes rotate {
   to {
     transform: rotate(360deg);
