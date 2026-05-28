@@ -456,6 +456,7 @@ export const CommonEn = {
   evaluation_env_test_tooltip: 'Dataset for official evaluation and leaderboard ranking',
   home_title: 'DB-GPT AI Data Assistant',
   home_subtitle: 'Agentic Data Driven Decisions',
+  home_slogan: 'Ask Data, See Insights',
   skills: 'Skills',
   datasources: 'Datasources',
   knowledge: 'Knowledge Base',

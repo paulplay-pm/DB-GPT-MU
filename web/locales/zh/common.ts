@@ -459,6 +459,7 @@ export const CommonZh: Resources['translation'] = {
   evaluation_env_test_tooltip: '用于正式评测打榜的数据集,结果用于评测集打榜排名',
   home_title: 'DB-GPT AI数据助理',
   home_subtitle: 'Agentic Data Driven Decisions',
+  home_slogan: '开口问数，看见洞察',
   skills: '技能',
   datasources: '数据源',
   knowledge: '知识库',
