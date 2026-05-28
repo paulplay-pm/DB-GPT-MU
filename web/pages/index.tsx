@@ -2840,16 +2840,9 @@ const Playground: NextPage = () => {
             // Welcome Mode: Display Hero Section
             <div className='flex-1 flex flex-col items-center px-6 py-8 pb-20 overflow-y-auto'>
               <div className='w-full max-w-[860px] flex flex-col items-center animate-fade-in-up'>
-                <h1 className='text-4xl md:text-5xl font-serif text-gray-900 dark:text-gray-100 mb-4 text-center flex items-center gap-4'>
-                  <div className='w-12 h-12 rounded-xl bg-white dark:bg-[#1a1b1e] shadow-md flex items-center justify-center flex-shrink-0'>
-                    <Image src='/LOGO_SMALL.png' alt='DB-GPT' width={32} height={32} className='object-contain' />
-                  </div>
-                  {t('home_title')}
-                </h1>
-
-                <p className='text-sm md:text-base text-gray-400 dark:text-gray-500 tracking-[0.2em] font-light mb-10'>
-                  {t('home_subtitle')}
-                </p>
+                <h2 className='text-2xl md:text-3xl font-medium text-gray-700 dark:text-gray-200 mb-6 text-center'>
+                  {t('home_slogan')}
+                </h2>
 
                 {/* Input Box Container - Premium Layered Style */}
                 <div className='w-full relative'>
