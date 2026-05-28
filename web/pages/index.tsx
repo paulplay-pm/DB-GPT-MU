@@ -3119,6 +3119,33 @@ const Playground: NextPage = () => {
                               />
                             </Tooltip>
                           </Popover>
+
+                          {/* Knowledge Base Button */}
+                          <Tooltip title={t('use_knowledge')}>
+                            <Button
+                              type='text'
+                              shape='circle'
+                              size='small'
+                              icon={<BookOutlined />}
+                              onClick={() => setIsKnowledgeModalOpen(true)}
+                              className='flex items-center justify-center text-gray-500 hover:text-violet-600 bg-gradient-to-b from-white to-gray-50 dark:from-[#2a2b2f] dark:to-[#1e1f24] dark:text-gray-300 border border-gray-200/80 dark:border-white/10 shadow-[0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] hover:-translate-y-[0.5px] hover:shadow-[0_2px_4px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] dark:hover:border-white/20 transition-all flex-shrink-0'
+                            />
+                          </Tooltip>
+
+                          {/* Database Button */}
+                          <Tooltip title={t('use_database')}>
+                            <Button
+                              type='text'
+                              shape='circle'
+                              size='small'
+                              icon={<DatabaseOutlined />}
+                              onClick={() => setIsDbModalOpen(true)}
+                              className='flex items-center justify-center text-gray-500 hover:text-violet-600 bg-gradient-to-b from-white to-gray-50 dark:from-[#2a2b2f] dark:to-[#1e1f24] dark:text-gray-300 border border-gray-200/80 dark:border-white/10 shadow-[0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] hover:-translate-y-[0.5px] hover:shadow-[0_2px_4px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] dark:hover:border-white/20 transition-all flex-shrink-0'
+                            />
+                          </Tooltip>
+
+                          {/* Model Selector */}
+                          <ModelSelector />
                         </div>
 
                         <div className='flex items-center gap-3'>
