@@ -2848,12 +2848,12 @@ const Playground: NextPage = () => {
                 </h2>
 
                 <div className='w-full mb-6'>
-                  <div className='grid grid-cols-2 lg:grid-cols-4 gap-3'>
+                  <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
                     {EXAMPLE_CARDS.map(example => (
                       <div
                         key={example.id}
                         onClick={() => handleExampleClick(example)}
-                        className={`group relative rounded-2xl overflow-hidden bg-gradient-to-br ${example.color} border ${example.borderColor} cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300`}
+                        className='group relative rounded-2xl overflow-hidden bg-white border border-gray-100 dark:border-gray-800 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-300'
                       >
                         {/* 渐变色条 */}
                         <div className={`h-2 w-full bg-gradient-to-r ${example.gradientColors}`} />
