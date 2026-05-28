@@ -2,7 +2,6 @@
 
 import { usePermission } from '@/context/PermissionContext';
 import UserBar from '@/new-components/layout/UserBar';
-import { STORAGE_VERSION_KEY, UI_VERSION_NEW, UI_VERSION_OLD } from '@/utils/constants/index';
 import {
   ApartmentOutlined,
   AppstoreOutlined,
@@ -21,7 +20,7 @@ import {
   UserAddOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Badge, Segmented } from 'antd';
+import { Badge } from 'antd';
 import cls from 'classnames';
 import { useRouter } from 'next/router';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
@@ -120,7 +119,9 @@ function NavMenuItem({
 function NavGroupSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className='mb-4'>
-      <div className='px-4 mb-1 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider'>{title}</div>
+      <div className='px-4 mb-1 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider'>
+        {title}
+      </div>
       <div className='space-y-0.5'>{children}</div>
     </div>
   );
@@ -150,17 +151,6 @@ export default function NewSideBar() {
 
   const [pendingCount, setPendingCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
-  const [uiVersion, setUiVersion] = useState(localStorage.getItem(STORAGE_VERSION_KEY) || UI_VERSION_NEW);
-
-  const handleVersionToggle = (version: string) => {
-    localStorage.setItem(STORAGE_VERSION_KEY, version);
-    setUiVersion(version);
-    if (version === UI_VERSION_NEW) {
-      router.push('/');
-    } else {
-      router.push('/chat');
-    }
-  };
 
   // Fetch pending registration count for badge
   useEffect(() => {
@@ -247,17 +237,9 @@ export default function NewSideBar() {
       <div className='flex flex-col h-screen w-16 min-w-16 bg-[var(--bg-secondary)] border-r border-[var(--border-color)]'>
         {/* Logo area */}
         <div className='flex flex-col items-center justify-center h-16 border-b border-[var(--border-color)] gap-1'>
-          <div className='text-lg font-bold text-primary'>DB</div>
-          <Segmented
-            value={uiVersion}
-            onChange={val => handleVersionToggle(val as string)}
-            options={[
-              { label: '新', value: UI_VERSION_NEW },
-              { label: '老', value: UI_VERSION_OLD },
-            ]}
-            size='small'
-            style={{ height: 20, fontSize: 10 }}
-          />
+          <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
+            <span className='text-white font-bold text-sm'>DB</span>
+          </div>
         </div>
 
         {/* Collapsed nav items */}
@@ -344,15 +326,6 @@ export default function NewSideBar() {
             <span className='text-white font-bold text-sm'>DB</span>
           </div>
           <span className='font-semibold text-[var(--text-primary)]'>DB-GPT</span>
-          <Segmented
-            value={uiVersion}
-            onChange={val => handleVersionToggle(val as string)}
-            options={[
-              { label: '新', value: UI_VERSION_NEW },
-              { label: '老', value: UI_VERSION_OLD },
-            ]}
-            size='small'
-          />
         </div>
         <div
           className='flex items-center justify-center w-7 h-7 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)] rounded transition-colors'
