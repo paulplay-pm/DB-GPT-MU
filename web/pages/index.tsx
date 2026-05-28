@@ -542,11 +542,11 @@ const Playground: NextPage = () => {
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [skillSearchQuery, setSkillSearchQuery] = useState('');
 
-  const [_isKnowledgePanelOpen, _setIsKnowledgePanelOpen] = useState(false);
-  const [_knowledgeSearchQuery, _setKnowledgeSearchQuery] = useState('');
+  const [isKnowledgePanelOpen, setIsKnowledgePanelOpen] = useState(false);
+  const [knowledgeSearchQuery, setKnowledgeSearchQuery] = useState('');
 
-  const [_isDbPanelOpen, _setIsDbPanelOpen] = useState(false);
-  const [_dbSearchQuery, _setDbSearchQuery] = useState('');
+  const [isDbPanelOpen, setIsDbPanelOpen] = useState(false);
+  const [dbSearchQuery, setDbSearchQuery] = useState('');
 
   const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
   const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false);
