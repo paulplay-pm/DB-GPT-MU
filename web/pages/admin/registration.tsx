@@ -16,8 +16,8 @@ import {
   rejectRegistration,
 } from '@/client/api/sys/registration';
 import { RoleResponse, getRoles } from '@/client/api/sys/role';
-import '@/styles/chatbi-variables.css';
 import PageHeader from '@/new-components/common/PageHeader';
+import '@/styles/chatbi-variables.css';
 
 export default function RegistrationManagementPage() {
   const { t } = useTranslation();
@@ -197,7 +197,7 @@ export default function RegistrationManagementPage() {
       width: 150,
       render: (_: any, record: RegistrationResponse) => {
         if (record.status !== 'pending') {
-          return <span style={{ color: '#999' }}>{t('Registration_Processed')}</span>;
+          return <span style={{ color: 'var(--text-tertiary)' }}>{t('Registration_Processed')}</span>;
         }
         return (
           <Space size='small'>
@@ -229,12 +229,9 @@ export default function RegistrationManagementPage() {
 
   return (
     <div className='bg-[--bg-primary] min-h-screen p-6'>
-      <PageHeader
-        title={t('Registration_Management')}
-        description={t('Registration_Management_Desc')}
-      />
+      <PageHeader title={t('registration_review')} description={t('registration_review')} />
 
-      <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+      <div className='bg-[var(--card-bg)] rounded-[12px] p-4 shadow-sm'>
         <div className='flex items-center gap-4 mb-4'>
           <span className='text-[--text-secondary]'>{t('Registration_Status_Filter')}：</span>
           <Select
@@ -249,7 +246,9 @@ export default function RegistrationManagementPage() {
               { value: 'rejected', label: t('Rejected') },
             ]}
           />
-          <Button onClick={loadRegistrations} className='rounded-[8px]'>{t('refresh_list')}</Button>
+          <Button onClick={loadRegistrations} className='rounded-[8px]'>
+            {t('refresh_list')}
+          </Button>
         </div>
 
         <Table

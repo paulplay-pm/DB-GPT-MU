@@ -15,8 +15,8 @@ import {
   getDeptTree,
   updateDept,
 } from '@/client/api/sys/dept';
-import '@/styles/chatbi-variables.css';
 import PageHeader from '@/new-components/common/PageHeader';
+import '@/styles/chatbi-variables.css';
 
 export default function DeptManagementPage() {
   const { t } = useTranslation();
@@ -142,8 +142,8 @@ export default function DeptManagementPage() {
   return (
     <div className='bg-[--bg-primary] min-h-screen p-6'>
       <PageHeader
-        title={t('Dept_Management')}
-        description={t('Dept_Management_Desc')}
+        title={t('dept_management')}
+        description={t('dept_management')}
         actions={
           <Button type='primary' icon={<PlusOutlined />} onClick={() => handleAdd()} className='rounded-[8px]'>
             {t('Add_Dept')}
@@ -151,7 +151,7 @@ export default function DeptManagementPage() {
         }
       />
 
-      <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+      <div className='bg-[var(--card-bg)] rounded-[12px] p-4 shadow-sm'>
         <Tree
           treeData={treeData}
           expandedKeys={expandedKeys}

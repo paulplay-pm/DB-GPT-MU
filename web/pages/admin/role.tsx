@@ -18,8 +18,8 @@ import {
   updateRole,
   updateRolePermissions,
 } from '@/client/api/sys/role';
-import '@/styles/chatbi-variables.css';
 import PageHeader from '@/new-components/common/PageHeader';
+import '@/styles/chatbi-variables.css';
 
 export default function RoleManagementPage() {
   const { t } = useTranslation();
@@ -161,7 +161,7 @@ export default function RoleManagementPage() {
       title: (
         <div className='flex items-center gap-2'>
           <span>{perm.name}</span>
-          <span className='text-xs text-gray-400'>{perm.code}</span>
+          <span className='text-xs text-[var(--text-tertiary)]'>{perm.code}</span>
         </div>
       ),
       children: perm.children && perm.children.length > 0 ? convertToTreeData(perm.children) : undefined,
@@ -220,8 +220,8 @@ export default function RoleManagementPage() {
   return (
     <div className='bg-[--bg-primary] min-h-screen p-6'>
       <PageHeader
-        title={t('Role_Management')}
-        description={t('Role_Management_Desc')}
+        title={t('role_management')}
+        description={t('role_management')}
         actions={
           <Button type='primary' icon={<PlusOutlined />} onClick={handleAdd} className='rounded-[8px]'>
             {t('Add_Role')}
@@ -229,7 +229,7 @@ export default function RoleManagementPage() {
         }
       />
 
-      <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+      <div className='bg-[var(--card-bg)] rounded-[12px] p-4 shadow-sm'>
         <Table
           columns={columns}
           dataSource={roles}
@@ -297,7 +297,7 @@ export default function RoleManagementPage() {
               />
             </Card>
           ) : (
-            <div className='text-center text-gray-400 py-8'>{t('No_Permission_Data')}</div>
+            <div className='text-center text-[var(--text-tertiary)] py-8'>{t('No_Permission_Data')}</div>
           )}
         </div>
       </Modal>

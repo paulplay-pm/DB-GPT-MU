@@ -18,8 +18,8 @@ import {
   updateUser,
   updateUserRoles,
 } from '@/client/api/sys/user';
-import '@/styles/chatbi-variables.css';
 import PageHeader from '@/new-components/common/PageHeader';
+import '@/styles/chatbi-variables.css';
 
 export default function UserManagementPage() {
   const { t } = useTranslation();
@@ -223,8 +223,8 @@ export default function UserManagementPage() {
   return (
     <div className='bg-[--bg-primary] min-h-screen p-6'>
       <PageHeader
-        title={t('User_Management')}
-        description={t('User_Management_Desc')}
+        title={t('user_management')}
+        description={t('user_management')}
         actions={
           <Button type='primary' icon={<PlusOutlined />} onClick={handleAdd} className='rounded-[8px]'>
             {t('Add_User')}
@@ -232,7 +232,7 @@ export default function UserManagementPage() {
         }
       />
 
-      <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+      <div className='bg-[var(--card-bg)] rounded-[12px] p-4 shadow-sm'>
         <Table
           columns={columns}
           dataSource={users}

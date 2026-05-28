@@ -7,8 +7,8 @@ import { Card, Spin, Tree } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import '@/styles/chatbi-variables.css';
 import PageHeader from '@/new-components/common/PageHeader';
+import '@/styles/chatbi-variables.css';
 
 export default function PermissionManagementPage() {
   const { t } = useTranslation();
@@ -36,9 +36,9 @@ export default function PermissionManagementPage() {
       key: perm.id,
       title: (
         <div className='flex items-center gap-2'>
-          <SafetyOutlined className='text-blue-500' />
+          <SafetyOutlined className='text-[var(--primary)]' />
           <span>{perm.name}</span>
-          <span className='text-xs text-gray-400 ml-2'>{perm.code}</span>
+          <span className='text-xs text-[var(--text-tertiary)] ml-2'>{perm.code}</span>
         </div>
       ),
       children: perm.children && perm.children.length > 0 ? convertToTreeData(perm.children) : undefined,
@@ -55,16 +55,15 @@ export default function PermissionManagementPage() {
 
   return (
     <div className='bg-[--bg-primary] min-h-screen p-6'>
-      <PageHeader
-        title={t('Permission_Management')}
-        description={t('Permission_Management_Desc')}
-      />
+      <PageHeader title={t('permission_management')} description={t('permission_management')} />
 
-      <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+      <div className='bg-[var(--card-bg)] rounded-[12px] p-4 shadow-sm'>
         <Card
           title={t('Permission_List')}
           extra={
-            <span className='text-gray-400 text-sm'>{t('Permission_Total_Count', { count: permissionTree.length })}</span>
+            <span className='text-[var(--text-tertiary)] text-sm'>
+              {t('Permission_Total_Count', { count: permissionTree.length })}
+            </span>
           }
         >
           {permissionTree.length > 0 ? (
@@ -75,7 +74,7 @@ export default function PermissionManagementPage() {
               blockNode
             />
           ) : (
-            <div className='text-center text-gray-400 py-8'>{t('No_Permission_Data')}</div>
+            <div className='text-center text-[var(--text-tertiary)] py-8'>{t('No_Permission_Data')}</div>
           )}
         </Card>
       </div>
