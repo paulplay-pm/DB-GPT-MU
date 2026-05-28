@@ -320,7 +320,7 @@ export default function NewSideBar() {
   return (
     <div className='flex flex-col h-screen w-60 min-w-60 bg-[var(--bg-secondary)] border-r border-[var(--border-color)] transition-all duration-200'>
       {/* Header with logo */}
-      <div className='flex items-center justify-between h-16 px-4 border-b border-[var(--border-color)]'>
+      <div className='flex items-center justify-between h-16 px-4 border-t border-b border-[var(--border-color)]'>
         <div className='flex items-center gap-3 hover:opacity-80'>
           <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
             <span className='text-white font-bold text-sm'>DB</span>
