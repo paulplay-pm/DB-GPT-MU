@@ -120,7 +120,7 @@ function NavMenuItem({
 function NavGroupSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className='mb-4'>
-      <div className='px-4 mb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider'>{title}</div>
+      <div className='px-4 mb-1 text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider'>{title}</div>
       <div className='space-y-0.5'>{children}</div>
     </div>
   );
