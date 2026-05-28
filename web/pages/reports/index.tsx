@@ -131,7 +131,9 @@ function ConversationsTab({
           allowClear
           className='w-[230px]'
         />
-        <span className='text-sm text-gray-400'>{totalRef.current ? `共 ${totalRef.current.total_count} 条` : ''}</span>
+        <span className='text-sm text-[var(--text-tertiary)]'>
+          {totalRef.current ? `共 ${totalRef.current.total_count} 条` : ''}
+        </span>
       </div>
       <div className='flex-1 overflow-y-auto'>
         <Spin spinning={loading}>
@@ -144,17 +146,15 @@ function ConversationsTab({
               {filteredList.map(conv => (
                 <div
                   key={conv.conv_uid}
-                  className='group flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-colors hover:bg-white dark:hover:bg-gray-800 hover:shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-700'
+                  className='group flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-colors hover:bg-white dark:hover:bg-gray-800 hover:shadow-sm border border-transparent hover:border-[var(--border-color)] dark:hover:border-gray-700'
                 >
-                  <div className='flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700'>
-                    <MessageOutlined className='text-gray-400 text-sm' />
+                  <div className='flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-[var(--bg-tertiary)]'>
+                    <MessageOutlined className='text-[var(--text-tertiary)] text-sm' />
                   </div>
                   <div className='flex-1 min-w-0'>
-                    <div className='text-sm font-medium text-gray-700 dark:text-gray-200 truncate'>
-                      {getTitle(conv)}
-                    </div>
+                    <div className='text-sm font-medium text-[var(--text-primary)] truncate'>{getTitle(conv)}</div>
                     {conv.gmt_created && (
-                      <div className='text-xs text-gray-400 mt-0.5'>{formatTime(conv.gmt_created)}</div>
+                      <div className='text-xs text-[var(--text-tertiary)] mt-0.5'>{formatTime(conv.gmt_created)}</div>
                     )}
                   </div>
                   <Popconfirm
@@ -170,13 +170,13 @@ function ConversationsTab({
                   >
                     <Tooltip title='删除'>
                       <div
-                        className='flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer'
+                        className='flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-[var(--bg-hover)] rounded cursor-pointer'
                         onClick={e => {
                           e.stopPropagation();
                           e.preventDefault();
                         }}
                       >
-                        <DeleteOutlined className='text-gray-300 hover:text-red-500' />
+                        <DeleteOutlined className='text-[var(--text-tertiary)] hover:text-red-500' />
                       </div>
                     </Tooltip>
                   </Popconfirm>
@@ -187,7 +187,7 @@ function ConversationsTab({
         </Spin>
       </div>
       {(totalRef.current?.total_count ?? 0) > PAGE_SIZE && (
-        <div className='flex justify-end pt-4 border-t border-gray-100 dark:border-gray-800'>
+        <div className='flex justify-end pt-4 border-t border-[var(--border-color)]'>
           <Pagination
             current={totalRef.current?.current_page}
             total={totalRef.current?.total_count || 0}
