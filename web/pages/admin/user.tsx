@@ -221,7 +221,7 @@ export default function UserManagementPage() {
   };
 
   return (
-    <div className='bg-[--bg-primary] min-h-screen p-6'>
+    <div className='bg-[var(--bg-primary)] min-h-screen p-6'>
       <PageHeader
         title={t('user_management')}
         description={t('user_management')}

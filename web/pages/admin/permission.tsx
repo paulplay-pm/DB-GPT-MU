@@ -54,7 +54,7 @@ export default function PermissionManagementPage() {
   }
 
   return (
-    <div className='bg-[--bg-primary] min-h-screen p-6'>
+    <div className='bg-[var(--bg-primary)] min-h-screen p-6'>
       <PageHeader title={t('permission_management')} description={t('permission_management')} />
 
       <div className='bg-[var(--card-bg)] rounded-[12px] p-4 shadow-sm'>

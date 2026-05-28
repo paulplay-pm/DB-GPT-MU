@@ -218,7 +218,7 @@ export default function RoleManagementPage() {
   };
 
   return (
-    <div className='bg-[--bg-primary] min-h-screen p-6'>
+    <div className='bg-[var(--bg-primary)] min-h-screen p-6'>
       <PageHeader
         title={t('role_management')}
         description={t('role_management')}

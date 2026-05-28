@@ -140,7 +140,7 @@ export default function DeptManagementPage() {
   const treeSelectData = convertToTreeSelectData(deptTree, editingDept?.id);
 
   return (
-    <div className='bg-[--bg-primary] min-h-screen p-6'>
+    <div className='bg-[var(--bg-primary)] min-h-screen p-6'>
       <PageHeader
         title={t('dept_management')}
         description={t('dept_management')}
