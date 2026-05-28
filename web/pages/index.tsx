@@ -2836,7 +2836,7 @@ const Playground: NextPage = () => {
           ) : (
             // Welcome Mode: Display Hero Section
             <div className='flex-1 flex flex-col items-center px-6 py-8 pb-20 overflow-y-auto justify-between'>
-              <div className='w-full max-w-[860px] flex flex-col items-center animate-fade-in-up flex-1'>
+              <div className='w-full max-w-[860px] flex flex-col items-center animate-fade-in-up flex-1 justify-center'>
                 <h2 className='text-2xl md:text-3xl font-medium text-gray-700 dark:text-gray-200 mb-3 text-center'>
                   {t('home_slogan')}
                 </h2>
@@ -2970,6 +2970,18 @@ const Playground: NextPage = () => {
                                   label: t('use_skill'),
                                   icon: <ThunderboltOutlined />,
                                   onClick: () => setIsSkillPanelOpen(true),
+                                },
+                                {
+                                  key: 'knowledge',
+                                  label: t('use_knowledge'),
+                                  icon: <BookOutlined />,
+                                  onClick: () => setIsKnowledgeModalOpen(true),
+                                },
+                                {
+                                  key: 'database',
+                                  label: t('use_database'),
+                                  icon: <DatabaseOutlined />,
+                                  onClick: () => setIsDbModalOpen(true),
                                 },
                               ],
                             }}
