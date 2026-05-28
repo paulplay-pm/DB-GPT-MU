@@ -2,8 +2,9 @@ import { apiInterceptors, getDbList, getDbSupportType, postDbDelete, postDbRefre
 import GPTCard from '@/components/common/gpt-card';
 import MuiLoading from '@/components/common/loading';
 import FormDialog from '@/components/database/form-dialog';
-import ConstructLayout from '@/new-components/layout/Construct';
 import PageHeader from '@/new-components/common/PageHeader';
+import ConstructLayout from '@/new-components/layout/Construct';
+import '@/styles/chatbi-variables.css';
 import { DBOption, DBType, DbListResponse, DbSupportTypeResponse } from '@/types/db';
 import { dbMapper } from '@/utils';
 import { DeleteFilled, EditFilled, PlusOutlined, RedoOutlined } from '@ant-design/icons';
@@ -11,7 +12,6 @@ import { useAsyncEffect } from 'ahooks';
 import { Badge, Button, Card, Drawer, Empty, Modal, Spin, message } from 'antd';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import '@/styles/chatbi-variables.css';
 
 type DBItem = DbListResponse[0];
 
@@ -164,8 +164,8 @@ function Database() {
       <div className='bg-[--bg-primary] min-h-screen p-6'>
         <MuiLoading visible={loading} />
         <PageHeader
-          title={t('Datasource_Management')}
-          description={t('Datasource_Management_Desc')}
+          title={t('datasources')}
+          description={t('datasources')}
           actions={
             <Button
               type='primary'
@@ -182,7 +182,7 @@ function Database() {
           }
         />
 
-        <div className='bg-white rounded-[12px] p-4 shadow-sm'>
+        <div className='bg-[var(--card-bg)] rounded-[12px] p-4 shadow-sm'>
           <div className='flex flex-wrap mx-[-8px] gap-2 md:gap-4'>
             {dbTypeList.map(item => {
               return (
