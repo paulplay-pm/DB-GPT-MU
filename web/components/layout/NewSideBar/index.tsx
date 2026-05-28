@@ -1,5 +1,6 @@
 'use client';
 
+import { ChatContext } from '@/app/chat-context';
 import { usePermission } from '@/context/PermissionContext';
 import UserBar from '@/new-components/layout/UserBar';
 import {
@@ -23,7 +24,7 @@ import {
 import { Badge, Tooltip } from 'antd';
 import cls from 'classnames';
 import { useRouter } from 'next/router';
-import { ReactNode, useCallback, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NAV_GROUPS, NavItem, PERMISSION_KEYS } from './config';
 
@@ -148,9 +149,10 @@ export default function NewSideBar() {
   const { pathname } = router;
   const { t } = useTranslation();
   const { hasPermission } = usePermission();
+  const { isMenuExpand, setIsMenuExpand } = useContext(ChatContext);
 
   const [pendingCount, setPendingCount] = useState(0);
-  const [collapsed, setCollapsed] = useState(false);
+  const collapsed = !isMenuExpand;
 
   // Fetch pending registration count for badge
   useEffect(() => {
@@ -229,12 +231,12 @@ export default function NewSideBar() {
 
   // Toggle collapsed state
   const handleToggleCollapse = useCallback(() => {
-    setCollapsed(!collapsed);
-  }, [collapsed]);
+    setIsMenuExpand?.(!isMenuExpand);
+  }, [isMenuExpand, setIsMenuExpand]);
 
   if (collapsed) {
     return (
-      <div className='flex flex-col h-screen w-16 min-w-16 bg-[var(--bg-secondary)] border-r border-[var(--border-color)]'>
+      <div className='flex flex-col h-screen w-16 min-w-16 bg-[var(--bg-secondary)] border-r border-[var(--border-color)] transition-all duration-200'>
         {/* Logo area */}
         <div className='flex flex-col items-center justify-center h-16 border-b border-[var(--border-color)] gap-1'>
           <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
@@ -322,10 +324,10 @@ export default function NewSideBar() {
   }
 
   return (
-    <div className='flex flex-col h-screen w-60 min-w-60 bg-[var(--bg-secondary)] border-r border-[var(--border-color)]'>
+    <div className='flex flex-col h-screen w-60 min-w-60 bg-[var(--bg-secondary)] border-r border-[var(--border-color)] transition-all duration-200'>
       {/* Header with logo */}
       <div className='flex items-center justify-between h-16 px-4 border-b border-[var(--border-color)]'>
-        <div className='flex items-center gap-3'>
+        <div className='flex items-center gap-3 hover:opacity-80'>
           <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
             <span className='text-white font-bold text-sm'>DB</span>
           </div>

@@ -27,9 +27,7 @@ export const PERMISSIONS = {
 } as const;
 
 // 所有权限码列表 (用于权限初始化等场景)
-export const ALL_PERMISSION_CODES = Object.values(PERMISSIONS).flatMap(category =>
-  Object.values(category)
-);
+export const ALL_PERMISSION_CODES = Object.values(PERMISSIONS).flatMap(category => Object.values(category));
 
 // 权限码类型
-export type PermissionCode = typeof ALL_PERMISSION_CODES[number];
+export type PermissionCode = (typeof ALL_PERMISSION_CODES)[number];

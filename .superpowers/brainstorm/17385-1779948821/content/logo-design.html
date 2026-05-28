@@ -1,0 +1,41 @@
+<h2>Logo 区域设计方案</h2>
+<p class="subtitle">选择左侧 logo 和产品名称区域的视觉风格</p>
+
+<div class="options">
+  <div class="option" data-choice="minimal" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>极简风格</h3>
+      <p>纯文字 logo，DB-GPT 简洁字体，hover 时轻微放大效果</p>
+    </div>
+  </div>
+  <div class="option" data-choice="badge" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>图标 + 名称</h3>
+      <p>左侧 logo 方块 + 右侧产品名，hover 时整体高亮，圆角边框</p>
+    </div>
+  </div>
+  <div class="option" data-choice="brand" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>品牌强化</h3>
+      <p>渐变背景 logo + 阴影效果 + 产品名带 icon，整体更有质感</p>
+    </div>
+  </div>
+</div>
+
+<div class="mockup" style="margin-top: 30px;">
+  <div class="mockup-header">预览示意图</div>
+  <div class="mockup-body">
+    <div style="display: flex; align-items: center; gap: 12px; padding: 16px; border-bottom: 1px solid #e5e7eb;">
+      <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #31afff, #1677ff); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+        <span style="color: white; font-weight: bold; font-size: 14px;">DB</span>
+      </div>
+      <span style="font-weight: 600; font-size: 16px; color: #1f1f1f;">DB-GPT</span>
+    </div>
+    <div style="padding: 20px; background: #f7f7f7;">
+      <p style="color: #666; font-size: 13px;">导航栏收缩按钮将常驻在顶部位置不变，收起后右侧内容区域自动扩展铺满</p>
+    </div>
+  </div>
+</div>

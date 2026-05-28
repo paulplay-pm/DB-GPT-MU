@@ -1,0 +1,49 @@
+<h2>收起状态下的 Tooltip 设计</h2>
+<p class="subtitle">导航栏收起后，图标需要显示 tooltip 说明功能</p>
+
+<div class="options">
+  <div class="option" data-choice="ant-tooltip" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Ant Design Tooltip</h3>
+      <p>使用 Ant Design 的 Tooltip 组件，hover 时显示在图标下方</p>
+    </div>
+  </div>
+  <div class="option" data-choice="custom" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>自定义浮动提示</h3>
+      <p>自定义样式，黑色背景白色文字，带小箭头指向图标</p>
+    </div>
+  </div>
+  <div class="option" data-choice="label" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>图标下方直接显示文字</h3>
+      <p>收起状态下图标下方显示功能名称缩写，hover 时完整显示</p>
+    </div>
+  </div>
+</div>
+
+<div class="mockup" style="margin-top: 30px;">
+  <div class="mockup-header">选项 A 预览 - Ant Design Tooltip</div>
+  <div class="mockup-body">
+    <div style="display: flex; gap: 0; height: 80px;">
+      <div style="width: 64px; background: #1e1f26; padding: 10px 0; display: flex; flex-direction: column; align-items: center; gap: 8px; border-right: 1px solid #333;">
+        <div style="position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #2a2d38; border-radius: 8px; cursor: pointer;">
+          <span style="color: #31afff; font-size: 16px;">💬</span>
+          <div style="position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: 8px; background: #333; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; z-index: 100;">
+            对话 / Chat
+            <div style="position: absolute; right: 100%; top: 50%; transform: translateY(-50%); border: 6px solid transparent; border-right-color: #333;"></div>
+          </div>
+        </div>
+        <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+          <span style="color: #707070; font-size: 16px;">📊</span>
+        </div>
+      </div>
+      <div style="flex: 1; background: #f7f7f7; display: flex; align-items: center; padding-left: 20px;">
+        <span style="color: #666; font-size: 13px;">鼠标悬停显示 tooltip</span>
+      </div>
+    </div>
+  </div>
+</div>

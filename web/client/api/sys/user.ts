@@ -1,4 +1,4 @@
-import { GET, POST, PUT, DELETE } from '@/client/api';
+import { GET, POST, PUT } from '@/client/api';
 
 export interface UserResponse {
   id: number;

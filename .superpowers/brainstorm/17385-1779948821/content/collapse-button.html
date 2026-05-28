@@ -1,0 +1,48 @@
+<h2>收缩按钮位置设计</h2>
+<p class="subtitle">导航栏收缩/展开按钮应该放在哪里？</p>
+
+<div class="options">
+  <div class="option" data-choice="header" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>固定在 logo 区域右侧</h3>
+      <p>按钮始终在 logo 右侧，展开时显示文字"收起"，收起时显示图标</p>
+    </div>
+  </div>
+  <div class="option" data-choice="topbar" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>独立顶部工具栏</h3>
+      <p>按钮独立在顶部，与 logo 分开，始终可见</p>
+    </div>
+  </div>
+  <div class="option" data-choice="sidebar-edge" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>悬浮在导航栏右侧边缘</h3>
+      <p>按钮在导航栏和内容的交界处，垂直居中，悬浮式设计</p>
+    </div>
+  </div>
+</div>
+
+<div class="mockup" style="margin-top: 30px;">
+  <div class="mockup-header">选项 A 预览</div>
+  <div class="mockup-body">
+    <div style="display: flex; gap: 0; height: 60px;">
+      <div style="width: 200px; background: #1e1f26; padding: 12px; display: flex; align-items: center; justify-content: space-between; border-right: 1px solid #333;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #31afff, #1677ff); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+            <span style="color: white; font-weight: bold; font-size: 12px;">DB</span>
+          </div>
+          <span style="color: #f0f0f0; font-weight: 600;">DB-GPT</span>
+        </div>
+        <div style="width: 24px; height: 24px; background: #333; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+          <span style="color: #999; font-size: 12px;">←</span>
+        </div>
+      </div>
+      <div style="flex: 1; background: #f7f7f7; display: flex; align-items: center; padding-left: 20px;">
+        <span style="color: #666; font-size: 13px;">主内容区域自动扩展</span>
+      </div>
+    </div>
+  </div>
+</div>

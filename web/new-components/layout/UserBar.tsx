@@ -17,7 +17,7 @@ interface UserInfo {
 
 export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }) {
   const router = useRouter();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [menuVisible, setMenuVisible] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
@@ -42,10 +42,10 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
     if (/[0-9]/.test(password)) strength += 15;
     if (/[^A-Za-z0-9]/.test(password)) strength += 15;
     let label = '';
-    if (strength <= 25) label = '弱';
-    else if (strength <= 50) label = '中等';
-    else if (strength <= 75) label = '良好';
-    else label = '强';
+    if (strength <= 25) label = t('weak');
+    else if (strength <= 50) label = t('medium');
+    else if (strength <= 75) label = t('good');
+    else label = t('strong');
     return { level: strength, percent: Math.min(strength, 100), label };
   };
 
@@ -142,118 +142,121 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       });
   };
 
-  const menuItems: MenuProps['items'] = useMemo(() => [
-    {
-      key: 'profile',
-      icon: <UserOutlined />,
-      label: i18n.language?.startsWith('en') ? 'Profile' : '个人信息',
-      onClick: () => {
-        setMenuVisible(false);
-        form.setFieldsValue({ real_name: userInfo?.real_name, email: userInfo?.email, phone: userInfo?.phone });
-        setProfileModalOpen(true);
+  const menuItems: MenuProps['items'] = useMemo(
+    () => [
+      {
+        key: 'profile',
+        icon: <UserOutlined />,
+        label: t('profile'),
+        onClick: () => {
+          setMenuVisible(false);
+          form.setFieldsValue({ real_name: userInfo?.real_name, email: userInfo?.email, phone: userInfo?.phone });
+          setProfileModalOpen(true);
+        },
       },
-    },
-    {
-      key: 'password',
-      icon: <LockOutlined />,
-      label: i18n.language?.startsWith('en') ? 'Change Password' : '修改密码',
-      onClick: () => {
-        setMenuVisible(false);
-        passwordForm.resetFields();
-        setPasswordModalOpen(true);
+      {
+        key: 'password',
+        icon: <LockOutlined />,
+        label: t('change_password'),
+        onClick: () => {
+          setMenuVisible(false);
+          passwordForm.resetFields();
+          setPasswordModalOpen(true);
+        },
       },
-    },
-    { type: 'divider' },
-    {
-      key: 'language',
-      label: (
-        <div className='flex items-center justify-between w-full px-1'>
-          <span className='text-sm'>{i18n.language?.startsWith('en') ? 'Language' : '语言'}</span>
-          <div className='flex gap-1'>
-            <button
-              className={`px-2 py-0.5 text-xs rounded ${i18n.language?.startsWith('zh') ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
-              onClick={e => {
-                e.stopPropagation();
-                setLang('zh');
-                localStorage.setItem(STORAGE_LANG_KEY, 'zh');
-                i18n.changeLanguage('zh');
-              }}
-            >
-              中文
-            </button>
-            <button
-              className={`px-2 py-0.5 text-xs rounded ${i18n.language?.startsWith('en') ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
-              onClick={e => {
-                e.stopPropagation();
-                setLang('en');
-                localStorage.setItem(STORAGE_LANG_KEY, 'en');
-                i18n.changeLanguage('en');
-              }}
-            >
-              EN
-            </button>
+      { type: 'divider' },
+      {
+        key: 'language',
+        label: (
+          <div className='flex items-center justify-between w-full px-1'>
+            <span className={`text-sm ${theme === 'dark' ? 'text-[#f0f0f0]' : 'text-[#1f1f1f]'}`}>{t('language')}</span>
+            <div className='flex gap-1'>
+              <button
+                className={`px-2 py-0.5 text-xs rounded ${i18n.language?.startsWith('zh') ? theme === 'dark' ? 'bg-[#1890ff] text-white' : 'bg-[#1890ff] text-white' : theme === 'dark' ? 'bg-[#2d2e36] hover:bg-[#3d3e46] text-[#b0b0b0]' : 'bg-[#f0f0f0] hover:bg-[#e0e0e0] text-[#666666]'}`}
+                onClick={e => {
+                  e.stopPropagation();
+                  setLang('zh');
+                  localStorage.setItem(STORAGE_LANG_KEY, 'zh');
+                  i18n.changeLanguage('zh');
+                }}
+              >
+                中文
+              </button>
+              <button
+                className={`px-2 py-0.5 text-xs rounded ${i18n.language?.startsWith('en') ? theme === 'dark' ? 'bg-[#1890ff] text-white' : 'bg-[#1890ff] text-white' : theme === 'dark' ? 'bg-[#2d2e36] hover:bg-[#3d3e46] text-[#b0b0b0]' : 'bg-[#f0f0f0] hover:bg-[#e0e0e0] text-[#666666]'}`}
+                onClick={e => {
+                  e.stopPropagation();
+                  setLang('en');
+                  localStorage.setItem(STORAGE_LANG_KEY, 'en');
+                  i18n.changeLanguage('en');
+                }}
+              >
+                EN
+              </button>
+            </div>
           </div>
-        </div>
-      ),
-    },
-    {
-      key: 'theme',
-      label: (
-        <div className='flex items-center justify-between w-full px-1'>
-          <span className='text-sm'>{i18n.language?.startsWith('en') ? 'Theme' : '主题'}</span>
-          <div className='flex gap-1'>
-            <button
-              className={`px-2 py-0.5 text-xs rounded ${isLight() ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
-              onClick={e => {
-                e.stopPropagation();
-                setTheme('light');
-                localStorage.setItem(STORAGE_THEME_KEY, 'light');
-                document.body?.classList?.remove('dark');
-                document.body?.classList?.add('light');
-              }}
-            >
-              {i18n.language?.startsWith('en') ? 'Light' : '浅色'}
-            </button>
-            <button
-              className={`px-2 py-0.5 text-xs rounded ${isDark() ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
-              onClick={e => {
-                e.stopPropagation();
-                setTheme('dark');
-                localStorage.setItem(STORAGE_THEME_KEY, 'dark');
-                document.body?.classList?.remove('light');
-                document.body?.classList?.add('dark');
-              }}
-            >
-              {i18n.language?.startsWith('en') ? 'Dark' : '深色'}
-            </button>
-          </div>
-        </div>
-      ),
-    },
-    { type: 'divider' },
-    {
-      key: 'logout',
-      icon: <LogoutOutlined />,
-      label: '退出',
-      danger: true,
-      onClick: () => {
-        setMenuVisible(false);
-        handleLogout();
+        ),
       },
-    },
-  ], [i18n.language]);
+      {
+        key: 'theme',
+        label: (
+          <div className='flex items-center justify-between w-full px-1'>
+            <span className={`text-sm ${theme === 'dark' ? 'text-[#f0f0f0]' : 'text-[#1f1f1f]'}`}>{t('Theme')}</span>
+            <div className='flex gap-1'>
+              <button
+                className={`px-2 py-0.5 text-xs rounded ${theme === 'light' ? 'bg-[#1890ff] text-white' : theme === 'dark' ? 'bg-[#2d2e36] hover:bg-[#3d3e46] text-[#b0b0b0]' : 'bg-[#f0f0f0] hover:bg-[#e0e0e0] text-[#666666]'}`}
+                onClick={e => {
+                  e.stopPropagation();
+                  setTheme('light');
+                  localStorage.setItem(STORAGE_THEME_KEY, 'light');
+                  document.body?.classList?.remove('dark');
+                  document.body?.classList?.add('light');
+                }}
+              >
+                {t('light')}
+              </button>
+              <button
+                className={`px-2 py-0.5 text-xs rounded ${theme === 'dark' ? 'bg-[#1890ff] text-white' : theme === 'dark' ? 'bg-[#2d2e36] hover:bg-[#3d3e46] text-[#b0b0b0]' : 'bg-[#f0f0f0] hover:bg-[#e0e0e0] text-[#666666]'}`}
+                onClick={e => {
+                  e.stopPropagation();
+                  setTheme('dark');
+                  localStorage.setItem(STORAGE_THEME_KEY, 'dark');
+                  document.body?.classList?.remove('light');
+                  document.body?.classList?.add('dark');
+                }}
+              >
+                {t('dark')}
+              </button>
+            </div>
+          </div>
+        ),
+      },
+      { type: 'divider' },
+      {
+        key: 'logout',
+        icon: <LogoutOutlined />,
+        label: t('logout'),
+        danger: true,
+        onClick: () => {
+          setMenuVisible(false);
+          handleLogout();
+        },
+      },
+    ],
+    [i18n.language, theme],
+  );
 
   const triggerArea = (
     <div
       id='user-avatar-trigger'
-      className='flex items-center gap-2 cursor-pointer px-2 py-1 rounded hover:bg-[var(--hover-bg)]'
+      className={`flex items-center gap-2 cursor-pointer px-2 py-1 rounded ${theme === 'dark' ? 'hover:bg-[#3d3e46]' : 'hover:bg-[#f0f0f0]'}`}
       onClick={handleMenuToggle}
     >
       <Avatar src={userInfo?.avatar_url} className='bg-gradient-to-tr from-[#31afff] to-[#1677ff]'>
         {userInfo?.real_name?.[0] || userInfo?.nick_name?.[0] || userInfo?.login_name?.[0] || '?'}
       </Avatar>
       {!onlyAvatar && (
-        <span className='text-sm truncate max-w-[80px]'>
+        <span className={`text-sm truncate max-w-[80px] ${theme === 'dark' ? 'text-[#f0f0f0]' : 'text-[#1f1f1f]'}`}>
           {userInfo?.nick_name || userInfo?.real_name || userInfo?.login_name || ''}
         </span>
       )}
@@ -265,33 +268,43 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       {triggerArea}
       <div
         id='user-dropdown-menu'
-        key={`dropdown-${isDark() ? 'dark' : 'light'}`}
+        key={`dropdown-${theme}`}
         style={{
           position: 'absolute',
           bottom: '100%',
           left: 0,
-          background: 'var(--bg-secondary)',
-          border: '1px solid var(--border-color)',
+          background: theme === 'dark' ? '#1e1f26' : '#ffffff',
+          border: `1px solid ${theme === 'dark' ? '#333333' : '#e8e8e8'}`,
           borderRadius: 4,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+          boxShadow: theme === 'dark' ? '0 2px 8px rgba(0,0,0,0.4)' : '0 2px 8px rgba(0,0,0,0.15)',
           zIndex: 1000,
           minWidth: 120,
           display: menuVisible ? 'block' : 'none',
         }}
       >
-        <Menu mode='vertical' items={menuItems} style={{ border: 'none', boxShadow: 'none' }} />
+        <Menu 
+          mode='vertical' 
+          items={menuItems} 
+          style={{ 
+            border: 'none', 
+            boxShadow: 'none',
+            background: 'transparent',
+            color: theme === 'dark' ? '#f0f0f0' : '#1f1f1f',
+          }} 
+          className={`custom-user-menu ${theme === 'dark' ? 'dark-menu' : 'light-menu'}`}
+        />
       </div>
       <Modal
         title={
           <span className='flex items-center gap-2'>
             <UserOutlined className='text-[#1677ff]' />
-            <span>个人信息</span>
+            <span>{t('profile_title')}</span>
           </span>
         }
         open={profileModalOpen}
         onCancel={() => setProfileModalOpen(false)}
-        okText='保存'
-        cancelText='取消'
+        okText={t('save')}
+        cancelText={t('cancel')}
         onOk={() => {
           form.validateFields().then(async values => {
             try {
@@ -307,12 +320,12 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
                 localStorage.setItem(STORAGE_USERINFO_KEY, JSON.stringify(updated));
                 setUserInfo(updated);
                 setProfileModalOpen(false);
-                message.success('个人信息已更新');
+                message.success(t('profile_updated'));
               } else {
-                message.error(data.detail || '更新失败');
+                message.error(data.detail || t('update_failed'));
               }
             } catch {
-              message.error('更新失败');
+              message.error(t('update_failed'));
             }
           });
         }}
@@ -322,29 +335,29 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
             <Avatar src={userInfo?.avatar_url} size={72} className='bg-gradient-to-tr from-[#31afff] to-[#1677ff]'>
               {userInfo?.real_name?.[0] || userInfo?.nick_name?.[0] || userInfo?.login_name?.[0] || '?'}
             </Avatar>
-            <span className='text-xs text-gray-400'>点击更换头像</span>
+            <span className='text-xs text-gray-400'>{t('click_to_change_avatar')}</span>
           </div>
           <Divider type='vertical' className='h-full my-0' />
           <div className='flex-1'>
             <Form form={form} layout='vertical' size='middle'>
-              <Form.Item label='登录账号'>
+              <Form.Item label={t('login_account')}>
                 <Input value={userInfo?.login_name || ''} disabled className='bg-gray-50' />
               </Form.Item>
-              <Form.Item name='real_name' label='真实姓名' rules={[{ required: true, message: '请输入真实姓名' }]}>
-                <Input placeholder='请输入真实姓名' />
+              <Form.Item name='real_name' label={t('real_name')} rules={[{ required: true, message: t('please_input_real_name') }]}>
+                <Input placeholder={t('please_input_real_name')} />
               </Form.Item>
               <Form.Item
                 name='email'
-                label='邮箱'
+                label={t('email')}
                 rules={[
-                  { type: 'email', message: '请输入有效的邮箱地址' },
-                  { required: true, message: '请输入邮箱' },
+                  { type: 'email', message: t('invalid_email') },
+                  { required: true, message: t('please_input_email') },
                 ]}
               >
-                <Input placeholder='请输入邮箱' />
+                <Input placeholder={t('please_input_email')} />
               </Form.Item>
-              <Form.Item name='phone' label='手机号'>
-                <Input placeholder='请输入手机号' />
+              <Form.Item name='phone' label={t('phone')}>
+                <Input placeholder={t('please_input_phone')} />
               </Form.Item>
             </Form>
           </div>
@@ -354,17 +367,17 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
         title={
           <span className='flex items-center gap-2'>
             <LockOutlined className='text-[#1677ff]' />
-            <span>修改密码</span>
+            <span>{t('change_password')}</span>
           </span>
         }
         open={passwordModalOpen}
         onCancel={() => setPasswordModalOpen(false)}
-        okText='确认修改'
-        cancelText='取消'
+        okText={t('confirm_modify')}
+        cancelText={t('cancel')}
         onOk={() => {
           passwordForm.validateFields().then(async values => {
             if (values.new_password !== values.confirm_password) {
-              message.error('两次输入的密码不一致');
+              message.error(t('password_mismatch'));
               return;
             }
             try {
@@ -380,32 +393,32 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
               const data = await res.json();
               if (data.success) {
                 setPasswordModalOpen(false);
-                message.success('密码已更新');
+                message.success(t('password_updated'));
                 passwordForm.resetFields();
               } else {
-                message.error(data.detail || '修改失败');
+                message.error(data.detail || t('password_change_failed'));
               }
             } catch {
-              message.error('修改失败');
+              message.error(t('password_change_failed'));
             }
           });
         }}
       >
         <div className='py-4'>
           <Form form={passwordForm} layout='vertical' size='middle'>
-            <Form.Item name='old_password' label='当前密码' rules={[{ required: true, message: '请输入当前密码' }]}>
-              <Input.Password placeholder='请输入当前密码' />
+            <Form.Item name='old_password' label={t('old_password')} rules={[{ required: true, message: t('please_input_old_password') }]}>
+              <Input.Password placeholder={t('please_input_old_password')} />
             </Form.Item>
             <Form.Item
               name='new_password'
-              label='新密码'
+              label={t('new_password')}
               rules={[
-                { required: true, message: '请输入新密码' },
-                { min: 6, message: '密码至少6位' },
+                { required: true, message: t('please_input_new_password') },
+                { min: 6, message: t('password_min_length') },
               ]}
             >
               <Input.Password
-                placeholder='请输入新密码'
+                placeholder={t('please_input_new_password')}
                 onChange={e => {
                   const strength = getPasswordStrength(e.target.value);
                   passwordForm.setFieldsValue({ passwordStrength: strength });
@@ -415,7 +428,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
             {passwordForm.getFieldValue('new_password') && (
               <div className='mb-4 -mt-2'>
                 <div className='flex items-center gap-2 mb-1'>
-                  <span className='text-xs text-gray-500'>密码强度：</span>
+                  <span className='text-xs text-gray-500'>{t('password_strength')}：</span>
                   <span
                     className={`text-xs font-medium ${
                       getPasswordStrength(passwordForm.getFieldValue('new_password') || '').level <= 25
@@ -446,20 +459,39 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
                 />
               </div>
             )}
-            <Form.Item name='confirm_password' label='确认新密码' rules={[{ required: true, message: '请确认新密码' }]}>
-              <Input.Password placeholder='请再次输入新密码' />
+            <Form.Item name='confirm_password' label={t('confirm_new_password')} rules={[{ required: true, message: t('please_confirm_new_password') }]}>
+              <Input.Password placeholder={t('please_confirm_new_password')} />
             </Form.Item>
           </Form>
           <div className='mt-4 p-3 bg-gray-50 rounded-lg'>
-            <div className='text-xs text-gray-500 mb-2'>密码要求：</div>
+            <div className='text-xs text-gray-500 mb-2'>{t('password_requirements')}</div>
             <ul className='text-xs text-gray-400 space-y-1'>
-              <li>• 至少6位字符</li>
-              <li>• 建议包含大小写字母、数字和特殊字符</li>
-              <li>• 不要使用与其他网站相同的密码</li>
+              <li>{t('password_req_length')}</li>
+              <li>{t('password_req_suggest')}</li>
+              <li>{t('password_req_unique')}</li>
             </ul>
           </div>
         </div>
       </Modal>
+      <style>{`
+        .custom-user-menu.dark-menu .ant-menu-item,
+        .custom-user-menu.dark-menu .ant-menu-item-icon {
+          color: #f0f0f0 !important;
+        }
+        .custom-user-menu.dark-menu .ant-menu-item:hover {
+          background-color: #3d3e46 !important;
+        }
+        .custom-user-menu.light-menu .ant-menu-item,
+        .custom-user-menu.light-menu .ant-menu-item-icon {
+          color: #1f1f1f !important;
+        }
+        .custom-user-menu.light-menu .ant-menu-item:hover {
+          background-color: #f0f0f0 !important;
+        }
+        .custom-user-menu .ant-menu-item-danger {
+          color: #ff4d4f !important;
+        }
+      `}</style>
     </div>
   );
 }

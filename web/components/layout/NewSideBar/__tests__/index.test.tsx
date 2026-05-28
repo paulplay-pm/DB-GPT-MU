@@ -4,7 +4,7 @@
 
 // Simple test suite for NewSideBar configuration
 
-import { NAV_GROUPS, PERMISSION_KEYS, isPathActive, getRequiredPermissions, NavItem, NavGroup } from '../config';
+import { NAV_GROUPS, PERMISSION_KEYS, getRequiredPermissions, isPathActive } from '../config';
 
 describe('NewSideBar Configuration Tests', () => {
   describe('NAV_GROUPS structure', () => {

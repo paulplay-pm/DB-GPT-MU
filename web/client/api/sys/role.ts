@@ -1,4 +1,4 @@
-import { GET, POST, PUT, DELETE } from '@/client/api';
+import { DELETE, GET, POST, PUT } from '@/client/api';
 
 export interface RoleResponse {
   id: number;

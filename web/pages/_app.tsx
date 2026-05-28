@@ -1,5 +1,5 @@
 import { ChatContext, ChatContextProvider } from '@/app/chat-context';
-import SideBar from '@/components/layout/side-bar';
+import NewSideBar from '@/components/layout/NewSideBar';
 import { PermissionProvider } from '@/context/PermissionContext';
 import FloatHelper from '@/new-components/layout/FloatHelper';
 import { STORAGE_LANG_KEY } from '@/utils/constants/index';
@@ -116,8 +116,8 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
           <meta name='viewport' content='initial-scale=1.0, width=device-width, maximum-scale=1' />
         </Head>
         {router.pathname !== '/construct/app/extra' && (
-          <div className={classNames('transition-[width]', isMenuExpand ? 'w-60' : 'w-20', 'hidden', 'md:block')}>
-            <SideBar />
+          <div className={classNames('transition-[width]', isMenuExpand ? 'w-60' : 'w-16', 'hidden', 'md:block')}>
+            <NewSideBar />
           </div>
         )}
         <div className='flex flex-col flex-1 relative overflow-hidden'>{children}</div>
@@ -131,8 +131,8 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
       locale={i18n.language === 'en' ? enUS : zhCN}
       theme={{
         token: {
-          colorPrimary: '#0C75FC',
-          borderRadius: 4,
+          colorPrimary: '#1677ff',
+          borderRadius: 8,
         },
         algorithm: mode === 'dark' ? antdDarkTheme : undefined,
       }}
