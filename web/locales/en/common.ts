@@ -682,4 +682,7 @@ export const CommonEn = {
   strong: 'Strong',
   // Logout
   logout: 'Logout',
+  // TopActionBar
+  notification: 'Notification',
+  no_notification: 'No notifications',
 } as const;

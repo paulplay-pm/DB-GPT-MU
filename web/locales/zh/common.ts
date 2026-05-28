@@ -685,4 +685,7 @@ export const CommonZh: Resources['translation'] = {
   strong: '强',
   // Logout
   logout: '退出',
+  // TopActionBar
+  notification: '通知',
+  no_notification: '暂无通知',
 } as const;
