@@ -2854,33 +2854,38 @@ const Playground: NextPage = () => {
                       <div
                         key={example.id}
                         onClick={() => handleExampleClick(example)}
-                        className={`group relative bg-gradient-to-br ${example.color} border ${example.borderColor} rounded-2xl p-4 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300`}
+                        className={`group relative rounded-2xl overflow-hidden bg-gradient-to-br ${example.color} border ${example.borderColor} cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300`}
                       >
-                        <div className='flex items-start gap-3'>
-                          <div
-                            className={`w-10 h-10 ${example.iconBg} rounded-xl flex items-center justify-center text-xl flex-shrink-0`}
-                          >
-                            {example.icon}
+                        {/* 渐变色条 */}
+                        <div className={`h-2 w-full bg-gradient-to-r ${example.gradientColors}`} />
+                        {/* 卡片内容 */}
+                        <div className='p-4'>
+                          <div className='flex items-start gap-3'>
+                            <div
+                              className={`w-10 h-10 ${example.iconBg} rounded-xl flex items-center justify-center text-xl flex-shrink-0`}
+                            >
+                              {example.icon}
+                            </div>
+                            <div className='flex-1 min-w-0'>
+                              <h3 className='text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                                {(() => {
+                                  const key = `example_${example.id}_title`;
+                                  const val = t(key) as string;
+                                  return val && val !== key ? val : example.title;
+                                })()}
+                              </h3>
+                              <p className='text-xs text-gray-500 dark:text-gray-400 line-clamp-2'>
+                                {(() => {
+                                  const key = `example_${example.id}_desc`;
+                                  const val = t(key) as string;
+                                  return val && val !== key ? val : example.description;
+                                })()}
+                              </p>
+                            </div>
                           </div>
-                          <div className='flex-1 min-w-0'>
-                            <h3 className='text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                              {(() => {
-                                const key = `example_${example.id}_title`;
-                                const val = t(key) as string;
-                                return val && val !== key ? val : example.title;
-                              })()}
-                            </h3>
-                            <p className='text-xs text-gray-500 dark:text-gray-400 line-clamp-2'>
-                              {(() => {
-                                const key = `example_${example.id}_desc`;
-                                const val = t(key) as string;
-                                return val && val !== key ? val : example.description;
-                              })()}
-                            </p>
+                          <div className='absolute top-6 right-4 opacity-0 group-hover:opacity-100 transition-opacity'>
+                            <RightOutlined className='text-xs text-gray-400' />
                           </div>
-                        </div>
-                        <div className='absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity'>
-                          <RightOutlined className='text-xs text-gray-400' />
                         </div>
                       </div>
                     ))}
