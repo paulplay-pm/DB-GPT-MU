@@ -2853,7 +2853,7 @@ const Playground: NextPage = () => {
                     </span>
                     <div className='h-px flex-1 bg-gradient-to-l from-transparent to-gray-200 dark:to-gray-700' />
                   </div>
-                  <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+                  <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
                     {EXAMPLE_CARDS.map(example => (
                       <div
                         key={example.id}
