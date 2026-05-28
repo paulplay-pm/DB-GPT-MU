@@ -47,16 +47,18 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
 
   // Sync theme state with actual body class on mount and when body class changes
   useEffect(() => {
-    const syncTheme = () => {
+    // Read current theme from body class
+    const getCurrentTheme = () => {
       const body = document.body;
-      const isDark = body.classList.contains('dark');
-      const isLight = body.classList.contains('light');
-      // Only update if body class doesn't match our state
-      if (isDark && theme !== 'dark') {
-        setTheme('dark');
-      } else if (isLight && theme !== 'light') {
-        setTheme('light');
-      }
+      if (body.classList.contains('dark') && !body.classList.contains('light')) return 'dark';
+      if (body.classList.contains('light') && !body.classList.contains('dark')) return 'light';
+      return localStorage.getItem(STORAGE_THEME_KEY) || 'light';
+    };
+
+    const syncTheme = () => {
+      const currentTheme = getCurrentTheme();
+      setTheme(currentTheme);
+      localStorage.setItem(STORAGE_THEME_KEY, currentTheme);
     };
 
     // Initial sync
@@ -66,23 +68,30 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
     const observer = new MutationObserver(syncTheme);
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     return () => observer.disconnect();
-  }, [theme]);
+  }, []);
 
   // Sync lang state with i18n events
   useEffect(() => {
     const handleLanguageChange = () => {
       const currentLang = i18n.language?.startsWith('en') ? 'en' : 'zh';
-      if (lang !== currentLang) {
-        setLang(currentLang);
+      const storedLang = localStorage.getItem(STORAGE_LANG_KEY) || 'zh';
+      // Sync localStorage if needed
+      if (storedLang !== currentLang) {
+        localStorage.setItem(STORAGE_LANG_KEY, currentLang);
       }
+      // Only update state if different (avoid infinite loop)
+      setLang(currentLang);
     };
+
+    // Initial sync
+    handleLanguageChange();
 
     // Listen for language changes
     i18n.on('languageChanged', handleLanguageChange);
     return () => {
       i18n.off('languageChanged', handleLanguageChange);
     };
-  }, [i18n, lang]);
+  }, [i18n]);
 
   // Load user info
   useEffect(() => {
