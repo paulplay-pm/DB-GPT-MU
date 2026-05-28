@@ -77,7 +77,7 @@ body {
 
 /* Unselected tab text - dark mode */
 .dark .ant-tabs-tab:not(.ant-tabs-tab-active) .ant-tabs-tab-btn {
-  color: #a0a0a0;
+  color: var(--text-secondary);
 }
 
 /* Tab hover */
