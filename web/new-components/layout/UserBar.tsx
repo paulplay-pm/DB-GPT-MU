@@ -122,7 +122,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
           <span className='text-sm'>语言</span>
           <div className='flex gap-1'>
             <button
-              className={`px-2 py-0.5 text-xs rounded ${lang === 'zh' ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              className={`px-2 py-0.5 text-xs rounded ${lang === 'zh' ? 'bg-primary text-white' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-primary)]'}`}
               onClick={e => {
                 e.stopPropagation();
                 setLang('zh');
@@ -133,7 +133,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
               中文
             </button>
             <button
-              className={`px-2 py-0.5 text-xs rounded ${lang === 'en' ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              className={`px-2 py-0.5 text-xs rounded ${lang === 'en' ? 'bg-primary text-white' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-primary)]'}`}
               onClick={e => {
                 e.stopPropagation();
                 setLang('en');
@@ -154,7 +154,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
           <span className='text-sm'>主题</span>
           <div className='flex gap-1'>
             <button
-              className={`px-2 py-0.5 text-xs rounded ${theme === 'light' ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              className={`px-2 py-0.5 text-xs rounded ${theme === 'light' ? 'bg-primary text-white' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-primary)]'}`}
               onClick={e => {
                 e.stopPropagation();
                 setTheme('light');
@@ -166,7 +166,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
               浅色
             </button>
             <button
-              className={`px-2 py-0.5 text-xs rounded ${theme === 'dark' ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'}`}
+              className={`px-2 py-0.5 text-xs rounded ${theme === 'dark' ? 'bg-primary text-white' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-primary)]'}`}
               onClick={e => {
                 e.stopPropagation();
                 setTheme('dark');
@@ -220,8 +220,8 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
           position: 'absolute',
           bottom: '100%',
           left: 0,
-          background: 'white',
-          border: '1px solid #ddd',
+          background: 'var(--bg-secondary)',
+          border: '1px solid var(--border-color)',
           borderRadius: 4,
           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
           zIndex: 1000,
