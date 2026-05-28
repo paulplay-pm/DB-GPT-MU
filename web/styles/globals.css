@@ -93,6 +93,24 @@ body {
   height: 36px;
 }
 
+/* Knowledge modal dark mode */
+.dark .ant-modal-content {
+  background-color: var(--bg-secondary) !important;
+}
+
+.dark .ant-modal-header {
+  background-color: var(--bg-secondary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.dark .ant-modal-footer {
+  border-top: 1px solid var(--border-color) !important;
+}
+
+.dark .ant-modal-body {
+  background-color: var(--bg-secondary) !important;
+}
+
 @keyframes rotate {
   to {
     transform: rotate(360deg);
