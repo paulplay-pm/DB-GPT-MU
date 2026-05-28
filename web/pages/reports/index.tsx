@@ -8,6 +8,7 @@ import { DeleteOutlined, MessageOutlined, SearchOutlined } from '@ant-design/ico
 import { useRequest } from 'ahooks';
 import { Empty, Input, Pagination, Popconfirm, Spin, Tabs, Tooltip, message } from 'antd';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -61,6 +62,7 @@ function ConversationsTab({
   searchKeyword: string;
   onSearchChange: (val: string) => void;
 }) {
+  const router = useRouter();
   const [list, setList] = useState<IChatDialogueSchema[]>([]);
   const totalRef = useRef<{ current_page: number; total_count: number; total_pages: number }>();
 
@@ -146,6 +148,7 @@ function ConversationsTab({
               {filteredList.map(conv => (
                 <div
                   key={conv.conv_uid}
+                  onClick={() => router.push(`/?id=${conv.conv_uid}&parent=reports`)}
                   className='group flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-colors hover:bg-white dark:hover:bg-gray-800 hover:shadow-sm border border-transparent hover:border-[var(--border-color)] dark:hover:border-gray-700'
                 >
                   <div className='flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-[var(--bg-tertiary)]'>
