@@ -261,6 +261,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       {triggerArea}
       <div
         id='user-dropdown-menu'
+        key={`dropdown-${theme}`}
         style={{
           position: 'absolute',
           bottom: '100%',
