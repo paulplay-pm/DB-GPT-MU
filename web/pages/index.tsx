@@ -2843,12 +2843,12 @@ const Playground: NextPage = () => {
             // Welcome Mode: Display Hero Section
             <div className='flex-1 flex flex-col items-center px-6 py-8 pb-20 overflow-y-auto'>
               <div className='w-full max-w-[860px] flex flex-col items-center animate-fade-in-up'>
-                <h2 className='text-2xl md:text-3xl font-medium text-gray-700 dark:text-gray-200 mb-6 text-center'>
+                <h2 className='text-2xl md:text-3xl font-medium text-gray-700 dark:text-gray-200 mb-4 text-center'>
                   {t('home_slogan')}
                 </h2>
 
-                <div className='w-full'>
-                  <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
+                <div className='w-full mb-6'>
+                  <div className='grid grid-cols-2 lg:grid-cols-4 gap-3'>
                     {EXAMPLE_CARDS.map(example => (
                       <div
                         key={example.id}
