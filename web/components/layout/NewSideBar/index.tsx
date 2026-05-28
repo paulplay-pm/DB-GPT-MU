@@ -20,7 +20,7 @@ import {
   UserAddOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Badge } from 'antd';
+import { Badge, Tooltip } from 'antd';
 import cls from 'classnames';
 import { useRouter } from 'next/router';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
@@ -255,43 +255,44 @@ export default function NewSideBar() {
                   const isActive = isItemActive(item.path);
 
                   return (
-                    <div
-                      key={item.key}
-                      className={cls(
-                        'relative flex items-center justify-center h-12 cursor-pointer transition-all duration-200',
-                        'hover:bg-[var(--hover-bg)]',
-                        {
-                          'bg-[var(--bg-tertiary)]': isActive,
-                        },
-                      )}
-                      onClick={() => handleNavigate(item.path)}
-                    >
-                      {/* Active indicator */}
-                      {isActive && (
-                        <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-primary rounded-r' />
-                      )}
-
-                      <span
+                    <Tooltip key={item.key} title={t(item.label)} placement='right'>
+                      <div
                         className={cls(
-                          'text-xl transition-colors duration-200',
-                          isActive ? 'text-primary' : 'text-[var(--text-secondary)]',
+                          'relative flex items-center justify-center h-12 cursor-pointer transition-all duration-200',
+                          'hover:bg-[var(--hover-bg)]',
+                          {
+                            'bg-[var(--bg-tertiary)]': isActive,
+                          },
                         )}
+                        onClick={() => handleNavigate(item.path)}
                       >
-                        {icon}
-                      </span>
+                        {/* Active indicator */}
+                        {isActive && (
+                          <div className='absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-primary rounded-r' />
+                        )}
 
-                      {/* Badge */}
-                      {item.key === 'registration' && pendingCount > 0 && (
-                        <Badge
-                          count={pendingCount}
-                          style={{
-                            position: 'absolute',
-                            top: 4,
-                            right: 4,
-                          }}
-                        />
-                      )}
-                    </div>
+                        <span
+                          className={cls(
+                            'text-xl transition-colors duration-200',
+                            isActive ? 'text-primary' : 'text-[var(--text-secondary)]',
+                          )}
+                        >
+                          {icon}
+                        </span>
+
+                        {/* Badge */}
+                        {item.key === 'registration' && pendingCount > 0 && (
+                          <Badge
+                            count={pendingCount}
+                            style={{
+                              position: 'absolute',
+                              top: 4,
+                              right: 4,
+                            }}
+                          />
+                        )}
+                      </div>
+                    </Tooltip>
                   );
                 })}
               </div>
@@ -302,12 +303,15 @@ export default function NewSideBar() {
         {/* UserBar and toggle */}
         <div className='p-2 border-t border-[var(--border-color)]'>
           <div className='flex items-center justify-center mb-2'>
-            <div
-              className='flex items-center justify-center w-8 h-8 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded transition-colors'
-              onClick={handleToggleCollapse}
-            >
-              <AppstoreOutlined />
-            </div>
+            {/* Toggle button with tooltip */}
+            <Tooltip title={t('expand_sidebar')} placement='right'>
+              <div
+                className='flex items-center justify-center w-8 h-8 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded transition-colors'
+                onClick={handleToggleCollapse}
+              >
+                <AppstoreOutlined />
+              </div>
+            </Tooltip>
           </div>
           <div className='flex justify-center'>
             <UserBar onlyAvatar />
@@ -327,12 +331,14 @@ export default function NewSideBar() {
           </div>
           <span className='font-semibold text-[var(--text-primary)]'>DB-GPT</span>
         </div>
-        <div
-          className='flex items-center justify-center w-7 h-7 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)] rounded transition-colors'
-          onClick={handleToggleCollapse}
-        >
-          <AppstoreOutlined style={{ fontSize: 14 }} />
-        </div>
+        <Tooltip title={t('collapse_sidebar')} placement='bottom'>
+          <div
+            className='flex items-center justify-center w-7 h-7 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)] rounded transition-colors'
+            onClick={handleToggleCollapse}
+          >
+            <AppstoreOutlined style={{ fontSize: 14 }} />
+          </div>
+        </Tooltip>
       </div>
 
       {/* Navigation groups */}
