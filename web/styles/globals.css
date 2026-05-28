@@ -124,6 +124,35 @@ body {
   color: var(--text-primary) !important;
 }
 
+/* Table dark mode */
+.dark .ant-table {
+  background-color: var(--bg-secondary) !important;
+}
+
+.dark .ant-table-thead > tr > th {
+  background-color: var(--bg-tertiary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .ant-table-tbody > tr > td {
+  background-color: var(--bg-secondary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .ant-table-tbody > tr:hover > td {
+  background-color: var(--hover-bg) !important;
+}
+
+.dark .ant-table-wrapper .ant-table-pagination {
+  background-color: transparent;
+}
+
+.dark .ant-empty-description {
+  color: var(--text-secondary);
+}
+
 @keyframes rotate {
   to {
     transform: rotate(360deg);
