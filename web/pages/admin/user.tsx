@@ -28,7 +28,7 @@ export default function UserManagementPage() {
   const [deptTree, setDeptTree] = useState<DeptTreeNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalTitle, setModalTitle] = useState('新增用户');
+  const [modalTitle, setModalTitle] = useState(t('Add_User'));
   const [editingUser, setEditingUser] = useState<UserResponse | null>(null);
   const [form] = Form.useForm();
   const [roleSelectOpen, setRoleSelectOpen] = useState(false);
