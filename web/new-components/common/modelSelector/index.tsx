@@ -28,7 +28,11 @@ export function renderModelIcon(model?: string, props?: { width: number; height:
   );
 }
 
-const ModelSelector: React.FC = () => {
+interface ModelSelectorProps {
+  onChange?: (val: string) => void;
+}
+
+const ModelSelector: React.FC<ModelSelectorProps> = ({ onChange }) => {
   const { t } = useTranslation();
   const { model, setModel } = useContext(ChatContext);
 
@@ -45,6 +49,13 @@ const ModelSelector: React.FC = () => {
     return null;
   }
 
+  const handleChange = (val: string) => {
+    if (onChange) {
+      onChange(val);
+    }
+    setModel(val);
+  };
+
   return (
     <div className={styles['cus-selector']}>
       <Select
@@ -52,12 +63,10 @@ const ModelSelector: React.FC = () => {
         placeholder={t('choose_model')}
         className='w-48 h-8 rounded-3xl'
         suffixIcon={<CaretDownOutlined className='text-sm text-[#000000]' />}
-        onChange={val => {
-          setModel(val);
-        }}
+        onChange={handleChange}
       >
         {modelList.map(item => (
-          <Select.Option key={item}>
+          <Select.Option key={item} value={item}>
             <div className='flex items-center'>
               {renderModelIcon(item)}
               <span className='ml-2'>{MODEL_ICON_MAP[item]?.label || item}</span>

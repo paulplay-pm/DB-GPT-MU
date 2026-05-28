@@ -44,7 +44,7 @@ import {
   UploadOutlined,
 } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
-import { Button, ConfigProvider, Dropdown, Input, List, Modal, Popover, Tag, Tooltip, Upload, message } from 'antd';
+import { Button, ConfigProvider, Dropdown, Input, Popover, Tag, Tooltip, Upload, message } from 'antd';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
@@ -496,6 +496,8 @@ const Playground: NextPage = () => {
   // Selection State
   const [isDbModalOpen, setIsDbModalOpen] = useState(false);
   const [isKnowledgeModalOpen, setIsKnowledgeModalOpen] = useState(false);
+  const [dbSearchQuery, setDbSearchQuery] = useState('');
+  const [knowledgeSearchQuery, setKnowledgeSearchQuery] = useState('');
 
   // Contexts
   const [selectedDb, setSelectedDb] = useState<DataSource | null>(null);
@@ -2473,7 +2475,7 @@ const Playground: NextPage = () => {
                               'Ask a question about your database, upload a CSV, or generate a report...'
                             }
                             autoSize={{ minRows: 2, maxRows: 6 }}
-                            className='flex-1 resize-none !border-none !shadow-none !bg-transparent px-0 py-2'
+                            className='flex-1 resize-none !border-none !shadow-none !bg-transparent px-0 py-2 dark:text-white'
                             style={{ backgroundColor: 'transparent' }}
                           />
 
@@ -2835,344 +2837,494 @@ const Playground: NextPage = () => {
             </div>
           ) : (
             // Welcome Mode: Display Hero Section
-            <div className='flex-1 flex flex-col items-center px-6 py-8 pb-20 overflow-y-auto justify-between'>
-              <div className='w-full max-w-[860px] flex flex-col items-center animate-fade-in-up flex-1 justify-center'>
+            <div className='flex-1 flex flex-col items-center px-6 py-8 overflow-y-auto'>
+              {/* Slogan Section - centered in the available space */}
+              <div className='flex-1 flex flex-col items-center justify-center py-8'>
                 <h2 className='text-2xl md:text-3xl font-medium text-gray-700 dark:text-gray-200 mb-3 text-center'>
                   {t('home_slogan')}
                 </h2>
+              </div>
 
-                <div className='w-full mb-6'>
-                  <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
-                    {EXAMPLE_CARDS.map(example => (
-                      <div
-                        key={example.id}
-                        onClick={() => handleExampleClick(example)}
-                        className='group relative rounded-2xl overflow-hidden bg-white border border-gray-100 dark:border-gray-800 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-300'
-                      >
-                        {/* 渐变色条 */}
-                        <div className={`h-2 w-full bg-gradient-to-r ${example.gradientColors}`} />
-                        {/* 卡片内容 */}
-                        <div className='p-4'>
-                          <div className='flex items-start gap-3'>
-                            <div
-                              className={`w-10 h-10 ${example.iconBg} rounded-xl flex items-center justify-center text-xl flex-shrink-0`}
-                            >
-                              {example.icon}
-                            </div>
-                            <div className='flex-1 min-w-0'>
-                              <h3 className='text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                                {(() => {
-                                  const key = `example_${example.id}_title`;
-                                  const val = t(key) as string;
-                                  return val && val !== key ? val : example.title;
-                                })()}
-                              </h3>
-                              <p className='text-xs text-gray-500 dark:text-gray-400 line-clamp-2'>
-                                {(() => {
-                                  const key = `example_${example.id}_desc`;
-                                  const val = t(key) as string;
-                                  return val && val !== key ? val : example.description;
-                                })()}
-                              </p>
-                            </div>
+              {/* Example Cards - positioned above the input box */}
+              <div className='w-full max-w-[860px] mb-4'>
+                <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
+                  {EXAMPLE_CARDS.map(example => (
+                    <div
+                      key={example.id}
+                      onClick={() => handleExampleClick(example)}
+                      className='group relative rounded-2xl overflow-hidden bg-white border border-gray-100 dark:border-gray-800 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-300'
+                    >
+                      {/* 渐变色条 */}
+                      <div className={`h-2 w-full bg-gradient-to-r ${example.gradientColors}`} />
+                      {/* 卡片内容 */}
+                      <div className='p-4'>
+                        <div className='flex items-start gap-3'>
+                          <div
+                            className={`w-10 h-10 ${example.iconBg} rounded-xl flex items-center justify-center text-xl flex-shrink-0`}
+                          >
+                            {example.icon}
                           </div>
-                          <div className='absolute top-6 right-4 opacity-0 group-hover:opacity-100 transition-opacity'>
-                            <RightOutlined className='text-xs text-gray-400' />
+                          <div className='flex-1 min-w-0'>
+                            <h3 className='text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                              {(() => {
+                                const key = `example_${example.id}_title`;
+                                const val = t(key) as string;
+                                return val && val !== key ? val : example.title;
+                              })()}
+                            </h3>
+                            <p className='text-xs text-gray-500 dark:text-gray-400 line-clamp-2'>
+                              {(() => {
+                                const key = `example_${example.id}_desc`;
+                                const val = t(key) as string;
+                                return val && val !== key ? val : example.description;
+                              })()}
+                            </p>
                           </div>
+                        </div>
+                        <div className='absolute top-6 right-4 opacity-0 group-hover:opacity-100 transition-opacity'>
+                          <RightOutlined className='text-xs text-gray-400' />
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
+              </div>
 
-                {/* Input Box Container */}
-                <div className='w-full relative'>
-                  {/* Outer Frame */}
-                  <div className='w-full relative transition-all duration-300 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-[#1e1f24] shadow-sm hover:shadow-md'>
-                    {/* Inner Box */}
-                    <div className='p-3 relative z-10'>
-                      {/* Uploaded File, Database, Knowledge Tags */}
-                      {(uploadedFile || selectedDb || selectedKnowledge) && (
-                        <div className='flex flex-wrap gap-2 mb-2'>
-                          {uploadedFile && (
-                            <Tag
-                              closable
-                              onClose={() => setUploadedFile(null)}
-                              className='flex items-center gap-1 bg-green-50 border-green-200 text-green-700 px-3 py-1 rounded-full'
-                            >
-                              <FileExcelOutlined /> <span className='font-medium ml-1'>{uploadedFile.name}</span>
-                            </Tag>
-                          )}
-                          {selectedDb && (
-                            <Tag
-                              closable
-                              onClose={() => setSelectedDb(null)}
-                              className='flex items-center gap-1 bg-blue-50 border-blue-200 text-blue-700 px-3 py-1 rounded-full'
-                            >
-                              {getDbIcon(selectedDb.type)}{' '}
-                              <span className='font-medium ml-1'>{selectedDb.db_name}</span>
-                            </Tag>
-                          )}
-                          {selectedKnowledge && (
-                            <Tag
-                              closable
-                              onClose={() => setSelectedKnowledge(null)}
-                              className='flex items-center gap-1 bg-orange-50 border-orange-200 text-orange-700 px-3 py-1 rounded-full'
-                            >
-                              <BookOutlined /> <span className='font-medium ml-1'>{selectedKnowledge.name}</span>
-                            </Tag>
-                          )}
-                        </div>
-                      )}
-
-                      <Input.TextArea
-                        value={query}
-                        onChange={e => {
-                          const newValue = e.target.value;
-                          setQuery(newValue);
-                          if (newValue === '/' && !isSkillPanelOpen && !selectedSkill) {
-                            setIsSkillPanelOpen(true);
-                          }
-                        }}
-                        onPressEnter={e => {
-                          if (!e.shiftKey) {
-                            e.preventDefault();
-                            handleStart();
-                          }
-                        }}
-                        placeholder={
-                          t('ask_data_question') ||
-                          'Ask a question about your database, upload a CSV, or generate a report...'
-                        }
-                        autoSize={{ minRows: 3, maxRows: 8 }}
-                        className='text-lg resize-none !border-none !shadow-none !bg-transparent px-2 py-2 mb-2'
-                        style={{ backgroundColor: 'transparent' }}
-                      />
-
-                      {/* Input Toolbar */}
-                      <div className='flex items-center justify-between px-1 mt-1'>
-                        <div className='flex items-center gap-4'>
-                          {/* Add Button with Dropdown Menu */}
-                          <Dropdown
-                            menu={{
-                              items: [
-                                {
-                                  key: 'upload',
-                                  label: (
-                                    <Upload {...uploadProps}>
-                                      <div className='w-full'>{t('add_from_local')}</div>
-                                    </Upload>
-                                  ),
-                                  icon: <PaperClipOutlined />,
-                                },
-                                {
-                                  key: 'skill',
-                                  label: t('use_skill'),
-                                  icon: <ThunderboltOutlined />,
-                                  onClick: () => setIsSkillPanelOpen(true),
-                                },
-                                {
-                                  key: 'knowledge',
-                                  label: t('use_knowledge'),
-                                  icon: <BookOutlined />,
-                                  onClick: () => setIsKnowledgeModalOpen(true),
-                                },
-                                {
-                                  key: 'database',
-                                  label: t('use_database'),
-                                  icon: <DatabaseOutlined />,
-                                  onClick: () => setIsDbModalOpen(true),
-                                },
-                              ],
-                            }}
-                            trigger={['click']}
+              {/* Input Box Container - fixed at bottom */}
+              <div className='w-full max-w-[860px] sticky bottom-0 pb-6'>
+                {/* Outer Frame */}
+                <div className='w-full relative transition-all duration-300 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-[#1e1f24] shadow-sm hover:shadow-md'>
+                  {/* Inner Box */}
+                  <div className='p-3 relative z-10'>
+                    {/* Uploaded File, Database, Knowledge Tags */}
+                    {(uploadedFile || selectedDb || selectedKnowledge) && (
+                      <div className='flex flex-wrap gap-2 mb-2'>
+                        {uploadedFile && (
+                          <Tag
+                            closable
+                            onClose={() => setUploadedFile(null)}
+                            className='flex items-center gap-1 bg-green-50 border-green-200 text-green-700 px-3 py-1 rounded-full'
                           >
-                            <Tooltip title={t('add_context')}>
-                              <Button
-                                type='text'
-                                shape='circle'
-                                size='small'
-                                icon={<PlusOutlined />}
-                                className='flex items-center justify-center text-gray-500 hover:text-violet-600 bg-gradient-to-b from-white to-gray-50 dark:from-[#2a2b2f] dark:to-[#1e1f24] dark:text-gray-300 border border-gray-200/80 dark:border-white/10 shadow-[0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] hover:-translate-y-[0.5px] hover:shadow-[0_2px_4px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] dark:hover:border-white/20 transition-all flex-shrink-0'
-                              />
-                            </Tooltip>
-                          </Dropdown>
+                            <FileExcelOutlined /> <span className='font-medium ml-1'>{uploadedFile.name}</span>
+                          </Tag>
+                        )}
+                        {selectedDb && (
+                          <Tag
+                            closable
+                            onClose={() => setSelectedDb(null)}
+                            className='flex items-center gap-1 bg-blue-50 border-blue-200 text-blue-700 px-3 py-1 rounded-full'
+                          >
+                            {getDbIcon(selectedDb.type)}
+                            <span className='font-medium ml-1'>{selectedDb.db_name}</span>
+                          </Tag>
+                        )}
+                        {selectedKnowledge && (
+                          <Tag
+                            closable
+                            onClose={() => setSelectedKnowledge(null)}
+                            className='flex items-center gap-1 bg-orange-50 border-orange-200 text-orange-700 px-3 py-1 rounded-full'
+                          >
+                            <BookOutlined /> <span className='font-medium ml-1'>{selectedKnowledge.name}</span>
+                          </Tag>
+                        )}
+                      </div>
+                    )}
 
-                          {/* Skill Selector Popover */}
-                          <Popover
-                            trigger='click'
-                            placement='topLeft'
-                            open={isSkillPanelOpen}
-                            onOpenChange={setIsSkillPanelOpen}
-                            overlayClassName='manus-skill-menu'
-                            overlayInnerStyle={{ padding: 0, borderRadius: 12 }}
-                            content={
-                              <div className='w-[320px] bg-white dark:bg-[#2c2d31] rounded-xl shadow-xl overflow-hidden'>
-                                <div className='p-3 border-b border-gray-100 dark:border-gray-700'>
-                                  <Input
-                                    placeholder={t('search_skill')}
-                                    prefix={<SearchOutlined className='text-gray-400' />}
-                                    value={skillSearchQuery}
-                                    onChange={e => setSkillSearchQuery(e.target.value)}
-                                    className='rounded-lg'
-                                    allowClear
-                                    size='small'
-                                  />
-                                </div>
-                                <div className='max-h-[300px] overflow-y-auto'>
-                                  {(skillsList || [])
-                                    .filter(
-                                      skill =>
-                                        !skillSearchQuery ||
-                                        skill.name.toLowerCase().includes(skillSearchQuery.toLowerCase()) ||
-                                        skill.description.toLowerCase().includes(skillSearchQuery.toLowerCase()),
-                                    )
-                                    .map(skill => (
-                                      <div
-                                        key={skill.id}
-                                        onClick={() => {
-                                          if (selectedSkill?.id === skill.id) {
-                                            setSelectedSkill(null);
-                                            setQuery('');
-                                          } else {
-                                            setSelectedSkill(skill);
-                                            setQuery(`/${skill.name} `);
-                                          }
-                                          setIsSkillPanelOpen(false);
-                                          setSkillSearchQuery('');
-                                        }}
-                                        className={`flex items-start gap-3 px-3 py-2.5 cursor-pointer transition-all hover:bg-gray-50 dark:hover:bg-gray-800 ${
-                                          selectedSkill?.id === skill.id ? 'bg-purple-50 dark:bg-purple-900/20' : ''
-                                        }`}
-                                      >
-                                        <div className='flex-shrink-0 w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-xs'>
-                                          {skill.icon || <ThunderboltOutlined />}
-                                        </div>
-                                        <div className='flex-1 min-w-0'>
-                                          <div className='flex items-center gap-2'>
-                                            <span className='font-medium text-sm text-gray-800 dark:text-gray-200'>
-                                              {skill.name}
-                                            </span>
-                                            <span
-                                              className={`text-[10px] px-1.5 py-0.5 rounded ${
-                                                skill.type === 'official'
-                                                  ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
-                                                  : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'
-                                              }`}
-                                            >
-                                              {skill.type === 'official' ? '官方' : '个人'}
-                                            </span>
-                                          </div>
-                                          <p className='text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2'>
-                                            {skill.description}
-                                          </p>
-                                        </div>
-                                        {selectedSkill?.id === skill.id && (
-                                          <CheckCircleFilled className='text-purple-500 flex-shrink-0 text-sm' />
-                                        )}
-                                      </div>
-                                    ))}
-                                  {(skillsList || []).filter(
+                    <Input.TextArea
+                      value={query}
+                      onChange={e => {
+                        const newValue = e.target.value;
+                        setQuery(newValue);
+                        if (newValue === '/' && !isSkillPanelOpen && !selectedSkill) {
+                          setIsSkillPanelOpen(true);
+                        }
+                      }}
+                      onPressEnter={e => {
+                        if (!e.shiftKey) {
+                          e.preventDefault();
+                          handleStart();
+                        }
+                      }}
+                      placeholder={
+                        t('ask_data_question') ||
+                        'Ask a question about your database, upload a CSV, or generate a report...'
+                      }
+                      autoSize={{ minRows: 3, maxRows: 8 }}
+                      className='text-lg resize-none !border-none !shadow-none !bg-transparent px-2 py-2 mb-2 dark:text-white'
+                      style={{ backgroundColor: 'transparent' }}
+                    />
+
+                    {/* Input Toolbar */}
+                    <div className='flex items-center justify-between px-1 mt-1'>
+                      <div className='flex items-center gap-4'>
+                        {/* Add Button with Dropdown Menu */}
+                        <Dropdown
+                          menu={{
+                            items: [
+                              {
+                                key: 'upload',
+                                label: (
+                                  <Upload {...uploadProps}>
+                                    <div className='w-full'>{t('add_from_local')}</div>
+                                  </Upload>
+                                ),
+                                icon: <PaperClipOutlined />,
+                              },
+                              {
+                                key: 'skill',
+                                label: t('use_skill'),
+                                icon: <ThunderboltOutlined />,
+                                onClick: () => setIsSkillPanelOpen(true),
+                              },
+                              {
+                                key: 'knowledge',
+                                label: t('use_knowledge'),
+                                icon: <BookOutlined />,
+                                onClick: () => setIsKnowledgeModalOpen(true),
+                              },
+                              {
+                                key: 'database',
+                                label: t('use_database'),
+                                icon: <DatabaseOutlined />,
+                                onClick: () => setIsDbModalOpen(true),
+                              },
+                            ],
+                          }}
+                          trigger={['click']}
+                        >
+                          <Tooltip title={t('add_context')}>
+                            <Button
+                              type='text'
+                              shape='circle'
+                              size='small'
+                              icon={<PlusOutlined />}
+                              className='flex items-center justify-center text-gray-500 hover:text-violet-600 bg-gradient-to-b from-white to-gray-50 dark:from-[#2a2b2f] dark:to-[#1e1f24] dark:text-gray-300 border border-gray-200/80 dark:border-white/10 shadow-[0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] hover:-translate-y-[0.5px] hover:shadow-[0_2px_4px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] dark:hover:border-white/20 transition-all flex-shrink-0'
+                            />
+                          </Tooltip>
+                        </Dropdown>
+
+                        {/* Skill Selector Popover */}
+                        <Popover
+                          trigger='click'
+                          placement='topLeft'
+                          open={isSkillPanelOpen}
+                          onOpenChange={setIsSkillPanelOpen}
+                          overlayClassName='manus-skill-menu'
+                          overlayInnerStyle={{ padding: 0, borderRadius: 12 }}
+                          content={
+                            <div className='w-[320px] bg-white dark:bg-[#2c2d31] rounded-xl shadow-xl overflow-hidden'>
+                              <div className='p-3 border-b border-gray-100 dark:border-gray-700'>
+                                <Input
+                                  placeholder={t('search_skill')}
+                                  prefix={<SearchOutlined className='text-gray-400' />}
+                                  value={skillSearchQuery}
+                                  onChange={e => setSkillSearchQuery(e.target.value)}
+                                  className='rounded-lg'
+                                  allowClear
+                                  size='small'
+                                />
+                              </div>
+                              <div className='max-h-[300px] overflow-y-auto'>
+                                {(skillsList || [])
+                                  .filter(
                                     skill =>
                                       !skillSearchQuery ||
                                       skill.name.toLowerCase().includes(skillSearchQuery.toLowerCase()) ||
                                       skill.description.toLowerCase().includes(skillSearchQuery.toLowerCase()),
-                                  ).length === 0 && (
-                                    <div className='text-center py-8 text-gray-400'>
-                                      <ThunderboltOutlined className='text-2xl mb-2 opacity-50' />
-                                      <div className='text-xs'>
-                                        {skillSearchQuery ? '未找到匹配的技能' : '暂无可用技能'}
+                                  )
+                                  .map(skill => (
+                                    <div
+                                      key={skill.id}
+                                      onClick={() => {
+                                        if (selectedSkill?.id === skill.id) {
+                                          setSelectedSkill(null);
+                                          setQuery('');
+                                        } else {
+                                          setSelectedSkill(skill);
+                                          setQuery(`/${skill.name} `);
+                                        }
+                                        setIsSkillPanelOpen(false);
+                                        setSkillSearchQuery('');
+                                      }}
+                                      className={`flex items-start gap-3 px-3 py-2.5 cursor-pointer transition-all hover:bg-gray-50 dark:hover:bg-gray-800 ${
+                                        selectedSkill?.id === skill.id ? 'bg-purple-50 dark:bg-purple-900/20' : ''
+                                      }`}
+                                    >
+                                      <div className='flex-shrink-0 w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-xs'>
+                                        {skill.icon || <ThunderboltOutlined />}
                                       </div>
+                                      <div className='flex-1 min-w-0'>
+                                        <div className='flex items-center gap-2'>
+                                          <span className='font-medium text-sm text-gray-800 dark:text-gray-200'>
+                                            {skill.name}
+                                          </span>
+                                          <span
+                                            className={`text-[10px] px-1.5 py-0.5 rounded ${
+                                              skill.type === 'official'
+                                                ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+                                                : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'
+                                            }`}
+                                          >
+                                            {skill.type === 'official' ? '官方' : '个人'}
+                                          </span>
+                                        </div>
+                                        <p className='text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2'>
+                                          {skill.description}
+                                        </p>
+                                      </div>
+                                      {selectedSkill?.id === skill.id && (
+                                        <CheckCircleFilled className='text-purple-500 flex-shrink-0 text-sm' />
+                                      )}
                                     </div>
-                                  )}
-                                </div>
-                                <div className='border-t border-gray-100 dark:border-gray-700 px-3 py-2 flex items-center justify-between bg-gray-50/50 dark:bg-gray-900/50'>
-                                  <span className='text-[10px] text-gray-400'>
-                                    {(skillsList || []).length} 个技能可用
-                                  </span>
-                                  <Button
-                                    type='link'
-                                    size='small'
-                                    onClick={() => {
-                                      router.push('/construct/skills');
-                                      setIsSkillPanelOpen(false);
-                                    }}
-                                    className='text-[10px] p-0 h-auto'
-                                  >
-                                    管理技能 →
-                                  </Button>
-                                </div>
+                                  ))}
+                                {(skillsList || []).filter(
+                                  skill =>
+                                    !skillSearchQuery ||
+                                    skill.name.toLowerCase().includes(skillSearchQuery.toLowerCase()) ||
+                                    skill.description.toLowerCase().includes(skillSearchQuery.toLowerCase()),
+                                ).length === 0 && (
+                                  <div className='text-center py-8 text-gray-400'>
+                                    <ThunderboltOutlined className='text-2xl mb-2 opacity-50' />
+                                    <div className='text-xs'>
+                                      {skillSearchQuery ? '未找到匹配的技能' : '暂无可用技能'}
+                                    </div>
+                                  </div>
+                                )}
                               </div>
+                              <div className='border-t border-gray-100 dark:border-gray-700 px-3 py-2 flex items-center justify-between bg-gray-50/50 dark:bg-gray-900/50'>
+                                <span className='text-[10px] text-gray-400'>
+                                  {(skillsList || []).length} 个技能可用
+                                </span>
+                                <Button
+                                  type='link'
+                                  size='small'
+                                  onClick={() => {
+                                    router.push('/construct/skills');
+                                    setIsSkillPanelOpen(false);
+                                  }}
+                                  className='text-[10px] p-0 h-auto'
+                                >
+                                  管理技能 →
+                                </Button>
+                              </div>
+                            </div>
+                          }
+                        >
+                          <Tooltip
+                            title={
+                              selectedSkill ? t('skill_selected', { name: selectedSkill.name }) : t('select_skill')
                             }
                           >
-                            <Tooltip
-                              title={
-                                selectedSkill ? t('skill_selected', { name: selectedSkill.name }) : t('select_skill')
-                              }
-                            >
-                              <Button
-                                type='text'
-                                shape='circle'
-                                size='small'
-                                icon={<ThunderboltOutlined />}
-                                className='flex items-center justify-center text-gray-500 hover:text-violet-600 bg-gradient-to-b from-white to-gray-50 dark:from-[#2a2b2f] dark:to-[#1e1f24] dark:text-gray-300 border border-gray-200/80 dark:border-white/10 shadow-[0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] hover:-translate-y-[0.5px] hover:shadow-[0_2px_4px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] dark:hover:border-white/20 transition-all flex-shrink-0'
-                              />
-                            </Tooltip>
-                          </Popover>
+                            <Button
+                              type='text'
+                              shape='circle'
+                              size='small'
+                              icon={<ThunderboltOutlined />}
+                              className='flex items-center justify-center text-gray-500 hover:text-violet-600 bg-gradient-to-b from-white to-gray-50 dark:from-[#2a2b2f] dark:to-[#1e1f24] dark:text-gray-300 border border-gray-200/80 dark:border-white/10 shadow-[0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] hover:-translate-y-[0.5px] hover:shadow-[0_2px_4px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] dark:hover:border-white/20 transition-all flex-shrink-0'
+                            />
+                          </Tooltip>
+                        </Popover>
 
-                          {/* Knowledge Base Button */}
+                        {/* Knowledge Base Button */}
+                        <Popover
+                          content={
+                            <div className='w-[320px] bg-white dark:bg-[#2c2d31] rounded-xl shadow-xl overflow-hidden'>
+                              <div className='p-3 border-b border-gray-100 dark:border-gray-700'>
+                                <Input.Search
+                                  placeholder='搜索知识库'
+                                  onChange={e => setKnowledgeSearchQuery(e.target.value)}
+                                  className='rounded-lg'
+                                  allowClear
+                                  size='small'
+                                />
+                              </div>
+                              <div className='max-h-[300px] overflow-y-auto'>
+                                {(knowledgeSpaces || [])
+                                  .filter(
+                                    item =>
+                                      !knowledgeSearchQuery ||
+                                      item.name.toLowerCase().includes(knowledgeSearchQuery.toLowerCase()),
+                                  )
+                                  .map((item: KnowledgeSpace) => (
+                                    <div
+                                      key={item.id}
+                                      onClick={() => {
+                                        setSelectedKnowledge(item);
+                                        setIsKnowledgeModalOpen(false);
+                                      }}
+                                      className={`flex items-start gap-3 px-3 py-2.5 cursor-pointer transition-all hover:bg-gray-50 dark:hover:bg-gray-800 ${selectedKnowledge?.id === item.id ? 'bg-orange-50 dark:bg-orange-900/20' : ''}`}
+                                    >
+                                      <div className='flex-shrink-0 w-7 h-7 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center'>
+                                        <ReadOutlined className='text-orange-500 text-xs' />
+                                      </div>
+                                      <div className='flex-1 min-w-0'>
+                                        <div className='font-medium text-sm text-gray-800 dark:text-gray-200'>
+                                          {item.name}
+                                        </div>
+                                        <p className='text-xs text-gray-500 dark:text-gray-400 mt-0.5'>
+                                          {item.vector_type}
+                                        </p>
+                                      </div>
+                                      {selectedKnowledge?.id === item.id && (
+                                        <CheckCircleFilled className='text-orange-500 flex-shrink-0 text-sm' />
+                                      )}
+                                    </div>
+                                  ))}
+                                {knowledgeSpaces?.length === 0 && (
+                                  <div className='text-center py-8 text-gray-400'>
+                                    <BookOutlined className='text-2xl mb-2 opacity-50' />
+                                    <div className='text-xs'>暂无知识库</div>
+                                  </div>
+                                )}
+                              </div>
+                              <div className='border-t border-gray-100 dark:border-gray-700 px-3 py-2 flex items-center justify-between bg-gray-50/50 dark:bg-gray-900/50'>
+                                <span className='text-[10px] text-gray-400'>
+                                  {knowledgeSpaces?.length || 0} 个知识库可用
+                                </span>
+                                <Button
+                                  type='link'
+                                  size='small'
+                                  onClick={() => {
+                                    setIsKnowledgeModalOpen(false);
+                                    router.push('/construct/knowledge');
+                                  }}
+                                  className='text-[10px] p-0 h-auto'
+                                >
+                                  管理知识库 →
+                                </Button>
+                              </div>
+                            </div>
+                          }
+                          trigger='click'
+                          open={isKnowledgeModalOpen}
+                          onOpenChange={setIsKnowledgeModalOpen}
+                          placement='topLeft'
+                          overlayInnerStyle={{ padding: 0, borderRadius: 12 }}
+                        >
                           <Tooltip title={t('use_knowledge')}>
                             <Button
                               type='text'
                               shape='circle'
                               size='small'
                               icon={<BookOutlined />}
-                              onClick={() => setIsKnowledgeModalOpen(true)}
                               className='flex items-center justify-center text-gray-500 hover:text-violet-600 bg-gradient-to-b from-white to-gray-50 dark:from-[#2a2b2f] dark:to-[#1e1f24] dark:text-gray-300 border border-gray-200/80 dark:border-white/10 shadow-[0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] hover:-translate-y-[0.5px] hover:shadow-[0_2px_4px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] dark:hover:border-white/20 transition-all flex-shrink-0'
                             />
                           </Tooltip>
+                        </Popover>
 
-                          {/* Database Button */}
+                        {/* Database Button */}
+                        <Popover
+                          content={
+                            <div className='w-[320px] bg-white dark:bg-[#2c2d31] rounded-xl shadow-xl overflow-hidden'>
+                              <div className='p-3 border-b border-gray-100 dark:border-gray-700'>
+                                <Input.Search
+                                  placeholder='搜索数据库'
+                                  onChange={e => setDbSearchQuery(e.target.value)}
+                                  className='rounded-lg'
+                                  allowClear
+                                  size='small'
+                                />
+                              </div>
+                              <div className='max-h-[300px] overflow-y-auto'>
+                                {(dataSources || [])
+                                  .filter(
+                                    item =>
+                                      !dbSearchQuery ||
+                                      item.db_name.toLowerCase().includes(dbSearchQuery.toLowerCase()),
+                                  )
+                                  .map((item: DataSource) => (
+                                    <div
+                                      key={item.id}
+                                      onClick={() => {
+                                        setSelectedDb(item);
+                                        setIsDbModalOpen(false);
+                                      }}
+                                      className={`flex items-start gap-3 px-3 py-2.5 cursor-pointer transition-all hover:bg-gray-50 dark:hover:bg-gray-800 ${selectedDb?.id === item.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
+                                    >
+                                      <div className='flex-shrink-0 w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center'>
+                                        {getDbIcon(item.type)}
+                                      </div>
+                                      <div className='flex-1 min-w-0'>
+                                        <div className='font-medium text-sm text-gray-800 dark:text-gray-200'>
+                                          {item.db_name}
+                                        </div>
+                                        <p className='text-xs text-gray-500 dark:text-gray-400 mt-0.5'>{item.type}</p>
+                                      </div>
+                                      {selectedDb?.id === item.id && (
+                                        <CheckCircleFilled className='text-blue-500 flex-shrink-0 text-sm' />
+                                      )}
+                                    </div>
+                                  ))}
+                                {dataSources?.length === 0 && (
+                                  <div className='text-center py-8 text-gray-400'>
+                                    <DatabaseOutlined className='text-2xl mb-2 opacity-50' />
+                                    <div className='text-xs'>暂无数据库</div>
+                                  </div>
+                                )}
+                              </div>
+                              <div className='border-t border-gray-100 dark:border-gray-700 px-3 py-2 flex items-center justify-between bg-gray-50/50 dark:bg-gray-900/50'>
+                                <span className='text-[10px] text-gray-400'>
+                                  {dataSources?.length || 0} 个数据库可用
+                                </span>
+                                <Button
+                                  type='link'
+                                  size='small'
+                                  onClick={() => {
+                                    setIsDbModalOpen(false);
+                                    router.push('/construct/database');
+                                  }}
+                                  className='text-[10px] p-0 h-auto'
+                                >
+                                  管理数据库 →
+                                </Button>
+                              </div>
+                            </div>
+                          }
+                          trigger='click'
+                          open={isDbModalOpen}
+                          onOpenChange={setIsDbModalOpen}
+                          placement='topLeft'
+                          overlayInnerStyle={{ padding: 0, borderRadius: 12 }}
+                        >
                           <Tooltip title={t('use_database')}>
                             <Button
                               type='text'
                               shape='circle'
                               size='small'
                               icon={<DatabaseOutlined />}
-                              onClick={() => setIsDbModalOpen(true)}
                               className='flex items-center justify-center text-gray-500 hover:text-violet-600 bg-gradient-to-b from-white to-gray-50 dark:from-[#2a2b2f] dark:to-[#1e1f24] dark:text-gray-300 border border-gray-200/80 dark:border-white/10 shadow-[0_1px_2px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] hover:-translate-y-[0.5px] hover:shadow-[0_2px_4px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] dark:hover:border-white/20 transition-all flex-shrink-0'
                             />
                           </Tooltip>
+                        </Popover>
 
-                          {/* Model Selector */}
-                          <ModelSelector />
+                        {/* Model Selector */}
+                        <ModelSelector />
+                      </div>
+
+                      <div className='flex items-center gap-3'>
+                        {/* Send Button */}
+                        <div
+                          onClick={() => handleStart()}
+                          className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
+                            (query.trim() || uploadedFile) && !loading
+                              ? 'bg-blue-500 hover:bg-blue-600 text-white cursor-pointer'
+                              : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                          }`}
+                        >
+                          <ArrowUpOutlined />
                         </div>
 
-                        <div className='flex items-center gap-3'>
-                          {/* Send Button */}
-                          <div
-                            onClick={() => handleStart()}
-                            className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
-                              (query.trim() || uploadedFile) && !loading
-                                ? 'bg-blue-500 hover:bg-blue-600 text-white cursor-pointer'
-                                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                            }`}
-                          >
-                            <ArrowUpOutlined />
-                          </div>
-
-                          {/* Voice Button */}
-                          <Tooltip title={t('voice_input')}>
-                            <Button
-                              type='text'
-                              shape='circle'
-                              size='large'
-                              icon={<AudioOutlined className='text-gray-500 text-xl' />}
-                              onClick={() => message.info(t('voice_input_coming_soon'))}
-                              className='flex-shrink-0 transition-all duration-200 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800'
-                            />
-                          </Tooltip>
-                        </div>
+                        {/* Voice Button */}
+                        <Tooltip title={t('voice_input')}>
+                          <Button
+                            type='text'
+                            shape='circle'
+                            size='large'
+                            icon={<AudioOutlined className='text-gray-500 text-xl' />}
+                            onClick={() => message.info(t('voice_input_coming_soon'))}
+                            className='flex-shrink-0 transition-all duration-200 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800'
+                          />
+                        </Tooltip>
                       </div>
                     </div>
                   </div>
@@ -3181,92 +3333,6 @@ const Playground: NextPage = () => {
             </div>
           )}
         </div>
-
-        {/* Database Selection Modal */}
-        <Modal
-          title={
-            <div className='flex items-center gap-2'>
-              <DatabaseOutlined />
-              Select Data Source
-            </div>
-          }
-          open={isDbModalOpen}
-          onCancel={() => setIsDbModalOpen(false)}
-          footer={null}
-          width={500}
-        >
-          <List
-            itemLayout='horizontal'
-            dataSource={dataSources || []}
-            renderItem={(item: DataSource) => (
-              <List.Item
-                className={`cursor-pointer hover:bg-gray-50 rounded-lg px-2 transition-colors ${selectedDb?.id === item.id ? 'bg-blue-50' : ''}`}
-                onClick={() => {
-                  setSelectedDb(item);
-                  setIsDbModalOpen(false);
-                }}
-                actions={[selectedDb?.id === item.id && <CheckCircleFilled className='text-blue-500' />]}
-              >
-                <List.Item.Meta
-                  avatar={<div className='mt-1 bg-gray-100 p-2 rounded-lg'>{getDbIcon(item.type)}</div>}
-                  title={item.db_name}
-                  description={<span className='text-xs text-gray-400'>{item.type}</span>}
-                />
-              </List.Item>
-            )}
-            locale={{ emptyText: 'No data sources found' }}
-          />
-          <div className='mt-4 pt-4 border-t border-gray-100 text-center'>
-            <Button type='dashed' block icon={<PlusOutlined />} onClick={() => router.push('/construct/database')}>
-              Add New Data Source
-            </Button>
-          </div>
-        </Modal>
-
-        {/* Knowledge Base Selection Modal */}
-        <Modal
-          title={
-            <div className='flex items-center gap-2'>
-              <BookOutlined />
-              Select Knowledge Base
-            </div>
-          }
-          open={isKnowledgeModalOpen}
-          onCancel={() => setIsKnowledgeModalOpen(false)}
-          footer={null}
-          width={500}
-        >
-          <List
-            itemLayout='horizontal'
-            dataSource={knowledgeSpaces || []}
-            renderItem={(item: KnowledgeSpace) => (
-              <List.Item
-                className={`cursor-pointer hover:bg-gray-50 rounded-lg px-2 transition-colors ${selectedKnowledge?.id === item.id ? 'bg-orange-50' : ''}`}
-                onClick={() => {
-                  setSelectedKnowledge(item);
-                  setIsKnowledgeModalOpen(false);
-                }}
-                actions={[selectedKnowledge?.id === item.id && <CheckCircleFilled className='text-orange-500' />]}
-              >
-                <List.Item.Meta
-                  avatar={
-                    <div className='mt-1 bg-gray-100 p-2 rounded-lg'>
-                      <ReadOutlined className='text-orange-500' />
-                    </div>
-                  }
-                  title={item.name}
-                  description={<span className='text-xs text-gray-400'>{item.vector_type}</span>}
-                />
-              </List.Item>
-            )}
-            locale={{ emptyText: 'No knowledge bases found' }}
-          />
-          <div className='mt-4 pt-4 border-t border-gray-100 text-center'>
-            <Button type='dashed' block icon={<PlusOutlined />} onClick={() => router.push('/construct/knowledge')}>
-              Add New Knowledge Base
-            </Button>
-          </div>
-        </Modal>
       </div>
     </ConfigProvider>
   );

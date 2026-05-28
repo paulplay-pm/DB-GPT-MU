@@ -39,6 +39,7 @@ interface IChatContext {
   setCurrentDialogInfo: (val: { chat_scene: string; app_code: string }) => void;
   adminList: UserInfoResponse[];
   refreshDialogList?: any;
+  refreshModelList?: () => void;
 }
 
 function getDefaultTheme(): ThemeMode {
@@ -73,6 +74,7 @@ const ChatContext = createContext<IChatContext>({
   setCurrentDialogInfo: () => {},
   adminList: [],
   refreshDialogList: () => {},
+  refreshModelList: () => {},
 });
 
 const ChatContextProvider = ({ children }: { children: React.ReactElement }) => {
@@ -97,7 +99,7 @@ const ChatContextProvider = ({ children }: { children: React.ReactElement }) => 
   });
 
   // 获取model
-  const { data: modelList = [] } = useRequest(async () => {
+  const { data: modelList = [], refresh: refreshModelList } = useRequest(async () => {
     const [, res] = await apiInterceptors(getUsableModels());
     return res ?? [];
   });
@@ -137,8 +139,11 @@ const ChatContextProvider = ({ children }: { children: React.ReactElement }) => 
   }, []);
 
   useEffect(() => {
-    setModel(modelList[0]);
-  }, [modelList, modelList?.length]);
+    // Only auto-set model when model is empty or current model is not in the list
+    if ((!model && modelList.length > 0) || (modelList.length > 0 && !modelList.includes(model))) {
+      setModel(modelList[0]);
+    }
+  }, [modelList]);
 
   const contextValue = {
     isContract,
@@ -163,6 +168,7 @@ const ChatContextProvider = ({ children }: { children: React.ReactElement }) => 
     currentDialogInfo,
     setCurrentDialogInfo,
     adminList,
+    refreshModelList,
   };
   return <ChatContext.Provider value={contextValue}>{children}</ChatContext.Provider>;
 };

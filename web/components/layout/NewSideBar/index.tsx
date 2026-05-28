@@ -237,11 +237,16 @@ export default function NewSideBar() {
   if (collapsed) {
     return (
       <div className='flex flex-col h-screen w-16 min-w-16 bg-[var(--bg-secondary)] border-r border-[var(--border-color)] transition-all duration-200'>
-        {/* Logo area */}
-        <div className='flex flex-col items-center justify-center h-16 border-b border-[var(--border-color)] gap-1'>
-          <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
-            <span className='text-white font-bold text-sm'>DB</span>
-          </div>
+        {/* Expand button area */}
+        <div className='flex items-center justify-center h-16 border-b border-[var(--border-color)]'>
+          <Tooltip title={t('expand_sidebar')} placement='right'>
+            <div
+              className='flex items-center justify-center w-8 h-8 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded transition-colors'
+              onClick={handleToggleCollapse}
+            >
+              <AppstoreOutlined />
+            </div>
+          </Tooltip>
         </div>
 
         {/* Collapsed nav items */}
@@ -302,19 +307,8 @@ export default function NewSideBar() {
           })}
         </div>
 
-        {/* UserBar and toggle */}
+        {/* UserBar */}
         <div className='p-2 border-t border-[var(--border-color)]'>
-          <div className='flex items-center justify-center mb-2'>
-            {/* Toggle button with tooltip */}
-            <Tooltip title={t('expand_sidebar')} placement='right'>
-              <div
-                className='flex items-center justify-center w-8 h-8 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded transition-colors'
-                onClick={handleToggleCollapse}
-              >
-                <AppstoreOutlined />
-              </div>
-            </Tooltip>
-          </div>
           <div className='flex justify-center'>
             <UserBar onlyAvatar />
           </div>

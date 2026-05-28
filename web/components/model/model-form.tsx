@@ -1,9 +1,10 @@
+import { ChatContext } from '@/app/chat-context';
 import { apiInterceptors, createModel, getSupportModels } from '@/client/api';
 import { renderModelIcon } from '@/components/chat/header/model-selector';
 import { ConfigurableParams } from '@/types/common';
 import { StartModelParams, SupportModel } from '@/types/model';
 import { AutoComplete, Button, Form, Select, Tooltip, message } from 'antd';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import ConfigurableForm from '../common/configurable-form';
@@ -16,6 +17,7 @@ const WORKER_TYPES = ['llm', 'text2vec', 'reranker'];
 
 function ModelForm({ onCancel, onSuccess }: { onCancel: () => void; onSuccess: () => void }) {
   const { t } = useTranslation();
+  const { refreshModelList } = useContext(ChatContext);
   const [_, setModels] = useState<Array<SupportModel> | null>([]);
   const [selectedWorkerType, setSelectedWorkerType] = useState<string>();
   const [selectedProvider, setSelectedProvider] = useState<string>();
@@ -137,6 +139,7 @@ function ModelForm({ onCancel, onSuccess }: { onCancel: () => void; onSuccess: (
       if (data?.success) {
         message.success(t('start_model_success'));
         form.resetFields();
+        refreshModelList?.();
         onSuccess?.();
       }
     } catch (_error) {

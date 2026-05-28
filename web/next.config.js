@@ -2,6 +2,9 @@
 const CopyPlugin = require("copy-webpack-plugin");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const path = require("path");
+
+const BACKEND_URL = process.env.API_BASE_URL || "http://localhost:5670";
+
 const nextConfig = {
   experimental: {
     esmExternals: "loose",
@@ -20,6 +23,14 @@ const nextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   skipTrailingSlashRedirect: true,
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${BACKEND_URL}/api/:path*`,
+      },
+    ];
+  },
   webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false };
     if (!isServer) {

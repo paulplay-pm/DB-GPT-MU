@@ -34,19 +34,21 @@ export function renderModelIcon(model?: string, props?: { width: number; height:
 
 function ModelSelector({ onChange }: Props) {
   const { t } = useTranslation();
-  const { modelList, model } = useContext(ChatContext);
+  const { modelList, model, setModel } = useContext(ChatContext);
   if (!modelList || modelList.length <= 0) {
     return null;
   }
+  const handleChange = (val: string) => {
+    onChange?.(val);
+    setModel(val);
+  };
   return (
     <Select
       value={model}
       placeholder={t('choose_model')}
       className='min-w-[120px]'
       popupMatchSelectWidth={false}
-      onChange={val => {
-        onChange?.(val);
-      }}
+      onChange={handleChange}
     >
       {modelList.map(item => (
         <Select.Option key={item} title={item}>
