@@ -71,8 +71,10 @@ function TopActionBar() {
     const parent = resolvedParentKey || 'chat';
     const parentPath = PAGE_PATH_MAP[parent] || '/';
 
-    // Get child from query if present
-    const child = typeof query.id === 'string' ? query.id : undefined;
+    // Get child from query if present (title takes precedence over id)
+    const child = typeof query.title === 'string'
+      ? decodeURIComponent(query.title)
+      : (typeof query.id === 'string' ? query.id : undefined);
 
     return { parent, parentPath, child };
   }, [router.pathname, router.query]);
