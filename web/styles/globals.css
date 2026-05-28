@@ -70,6 +70,21 @@ body {
 
 
 
+/* Unselected tab text - light mode */
+.ant-tabs-tab:not(.ant-tabs-tab-active) .ant-tabs-tab-btn {
+  color: var(--text-secondary);
+}
+
+/* Unselected tab text - dark mode */
+.dark .ant-tabs-tab:not(.ant-tabs-tab-active) .ant-tabs-tab-btn {
+  color: #a0a0a0;
+}
+
+/* Tab hover */
+.ant-tabs-tab:not(.ant-tabs-tab-active):hover .ant-tabs-tab-btn {
+  color: var(--text-primary);
+}
+
 .dark :where(.css-dev-only-do-not-override-18iikkb).ant-tabs .ant-tabs-tab-btn {
   color: white;
 }
