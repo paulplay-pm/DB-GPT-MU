@@ -98,7 +98,7 @@ function TopActionBar() {
   };
 
   return (
-    <div className='h-16 flex items-center justify-between px-6 border-b border-[var(--border-color)] bg-[var(--bg-secondary)]'>
+    <div className='h-16 flex items-center justify-between px-6 border-b border-r border-[var(--border-color)] bg-[var(--bg-secondary)]'>
       {/* Left: Breadcrumb */}
       <div className='flex items-center gap-2'>
         {breadcrumbs.child ? (
