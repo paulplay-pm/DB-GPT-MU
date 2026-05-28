@@ -145,8 +145,12 @@ body {
   background-color: var(--hover-bg) !important;
 }
 
+.dark .ant-table-tbody > tr.ant-table-row-hover > td {
+  background-color: var(--hover-bg) !important;
+}
+
 .dark .ant-table-wrapper .ant-table-pagination {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .dark .ant-empty-description {
