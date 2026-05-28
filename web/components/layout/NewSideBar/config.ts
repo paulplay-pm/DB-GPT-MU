@@ -114,6 +114,13 @@ export const NAV_GROUPS: NavGroup[] = [
         permission: PERMISSION_KEYS.SKILLS,
       },
       {
+        key: 'model_management',
+        label: 'model_manage',
+        icon: 'DatabaseOutlined',
+        path: '/construct/models',
+        permission: PERMISSION_KEYS.MODEL_MANAGE,
+      },
+      {
         key: 'prompts',
         label: 'prompts',
         icon: 'EditOutlined',
