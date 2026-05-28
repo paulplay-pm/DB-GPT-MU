@@ -2,7 +2,7 @@ import { STORAGE_LANG_KEY, STORAGE_THEME_KEY, STORAGE_USERINFO_KEY } from '@/uti
 import { LockOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Divider, Form, Input, Menu, MenuProps, Modal, Progress, message } from 'antd';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface UserInfo {
@@ -138,11 +138,11 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       });
   };
 
-  const menuItems: MenuProps['items'] = [
+  const menuItems: MenuProps['items'] = useMemo(() => [
     {
       key: 'profile',
       icon: <UserOutlined />,
-      label: '个人信息',
+      label: i18n.language?.startsWith('en') ? 'Profile' : '个人信息',
       onClick: () => {
         setMenuVisible(false);
         form.setFieldsValue({ real_name: userInfo?.real_name, email: userInfo?.email, phone: userInfo?.phone });
@@ -152,7 +152,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
     {
       key: 'password',
       icon: <LockOutlined />,
-      label: '修改密码',
+      label: i18n.language?.startsWith('en') ? 'Change Password' : '修改密码',
       onClick: () => {
         setMenuVisible(false);
         passwordForm.resetFields();
@@ -237,7 +237,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
         handleLogout();
       },
     },
-  ];
+  ], [i18n.language]);
 
   const triggerArea = (
     <div
