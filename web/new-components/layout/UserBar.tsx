@@ -45,36 +45,44 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
     return { level: strength, percent: Math.min(strength, 100), label };
   };
 
-  // Sync theme state with actual body class on mount and body class changes
+  // Sync theme state with actual body class on mount and when body class changes
   useEffect(() => {
     const syncTheme = () => {
-      // Read actual body class state (not from closure)
       const body = document.body;
       const isDark = body.classList.contains('dark');
       const isLight = body.classList.contains('light');
-      if (isDark && !body.classList.contains('light')) {
+      // Only update if body class doesn't match our state
+      if (isDark && theme !== 'dark') {
         setTheme('dark');
-        localStorage.setItem(STORAGE_THEME_KEY, 'dark');
-      } else if (isLight && !body.classList.contains('dark')) {
+      } else if (isLight && theme !== 'light') {
         setTheme('light');
-        localStorage.setItem(STORAGE_THEME_KEY, 'light');
       }
     };
+
+    // Initial sync
     syncTheme();
 
     // Watch for body class changes
     const observer = new MutationObserver(syncTheme);
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     return () => observer.disconnect();
-  }, []); // Empty deps - run once on mount
+  }, [theme]);
 
-  // Sync lang state with i18n on mount
+  // Sync lang state with i18n events
   useEffect(() => {
-    const currentLang = i18n.language?.startsWith('en') ? 'en' : 'zh';
-    if (lang !== currentLang) {
-      setLang(currentLang);
-    }
-  }, []); // Run once on mount
+    const handleLanguageChange = () => {
+      const currentLang = i18n.language?.startsWith('en') ? 'en' : 'zh';
+      if (lang !== currentLang) {
+        setLang(currentLang);
+      }
+    };
+
+    // Listen for language changes
+    i18n.on('languageChanged', handleLanguageChange);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange);
+    };
+  }, [i18n, lang]);
 
   // Load user info
   useEffect(() => {
