@@ -29,8 +29,8 @@ function FavoritesPage() {
         {filteredList.length === 0 ? (
           <div className='flex items-center justify-center h-full'>
             <div className='text-center'>
-              <div className='w-20 h-20 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center'>
-                <StarOutlined className='text-4xl text-gray-300' />
+              <div className='w-20 h-20 mx-auto mb-4 rounded-full bg-[var(--bg-tertiary)] flex items-center justify-center'>
+                <StarOutlined className='text-4xl text-[var(--text-tertiary)]' />
               </div>
               <Empty description={t('favorites_empty') || '暂无收藏'} />
             </div>
@@ -40,16 +40,16 @@ function FavoritesPage() {
             {filteredList.map(item => (
               <div
                 key={item.id}
-                className='bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 hover:shadow-lg transition-shadow cursor-pointer'
+                className='bg-[var(--card-bg)] rounded-xl border border-[var(--card-border)] p-4 hover:shadow-lg transition-shadow cursor-pointer'
               >
                 <div className='flex items-start gap-3'>
                   <div className='w-10 h-10 rounded-lg bg-primary-light flex items-center justify-center'>
                     <StarOutlined className='text-primary' />
                   </div>
                   <div className='flex-1 min-w-0'>
-                    <div className='font-medium text-gray-900 dark:text-gray-100 truncate'>{item.title}</div>
-                    <div className='text-sm text-gray-500 mt-1 line-clamp-2'>{item.description}</div>
-                    <div className='text-xs text-gray-400 mt-2'>{item.date}</div>
+                    <div className='font-medium text-[var(--text-primary)] truncate'>{item.title}</div>
+                    <div className='text-sm text-[var(--text-secondary)] mt-1 line-clamp-2'>{item.description}</div>
+                    <div className='text-xs text-[var(--text-tertiary)] mt-2'>{item.date}</div>
                   </div>
                 </div>
               </div>
