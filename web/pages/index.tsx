@@ -21,7 +21,6 @@ import {
   ArrowUpOutlined,
   AudioOutlined,
   BarChartOutlined,
-  BellOutlined,
   BookOutlined,
   CheckCircleFilled,
   CloudServerOutlined,
@@ -43,23 +42,9 @@ import {
   TableOutlined,
   ThunderboltOutlined,
   UploadOutlined,
-  UserOutlined,
 } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
-import {
-  Avatar,
-  Button,
-  ConfigProvider,
-  Dropdown,
-  Input,
-  List,
-  Modal,
-  Popover,
-  Tag,
-  Tooltip,
-  Upload,
-  message,
-} from 'antd';
+import { Button, ConfigProvider, Dropdown, Input, List, Modal, Popover, Tag, Tooltip, Upload, message } from 'antd';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -2015,24 +2000,6 @@ const Playground: NextPage = () => {
     }
   };
 
-  // Clear chat history
-  const handleClearChat = () => {
-    setMessages([]);
-    setConversationId(null);
-    setQuery('');
-    setExecutionMap({});
-    setActiveMessageId(null);
-    setActiveViewMsgId(null);
-    setUploadedFilePath(null);
-    setFilePreview(null);
-    setFilePreviewError(null);
-    setArtifacts([]);
-    setRightPanelTab('preview');
-    setStreamingSummary('');
-    setSummaryComplete(false);
-    router.push('/', undefined, { shallow: true });
-  };
-
   const restoreFromHistory = (
     historyMessages: Array<{ role: string; context: string; order?: number; model_name?: string }>,
   ) => {
@@ -2293,30 +2260,6 @@ const Playground: NextPage = () => {
       <div className='flex h-full w-full bg-[#f7f7f9] dark:bg-[#0f1012] text-[#1a1b1e] dark:text-gray-200 font-sans overflow-hidden'>
         {/* Main Content */}
         <div className='flex-1 flex flex-col relative overflow-hidden bg-white dark:bg-[#111217]'>
-          {/* Top Header */}
-          <div className='h-16 flex-shrink-0 flex items-center justify-between px-8 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-[#111217]/80 backdrop-blur z-20'>
-            <div className='flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 px-2 py-1 rounded-md'>
-              <span>{t('home_title')}</span>
-            </div>
-            <div className='flex items-center gap-4'>
-              {selectedDb && (
-                <Tag className='flex items-center gap-1 bg-blue-50 border-blue-200 text-blue-700 px-3 py-1 rounded-full text-xs'>
-                  {getDbIcon(selectedDb.type)} <span className='font-medium ml-1'>{selectedDb.db_name}</span>
-                </Tag>
-              )}
-              {messages.length > 0 && (
-                <Button type='text' size='small' onClick={handleClearChat} className='text-gray-500'>
-                  Clear Chat
-                </Button>
-              )}
-              <BellOutlined className='text-lg text-gray-500 cursor-pointer' />
-              <div className='flex items-center gap-2 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full text-xs font-medium'>
-                <ThunderboltOutlined className='text-yellow-500' /> <span>300</span>
-              </div>
-              <Avatar size='small' icon={<UserOutlined />} className='bg-blue-500' />
-            </div>
-          </div>
-
           {/* Chat Messages or Hero Section */}
           {messages.length > 0 ? (
             <div className={`flex-1 flex overflow-hidden ${rightPanelCollapsed ? 'justify-center' : ''}`}>
@@ -2895,7 +2838,7 @@ const Playground: NextPage = () => {
             </div>
           ) : (
             // Welcome Mode: Display Hero Section
-            <div className='flex-1 flex flex-col items-center justify-center px-6 py-4 pb-20 overflow-y-auto'>
+            <div className='flex-1 flex flex-col items-center px-6 py-8 pb-20 overflow-y-auto'>
               <div className='w-full max-w-[860px] flex flex-col items-center animate-fade-in-up'>
                 <h1 className='text-4xl md:text-5xl font-serif text-gray-900 dark:text-gray-100 mb-4 text-center flex items-center gap-4'>
                   <div className='w-12 h-12 rounded-xl bg-white dark:bg-[#1a1b1e] shadow-md flex items-center justify-center flex-shrink-0'>
@@ -3537,20 +3480,6 @@ const Playground: NextPage = () => {
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* Footer Promo - Only show when no messages */}
-          {messages.length === 0 && (
-            <div className='absolute bottom-6 left-0 right-0 flex justify-center'>
-              <div className='bg-white/60 dark:bg-[#1e1f24]/60 backdrop-blur-sm px-5 py-2.5 rounded-full border border-gray-100 dark:border-gray-700/50 flex items-center gap-3 shadow-sm cursor-pointer hover:shadow-md hover:bg-white/90 dark:hover:bg-[#1e1f24]/90 transition-all duration-300'>
-                <Image src='/LOGO_SMALL.png' alt='DB-GPT' width={22} height={22} className='object-contain' />
-                <span className='text-xs font-medium text-gray-600 dark:text-gray-300 tracking-wide'>
-                  {t('home_subtitle')}
-                </span>
-                <span className='text-[10px] text-gray-400 dark:text-gray-500'>·</span>
-                <span className='text-[10px] text-gray-400 dark:text-gray-500'>{t('home_title')}</span>
               </div>
             </div>
           )}
