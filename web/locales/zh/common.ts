@@ -110,6 +110,8 @@ export const CommonZh: Resources['translation'] = {
   Data_Source: '数据中心',
   Close_Sidebar: '收起',
   Show_Sidebar: '展开',
+  collapse_sidebar: '收起',
+  expand_sidebar: '展开',
   language: '语言',
   choose_model: '请选择一个模型',
   data_center_desc: 'DB-GPT支持数据库交互和基于文档的对话，它还提供了一个用户友好的数据中心管理界面。',

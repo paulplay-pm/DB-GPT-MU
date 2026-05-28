@@ -102,6 +102,8 @@ export const CommonEn = {
   Data_Source: 'Data Center',
   Close_Sidebar: 'Fold',
   Show_Sidebar: 'UnFold',
+  collapse_sidebar: 'Collapse',
+  expand_sidebar: 'Expand',
   language: 'Language',
   choose_model: 'Please choose a model',
   data_center_desc:
