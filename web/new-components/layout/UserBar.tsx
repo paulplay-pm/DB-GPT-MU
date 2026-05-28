@@ -237,7 +237,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
         handleLogout();
       },
     },
-  ], [i18n.language]);
+  ], [i18n.language, theme]);
 
   const triggerArea = (
     <div
