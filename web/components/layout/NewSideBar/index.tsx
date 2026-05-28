@@ -2,7 +2,7 @@
 
 import { usePermission } from '@/context/PermissionContext';
 import UserBar from '@/new-components/layout/UserBar';
-import { STORAGE_VERSION_KEY, UI_VERSION_NEW, UI_VERSION_OLD } from '@/utils/constants';
+import { STORAGE_VERSION_KEY, UI_VERSION_NEW, UI_VERSION_OLD } from '@/utils/constants/index';
 import {
   ApartmentOutlined,
   AppstoreOutlined,
@@ -69,9 +69,9 @@ function NavMenuItem({
     <div
       className={cls(
         'group relative flex items-center h-11 px-4 cursor-pointer transition-all duration-200 rounded-lg mx-2',
-        'hover:bg-primary-light/50',
+        'hover:bg-[var(--hover-bg)]',
         {
-          'bg-primary-light/30': isActive,
+          'bg-[var(--bg-tertiary)]': isActive,
         },
       )}
       onClick={() => onNavigate(item.path)}
@@ -83,7 +83,9 @@ function NavMenuItem({
       <span
         className={cls(
           'text-lg mr-3 transition-colors duration-200',
-          isActive ? 'text-primary' : 'text-gray-500 group-hover:text-gray-700',
+          isActive
+            ? 'text-[var(--text-primary)]'
+            : 'text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]',
         )}
       >
         {icon}
@@ -93,7 +95,9 @@ function NavMenuItem({
       <span
         className={cls(
           'text-sm font-medium transition-colors duration-200',
-          isActive ? 'text-primary' : 'text-gray-600 group-hover:text-gray-900',
+          isActive
+            ? 'text-[var(--text-primary)]'
+            : 'text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]',
         )}
       >
         {t(item.label)}
@@ -240,9 +244,9 @@ export default function NewSideBar() {
 
   if (collapsed) {
     return (
-      <div className='flex flex-col h-screen w-16 min-w-16 bg-white dark:bg-[#232734] border-r border-gray-200 dark:border-gray-700'>
+      <div className='flex flex-col h-screen w-16 min-w-16 bg-[var(--bg-secondary)] border-r border-[var(--border-color)]'>
         {/* Logo area */}
-        <div className='flex flex-col items-center justify-center h-16 border-b border-gray-200 dark:border-gray-700 gap-1'>
+        <div className='flex flex-col items-center justify-center h-16 border-b border-[var(--border-color)] gap-1'>
           <div className='text-lg font-bold text-primary'>DB</div>
           <Segmented
             value={uiVersion}
@@ -273,9 +277,9 @@ export default function NewSideBar() {
                       key={item.key}
                       className={cls(
                         'relative flex items-center justify-center h-12 cursor-pointer transition-all duration-200',
-                        'hover:bg-primary-light/50',
+                        'hover:bg-[var(--hover-bg)]',
                         {
-                          'bg-primary-light/30': isActive,
+                          'bg-[var(--bg-tertiary)]': isActive,
                         },
                       )}
                       onClick={() => handleNavigate(item.path)}
@@ -288,7 +292,7 @@ export default function NewSideBar() {
                       <span
                         className={cls(
                           'text-xl transition-colors duration-200',
-                          isActive ? 'text-primary' : 'text-gray-500',
+                          isActive ? 'text-primary' : 'text-[var(--text-secondary)]',
                         )}
                       >
                         {icon}
@@ -314,10 +318,10 @@ export default function NewSideBar() {
         </div>
 
         {/* UserBar and toggle */}
-        <div className='p-2 border-t border-gray-200 dark:border-gray-700'>
+        <div className='p-2 border-t border-[var(--border-color)]'>
           <div className='flex items-center justify-center mb-2'>
             <div
-              className='flex items-center justify-center w-8 h-8 cursor-pointer text-gray-500 hover:text-gray-700 rounded transition-colors'
+              className='flex items-center justify-center w-8 h-8 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded transition-colors'
               onClick={handleToggleCollapse}
             >
               <AppstoreOutlined />
@@ -332,14 +336,14 @@ export default function NewSideBar() {
   }
 
   return (
-    <div className='flex flex-col h-screen w-60 min-w-60 bg-white dark:bg-[#232734] border-r border-gray-200 dark:border-gray-700'>
+    <div className='flex flex-col h-screen w-60 min-w-60 bg-[var(--bg-secondary)] border-r border-[var(--border-color)]'>
       {/* Header with logo */}
-      <div className='flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700'>
+      <div className='flex items-center justify-between h-16 px-4 border-b border-[var(--border-color)]'>
         <div className='flex items-center gap-3'>
           <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
             <span className='text-white font-bold text-sm'>DB</span>
           </div>
-          <span className='font-semibold text-gray-800 dark:text-gray-200'>DB-GPT</span>
+          <span className='font-semibold text-[var(--text-primary)]'>DB-GPT</span>
           <Segmented
             value={uiVersion}
             onChange={val => handleVersionToggle(val as string)}
@@ -351,7 +355,7 @@ export default function NewSideBar() {
           />
         </div>
         <div
-          className='flex items-center justify-center w-7 h-7 cursor-pointer text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300 rounded transition-colors'
+          className='flex items-center justify-center w-7 h-7 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)] rounded transition-colors'
           onClick={handleToggleCollapse}
         >
           <AppstoreOutlined style={{ fontSize: 14 }} />
@@ -362,8 +366,8 @@ export default function NewSideBar() {
       <div className='flex-1 overflow-y-auto px-2 py-4'>{renderNavGroups()}</div>
 
       {/* Footer with UserBar */}
-      <div className='p-3 border-t border-gray-200 dark:border-gray-700'>
-        <div className='flex items-center gap-2 px-2 py-2 bg-gray-50 dark:bg-[#2d323f] rounded-lg'>
+      <div className='p-3 border-t border-[var(--border-color)]'>
+        <div className='flex items-center gap-2 px-2 py-2 bg-[var(--bg-tertiary)] rounded-lg'>
           <UserBar />
         </div>
       </div>
