@@ -2959,12 +2959,12 @@ const Playground: NextPage = () => {
                       {/* Input Toolbar */}
                       <div className='flex items-center justify-between px-1 mt-1'>
                         <div className='flex items-center gap-1'>
-                          <Tooltip title={t('upload') || 'Upload'}>
+                          <Tooltip title='Upload'>
                             <div className='w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer text-gray-500'>
                               <PaperClipOutlined />
                             </div>
                           </Tooltip>
-                          <Tooltip title={t('layout') || 'Layout'}>
+                          <Tooltip title='Layout'>
                             <div className='w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer text-gray-500'>
                               <AppstoreOutlined />
                             </div>
