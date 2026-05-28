@@ -28,15 +28,9 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
   const [passwordForm] = Form.useForm();
   const _menuRef = useRef<HTMLDivElement>(null);
 
-  // Force re-render when theme changes to update menu immediately
-  const [, forceUpdate] = useState({});
-  const updateTheme = (newTheme: string) => {
-    setTheme(newTheme);
-    localStorage.setItem(STORAGE_THEME_KEY, newTheme);
-    document.body?.classList?.remove('dark', 'light');
-    document.body?.classList?.add(newTheme);
-    forceUpdate({}); // Force re-render
-  };
+  // Check actual body class for theme (always reflects current state)
+  const isDark = () => document.body.classList.contains('dark');
+  const isLight = () => document.body.classList.contains('light');
 
   // Password strength calculation
   const getPasswordStrength = (password: string): { level: number; percent: number; label: string } => {
@@ -209,19 +203,25 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
           <span className='text-sm'>{i18n.language?.startsWith('en') ? 'Theme' : '主题'}</span>
           <div className='flex gap-1'>
             <button
-              className={`px-2 py-0.5 text-xs rounded ${theme === 'light' ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
+              className={`px-2 py-0.5 text-xs rounded ${isLight() ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
               onClick={e => {
                 e.stopPropagation();
-                updateTheme('light');
+                setTheme('light');
+                localStorage.setItem(STORAGE_THEME_KEY, 'light');
+                document.body?.classList?.remove('dark');
+                document.body?.classList?.add('light');
               }}
             >
               {i18n.language?.startsWith('en') ? 'Light' : '浅色'}
             </button>
             <button
-              className={`px-2 py-0.5 text-xs rounded ${theme === 'dark' ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
+              className={`px-2 py-0.5 text-xs rounded ${isDark() ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
               onClick={e => {
                 e.stopPropagation();
-                updateTheme('dark');
+                setTheme('dark');
+                localStorage.setItem(STORAGE_THEME_KEY, 'dark');
+                document.body?.classList?.remove('light');
+                document.body?.classList?.add('dark');
               }}
             >
               {i18n.language?.startsWith('en') ? 'Dark' : '深色'}
@@ -241,7 +241,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
         handleLogout();
       },
     },
-  ], [i18n.language, theme]);
+  ], [i18n.language]);
 
   const triggerArea = (
     <div
@@ -265,7 +265,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       {triggerArea}
       <div
         id='user-dropdown-menu'
-        key={`dropdown-${theme}`}
+        key={`dropdown-${isDark() ? 'dark' : 'light'}`}
         style={{
           position: 'absolute',
           bottom: '100%',
