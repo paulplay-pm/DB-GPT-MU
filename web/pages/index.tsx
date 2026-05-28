@@ -2844,15 +2844,7 @@ const Playground: NextPage = () => {
                   {t('home_slogan')}
                 </h2>
 
-                {/* Recommended Examples */}
-                <div className='mt-10 w-full'>
-                  <div className='flex items-center justify-center gap-2 mb-4'>
-                    <div className='h-px flex-1 bg-gradient-to-r from-transparent to-gray-200 dark:to-gray-700' />
-                    <span className='text-xs font-medium text-gray-400 dark:text-gray-500 tracking-wider uppercase'>
-                      {t('recommend_examples')}
-                    </span>
-                    <div className='h-px flex-1 bg-gradient-to-l from-transparent to-gray-200 dark:to-gray-700' />
-                  </div>
+                <div className='w-full'>
                   <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
                     {EXAMPLE_CARDS.map(example => (
                       <div
