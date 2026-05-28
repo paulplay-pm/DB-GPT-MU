@@ -2891,12 +2891,12 @@ const Playground: NextPage = () => {
                   </div>
                 </div>
 
-                {/* Input Box Container - Premium Layered Style */}
+                {/* Input Box Container */}
                 <div className='w-full relative'>
-                  {/* Outer Frame - Floating Effect */}
-                  <div className='w-full relative transition-all duration-500 rounded-[28px] shadow-[0_16px_48px_rgba(0,0,0,0.12),0_6px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_24px_64px_rgba(0,0,0,0.2),0_12px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.4)] dark:hover:shadow-[0_24px_64px_rgba(0,0,0,0.5)]'>
-                    {/* White Inner Box - Clean Glass Card */}
-                    <div className='bg-white/95 backdrop-blur-md dark:bg-[#1e1f24]/95 rounded-[28px] border border-gray-100 dark:border-[#33353b] shadow-[inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] p-5 relative z-10'>
+                  {/* Outer Frame */}
+                  <div className='w-full relative transition-all duration-300 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-[#1e1f24] shadow-sm hover:shadow-md'>
+                    {/* Inner Box */}
+                    <div className='p-3 relative z-10'>
                       {/* Uploaded File, Database, Knowledge Tags */}
                       {(uploadedFile || selectedDb || selectedKnowledge) && (
                         <div className='flex flex-wrap gap-2 mb-2'>
