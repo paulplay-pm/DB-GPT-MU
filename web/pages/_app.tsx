@@ -1,7 +1,7 @@
 import { ChatContext, ChatContextProvider } from '@/app/chat-context';
 import NewSideBar from '@/components/layout/NewSideBar';
 import { PermissionProvider } from '@/context/PermissionContext';
-import FloatHelper from '@/new-components/layout/FloatHelper';
+import TopActionBar from '@/new-components/layout/TopActionBar';
 import { STORAGE_LANG_KEY } from '@/utils/constants/index';
 import { App, ConfigProvider, MappingAlgorithm, theme } from 'antd';
 import enUS from 'antd/locale/en_US';
@@ -120,8 +120,10 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
             <NewSideBar />
           </div>
         )}
-        <div className='flex flex-col flex-1 relative overflow-hidden'>{children}</div>
-        <FloatHelper />
+        <div className='flex flex-col flex-1 relative overflow-hidden'>
+          <TopActionBar />
+          {children}
+        </div>
       </div>
     );
   };
