@@ -494,7 +494,15 @@ export const CommonEn = {
   skills_import_url_valid: 'URL format is correct, click "Import" to start pulling',
   skills_import_url_invalid: 'Please enter a valid GitHub URL',
   skills_updated_at: 'Updated on {{date}}',
-  // Management translations
+  // Navigation group titles
+  workspace: 'Workspace',
+  config_center: 'Configuration',
+  developer_center: 'Developer Center',
+  system_admin: 'System Admin',
+  explore: 'Explore',
+  chat: 'Chat',
+  // Skills page
+  skills_page_subtitle: 'Pre-packaged and reusable best practices and tools for your agents',
   user_management: 'User Management',
   dept_management: 'Department Management',
   role_management: 'Role Management',

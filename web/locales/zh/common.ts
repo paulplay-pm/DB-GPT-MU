@@ -497,7 +497,15 @@ export const CommonZh: Resources['translation'] = {
   skills_import_url_valid: '链接格式正确，点击「导入」开始拉取',
   skills_import_url_invalid: '请输入有效的 GitHub 地址',
   skills_updated_at: '更新于 {{date}}',
-  // Management translations
+  // Navigation group titles
+  workspace: '工作区',
+  config_center: '配置中心',
+  developer_center: '开发者中心',
+  system_admin: '系统管理',
+  explore: '探索',
+  chat: '对话',
+  // Skills page
+  skills_page_subtitle: '为您的代理提供的预打包和可重用的最佳实践和工具',
   user_management: '用户管理',
   dept_management: '部门管理',
   role_management: '角色管理',
