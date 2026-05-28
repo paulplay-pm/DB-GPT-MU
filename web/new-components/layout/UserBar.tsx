@@ -48,12 +48,16 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
   // Sync theme state with actual body class on mount and body class changes
   useEffect(() => {
     const syncTheme = () => {
-      const isDark = document.body.classList.contains('dark');
-      const isLight = document.body.classList.contains('light');
-      if (isDark && theme !== 'dark') {
+      // Read actual body class state (not from closure)
+      const body = document.body;
+      const isDark = body.classList.contains('dark');
+      const isLight = body.classList.contains('light');
+      if (isDark && !body.classList.contains('light')) {
         setTheme('dark');
-      } else if (isLight && theme !== 'light') {
+        localStorage.setItem(STORAGE_THEME_KEY, 'dark');
+      } else if (isLight && !body.classList.contains('dark')) {
         setTheme('light');
+        localStorage.setItem(STORAGE_THEME_KEY, 'light');
       }
     };
     syncTheme();
@@ -62,8 +66,17 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
     const observer = new MutationObserver(syncTheme);
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     return () => observer.disconnect();
-  }, [theme]);
+  }, []); // Empty deps - run once on mount
 
+  // Sync lang state with i18n on mount
+  useEffect(() => {
+    const currentLang = i18n.language?.startsWith('en') ? 'en' : 'zh';
+    if (lang !== currentLang) {
+      setLang(currentLang);
+    }
+  }, []); // Run once on mount
+
+  // Load user info
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_USERINFO_KEY);
     if (stored) {
