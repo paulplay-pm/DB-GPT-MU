@@ -28,6 +28,16 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
   const [passwordForm] = Form.useForm();
   const _menuRef = useRef<HTMLDivElement>(null);
 
+  // Force re-render when theme changes to update menu immediately
+  const [, forceUpdate] = useState({});
+  const updateTheme = (newTheme: string) => {
+    setTheme(newTheme);
+    localStorage.setItem(STORAGE_THEME_KEY, newTheme);
+    document.body?.classList?.remove('dark', 'light');
+    document.body?.classList?.add(newTheme);
+    forceUpdate({}); // Force re-render
+  };
+
   // Password strength calculation
   const getPasswordStrength = (password: string): { level: number; percent: number; label: string } => {
     if (!password) return { level: 0, percent: 0, label: '' };
@@ -202,10 +212,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
               className={`px-2 py-0.5 text-xs rounded ${theme === 'light' ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
               onClick={e => {
                 e.stopPropagation();
-                setTheme('light');
-                localStorage.setItem(STORAGE_THEME_KEY, 'light');
-                document.body?.classList?.remove('dark');
-                document.body?.classList?.add('light');
+                updateTheme('light');
               }}
             >
               {i18n.language?.startsWith('en') ? 'Light' : '浅色'}
@@ -214,10 +221,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
               className={`px-2 py-0.5 text-xs rounded ${theme === 'dark' ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
               onClick={e => {
                 e.stopPropagation();
-                setTheme('dark');
-                localStorage.setItem(STORAGE_THEME_KEY, 'dark');
-                document.body?.classList?.remove('light');
-                document.body?.classList?.add('dark');
+                updateTheme('dark');
               }}
             >
               {i18n.language?.startsWith('en') ? 'Dark' : '深色'}
