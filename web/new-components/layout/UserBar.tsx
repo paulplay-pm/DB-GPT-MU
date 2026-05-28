@@ -164,10 +164,10 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       key: 'language',
       label: (
         <div className='flex items-center justify-between w-full px-1'>
-          <span className='text-sm'>语言</span>
+          <span className='text-sm'>{i18n.language?.startsWith('en') ? 'Language' : '语言'}</span>
           <div className='flex gap-1'>
             <button
-              className={`px-2 py-0.5 text-xs rounded ${lang === 'zh' ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
+              className={`px-2 py-0.5 text-xs rounded ${i18n.language?.startsWith('zh') ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
               onClick={e => {
                 e.stopPropagation();
                 setLang('zh');
@@ -178,7 +178,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
               中文
             </button>
             <button
-              className={`px-2 py-0.5 text-xs rounded ${lang === 'en' ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
+              className={`px-2 py-0.5 text-xs rounded ${i18n.language?.startsWith('en') ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
               onClick={e => {
                 e.stopPropagation();
                 setLang('en');
@@ -196,7 +196,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       key: 'theme',
       label: (
         <div className='flex items-center justify-between w-full px-1'>
-          <span className='text-sm'>主题</span>
+          <span className='text-sm'>{i18n.language?.startsWith('en') ? 'Theme' : '主题'}</span>
           <div className='flex gap-1'>
             <button
               className={`px-2 py-0.5 text-xs rounded ${theme === 'light' ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
@@ -208,7 +208,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
                 document.body?.classList?.add('light');
               }}
             >
-              浅色
+              {i18n.language?.startsWith('en') ? 'Light' : '浅色'}
             </button>
             <button
               className={`px-2 py-0.5 text-xs rounded ${theme === 'dark' ? 'bg-primary text-[var(--text-primary)]' : 'bg-[var(--bg-tertiary)] hover:bg-[var(--hover-bg)] text-[var(--text-secondary)]'}`}
@@ -220,7 +220,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
                 document.body?.classList?.add('dark');
               }}
             >
-              深色
+              {i18n.language?.startsWith('en') ? 'Dark' : '深色'}
             </button>
           </div>
         </div>
