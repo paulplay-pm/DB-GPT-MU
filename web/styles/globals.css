@@ -1,3 +1,5 @@
+@import './chatbi-variables.css';
+@import './theme.css';
 @import './katex-override.css';
 @import './opencode-theme.css';
 
@@ -12,16 +14,8 @@ body {
   --antd-primary-color: #0069fe;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-appearance: none;
-}
-
-.light {
-  color: #333;
-  background-color: #f7f7f7;
-}
-
-.dark {
-  color: #f7f7f7;
-  background-color: #151622;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .dark-sub-bg {
