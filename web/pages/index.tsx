@@ -46,7 +46,6 @@ import {
 import { useRequest } from 'ahooks';
 import { Button, ConfigProvider, Dropdown, Input, List, Modal, Popover, Tag, Tooltip, Upload, message } from 'antd';
 import { NextPage } from 'next';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

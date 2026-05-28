@@ -172,7 +172,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
             <span className={`text-sm ${theme === 'dark' ? 'text-[#f0f0f0]' : 'text-[#1f1f1f]'}`}>{t('language')}</span>
             <div className='flex gap-1'>
               <button
-                className={`px-2 py-0.5 text-xs rounded ${i18n.language?.startsWith('zh') ? theme === 'dark' ? 'bg-[#1890ff] text-white' : 'bg-[#1890ff] text-white' : theme === 'dark' ? 'bg-[#2d2e36] hover:bg-[#3d3e46] text-[#b0b0b0]' : 'bg-[#f0f0f0] hover:bg-[#e0e0e0] text-[#666666]'}`}
+                className={`px-2 py-0.5 text-xs rounded ${i18n.language?.startsWith('zh') ? (theme === 'dark' ? 'bg-[#1890ff] text-white' : 'bg-[#1890ff] text-white') : theme === 'dark' ? 'bg-[#2d2e36] hover:bg-[#3d3e46] text-[#b0b0b0]' : 'bg-[#f0f0f0] hover:bg-[#e0e0e0] text-[#666666]'}`}
                 onClick={e => {
                   e.stopPropagation();
                   setLang('zh');
@@ -183,7 +183,7 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
                 中文
               </button>
               <button
-                className={`px-2 py-0.5 text-xs rounded ${i18n.language?.startsWith('en') ? theme === 'dark' ? 'bg-[#1890ff] text-white' : 'bg-[#1890ff] text-white' : theme === 'dark' ? 'bg-[#2d2e36] hover:bg-[#3d3e46] text-[#b0b0b0]' : 'bg-[#f0f0f0] hover:bg-[#e0e0e0] text-[#666666]'}`}
+                className={`px-2 py-0.5 text-xs rounded ${i18n.language?.startsWith('en') ? (theme === 'dark' ? 'bg-[#1890ff] text-white' : 'bg-[#1890ff] text-white') : theme === 'dark' ? 'bg-[#2d2e36] hover:bg-[#3d3e46] text-[#b0b0b0]' : 'bg-[#f0f0f0] hover:bg-[#e0e0e0] text-[#666666]'}`}
                 onClick={e => {
                   e.stopPropagation();
                   setLang('en');
@@ -282,15 +282,15 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
           display: menuVisible ? 'block' : 'none',
         }}
       >
-        <Menu 
-          mode='vertical' 
-          items={menuItems} 
-          style={{ 
-            border: 'none', 
+        <Menu
+          mode='vertical'
+          items={menuItems}
+          style={{
+            border: 'none',
             boxShadow: 'none',
             background: 'transparent',
             color: theme === 'dark' ? '#f0f0f0' : '#1f1f1f',
-          }} 
+          }}
           className={`custom-user-menu ${theme === 'dark' ? 'dark-menu' : 'light-menu'}`}
         />
       </div>
@@ -343,7 +343,11 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
               <Form.Item label={t('login_account')}>
                 <Input value={userInfo?.login_name || ''} disabled className='bg-gray-50' />
               </Form.Item>
-              <Form.Item name='real_name' label={t('real_name')} rules={[{ required: true, message: t('please_input_real_name') }]}>
+              <Form.Item
+                name='real_name'
+                label={t('real_name')}
+                rules={[{ required: true, message: t('please_input_real_name') }]}
+              >
                 <Input placeholder={t('please_input_real_name')} />
               </Form.Item>
               <Form.Item
@@ -406,7 +410,11 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
       >
         <div className='py-4'>
           <Form form={passwordForm} layout='vertical' size='middle'>
-            <Form.Item name='old_password' label={t('old_password')} rules={[{ required: true, message: t('please_input_old_password') }]}>
+            <Form.Item
+              name='old_password'
+              label={t('old_password')}
+              rules={[{ required: true, message: t('please_input_old_password') }]}
+            >
               <Input.Password placeholder={t('please_input_old_password')} />
             </Form.Item>
             <Form.Item
@@ -459,7 +467,11 @@ export default function UserBar({ onlyAvatar = false }: { onlyAvatar?: boolean }
                 />
               </div>
             )}
-            <Form.Item name='confirm_password' label={t('confirm_new_password')} rules={[{ required: true, message: t('please_confirm_new_password') }]}>
+            <Form.Item
+              name='confirm_password'
+              label={t('confirm_new_password')}
+              rules={[{ required: true, message: t('please_confirm_new_password') }]}
+            >
               <Input.Password placeholder={t('please_confirm_new_password')} />
             </Form.Item>
           </Form>
