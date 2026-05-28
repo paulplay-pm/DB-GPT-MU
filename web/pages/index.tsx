@@ -3149,6 +3149,16 @@ const Playground: NextPage = () => {
                         </div>
 
                         <div className='flex items-center gap-3'>
+                          {/* Send Button - only show when input is ready */}
+                          {(query.trim() || uploadedFile) && !loading && (
+                            <div
+                              onClick={() => handleStart()}
+                              className='w-9 h-9 rounded-lg flex items-center justify-center transition-colors cursor-pointer bg-primary hover:bg-primary/90 text-white'
+                            >
+                              <ArrowUpOutlined />
+                            </div>
+                          )}
+
                           {/* Voice Button */}
                           <Tooltip title={t('voice_input')}>
                             <Button
@@ -3160,18 +3170,6 @@ const Playground: NextPage = () => {
                               className='flex-shrink-0 transition-all duration-200 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800'
                             />
                           </Tooltip>
-
-                          {/* Send Button */}
-                          <div
-                            onClick={() => handleStart()}
-                            className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors cursor-pointer ${
-                              (query.trim() || uploadedFile) && !loading
-                                ? 'bg-primary hover:bg-primary/90 text-white'
-                                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                            }`}
-                          >
-                            <ArrowUpOutlined />
-                          </div>
                         </div>
                       </div>
                     </div>
