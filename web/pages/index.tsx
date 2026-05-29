@@ -17,6 +17,7 @@ import { MessagePart, ToolPart, ToolStatus } from '@/new-components/chat/content
 import TaskPlanCard, { TaskItem } from '@/new-components/chat/content/TaskPlanCard';
 import axios from '@/utils/ctx-axios';
 import { sendSpacePostRequest } from '@/utils/request';
+import { getUserId } from '@/utils/storage';
 import {
   ArrowUpOutlined,
   AudioOutlined,
@@ -1506,6 +1507,7 @@ const Playground: NextPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'user-id': getUserId() ?? '',
         },
         body: JSON.stringify({
           conv_uid: currentConvId,
