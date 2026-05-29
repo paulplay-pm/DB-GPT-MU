@@ -1299,7 +1299,6 @@ class StorageConversation(OnceConversation, StorageItem):
                 )
         if self.summary is not None and len(self.summary) > 4000:
             self.summary = self.summary[0:4000]
-        self.gmt_modified = datetime.now()
         self.conv_storage.save_or_update(self)
 
     def load_from_storage(
