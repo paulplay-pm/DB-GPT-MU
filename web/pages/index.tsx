@@ -2449,7 +2449,7 @@ const Playground: NextPage = () => {
                       {/* Outer Frame - Floating Effect */}
                       <div className='rounded-2xl w-full relative transition-all duration-300 shadow-[0_12px_32px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_48px_rgba(0,0,0,0.16),0_8px_24px_rgba(0,0,0,0.08)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.4)] dark:hover:shadow-[0_20px_48px_rgba(0,0,0,0.5)]'>
                         {/* White Inner Box - Clean Glass Card */}
-                        <div className='bg-white/95 backdrop-blur-md dark:bg-[#1e1f24]/95 rounded-2xl border border-gray-100 dark:border-[#33353b] shadow-[inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] p-3 px-4'>
+                        <div className='bg-white/95 backdrop-blur-md dark:bg-[#1e1f24]/95 rounded-2xl border border-blue-200 dark:border-blue-800 shadow-[inset_0_1px_0_rgba(255,255,255,1)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] p-3 px-4'>
                           {taskPlan.length > 0 && (
                             <div className='mb-3'>
                               <TaskPlanCard tasks={taskPlan} embedded />
@@ -2891,7 +2891,7 @@ const Playground: NextPage = () => {
               {/* Input Box Container - fixed at bottom */}
               <div className='w-full max-w-[860px] sticky bottom-0 pb-6'>
                 {/* Outer Frame */}
-                <div className='w-full relative transition-all duration-300 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-[#1e1f24] shadow-sm hover:shadow-md'>
+                <div className='w-full relative transition-all duration-300 rounded-xl border border-blue-200 dark:border-blue-800 bg-white dark:bg-[#1e1f24] shadow-sm hover:shadow-md'>
                   {/* Inner Box */}
                   <div className='p-3 relative z-10'>
                     {/* Uploaded File, Database, Knowledge Tags */}
