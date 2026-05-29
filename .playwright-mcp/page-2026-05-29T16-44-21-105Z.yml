@@ -1,0 +1,13 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Loading...
+  - img [ref=e8]
+  - alert [ref=e11]
+  - generic [ref=e13]:
+    - alert [ref=e15]:
+      - img "close-circle" [ref=e16]:
+        - img [ref=e17]
+      - generic [ref=e19]: Request error
+      - generic [ref=e20]: Network Error
+    - generic "Close" [ref=e21] [cursor=pointer]:
+      - img "close" [ref=e22]:
+        - img [ref=e23]

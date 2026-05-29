@@ -145,4 +145,31 @@ export const ChatEn = {
   task_plan_current: 'Current: {{task}}',
   update_time: 'Updated',
   created_at: 'Created',
+  // Category panel
+  conversation_categories: 'Conversation Categories',
+  delete_category_title: 'Delete Category',
+  delete_category_confirm: 'Are you sure you want to delete this category?',
+  confirm_delete: 'Confirm Delete',
+  cancel: 'Cancel',
+  // Create category modal
+  category_name_required: 'Category name is required',
+  create_category: 'Create Category',
+  create_category_desc: 'Create a new category to organize your conversations',
+  category_name: 'Category Name',
+  category_name_placeholder: 'Enter category name',
+  category_color: 'Color',
+  // System categories
+  all: 'All',
+  pinned: 'Pinned',
+  uncategorized: 'Uncategorized',
+  // Custom categories
+  rename: 'Rename',
+  delete: 'Delete',
+  // Conversation list
+  search_conversations: 'Search conversations',
+  batch_management: 'Batch Management',
+  selected_count: '{{count}} selected',
+  move_to_category: 'Move to Category',
+  pin: 'Pin',
+  no_conversations_in_category: 'No conversations in this category',
 };

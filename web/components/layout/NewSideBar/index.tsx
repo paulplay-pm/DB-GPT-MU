@@ -318,7 +318,7 @@ export default function NewSideBar() {
   }
 
   return (
-    <div className='flex flex-col h-full w-60 min-w-60 bg-[var(--bg-secondary)] border-r-0 transition-all duration-200 overflow-hidden'>
+    <div className='flex flex-col h-full w-60 min-w-60 bg-[var(--bg-secondary)] border-r border-[var(--border-color)] transition-all duration-200 overflow-hidden'>
       {/* Header with logo */}
       <div className='h-16 flex items-center justify-between px-6 border-b border-[var(--border-color)] border-b-[1px] bg-[var(--bg-secondary)] box-border overflow-hidden shrink-0'>
         <div className='flex items-center gap-3 hover:opacity-80'>

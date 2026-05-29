@@ -92,7 +92,12 @@ function TopActionBar() {
   };
 
   const handleNewChat = () => {
-    router.push('/');
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', '/');
+      router.push('/').then(() => {
+        window.dispatchEvent(new Event('popstate'));
+      });
+    }
   };
 
   const handleParentClick = () => {

@@ -1,0 +1,184 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e11]: DB
+          - generic [ref=e12]: DB-GPT
+        - img "appstore" [ref=e14] [cursor=pointer]:
+          - img [ref=e15]
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: 工作区
+          - generic [ref=e20]:
+            - generic [ref=e21] [cursor=pointer]:
+              - img "message" [ref=e24]:
+                - img [ref=e25]
+              - generic [ref=e27]: 对话
+            - generic [ref=e28] [cursor=pointer]:
+              - img "file-text" [ref=e30]:
+                - img [ref=e31]
+              - generic [ref=e33]: 我的报告
+            - generic [ref=e34] [cursor=pointer]:
+              - img "star" [ref=e36]:
+                - img [ref=e37]
+              - generic [ref=e39]: 收藏夹
+        - generic [ref=e40]:
+          - generic [ref=e41]: 探索
+          - generic [ref=e42]:
+            - generic [ref=e43] [cursor=pointer]:
+              - img "appstore" [ref=e45]:
+                - img [ref=e46]
+              - generic [ref=e48]: 模板广场
+            - generic [ref=e49] [cursor=pointer]:
+              - img "team" [ref=e51]:
+                - img [ref=e52]
+              - generic [ref=e54]: 团队共享
+        - generic [ref=e55]:
+          - generic [ref=e56]: 配置中心
+          - generic [ref=e57]:
+            - generic [ref=e58] [cursor=pointer]:
+              - img "database" [ref=e60]:
+                - img [ref=e61]
+              - generic [ref=e63]: 数据源
+            - generic [ref=e64] [cursor=pointer]:
+              - img "book" [ref=e66]:
+                - img [ref=e67]
+              - generic [ref=e69]: 知识库
+        - generic [ref=e70]:
+          - generic [ref=e71]: 开发者中心
+          - generic [ref=e72]:
+            - generic [ref=e73] [cursor=pointer]:
+              - img "tool" [ref=e75]:
+                - img [ref=e76]
+              - generic [ref=e78]: 技能
+            - generic [ref=e79] [cursor=pointer]:
+              - img "edit" [ref=e81]:
+                - img [ref=e82]
+              - generic [ref=e84]: 提示词
+            - generic [ref=e85] [cursor=pointer]:
+              - img "apartment" [ref=e87]:
+                - img [ref=e88]
+              - generic [ref=e90]: 工作流
+            - generic [ref=e91] [cursor=pointer]:
+              - img "appstore" [ref=e93]:
+                - img [ref=e94]
+              - generic [ref=e96]: 应用管理
+            - generic [ref=e97] [cursor=pointer]:
+              - img "database" [ref=e99]:
+                - img [ref=e100]
+              - generic [ref=e102]: 模型管理
+            - generic [ref=e103] [cursor=pointer]:
+              - img "line-chart" [ref=e105]:
+                - img [ref=e106]
+              - generic [ref=e108]: 模型评测
+            - generic [ref=e109] [cursor=pointer]:
+              - img "global" [ref=e111]:
+                - img [ref=e112]
+              - generic [ref=e114]: 社区
+        - generic [ref=e115]:
+          - generic [ref=e116]: 系统管理
+          - generic [ref=e117]:
+            - generic [ref=e118] [cursor=pointer]:
+              - img "user-add" [ref=e120]:
+                - img [ref=e121]
+              - generic [ref=e123]: 审核用户
+            - generic [ref=e124] [cursor=pointer]:
+              - img "user" [ref=e126]:
+                - img [ref=e127]
+              - generic [ref=e129]: 用户管理
+            - generic [ref=e130] [cursor=pointer]:
+              - img "key" [ref=e132]:
+                - img [ref=e133]
+              - generic [ref=e135]: 角色管理
+            - generic [ref=e136] [cursor=pointer]:
+              - img "apartment" [ref=e138]:
+                - img [ref=e139]
+              - generic [ref=e141]: 部门管理
+            - generic [ref=e142] [cursor=pointer]:
+              - img "safety" [ref=e144]:
+                - img [ref=e145]
+              - generic [ref=e148]: 权限管理
+      - generic [ref=e152] [cursor=pointer]:
+        - generic [ref=e154]: k
+        - generic [ref=e155]: kk
+    - generic [ref=e156]:
+      - generic [ref=e157]:
+        - generic [ref=e159]: 对话
+        - generic [ref=e160]:
+          - img "question-circle" [ref=e161] [cursor=pointer]:
+            - img [ref=e162]
+          - img "bell" [ref=e165] [cursor=pointer]:
+            - img [ref=e166]
+          - button "plus 创建会话" [ref=e168] [cursor=pointer]:
+            - img "plus" [ref=e170]:
+              - img [ref=e171]
+            - generic [ref=e174]: 创建会话
+      - generic [ref=e177]:
+        - heading "开口问数,预见洞察" [level=2] [ref=e179]
+        - generic [ref=e181]:
+          - generic [ref=e183] [cursor=pointer]:
+            - generic [ref=e184]:
+              - generic [ref=e185]: 📊
+              - generic [ref=e186]:
+                - heading "沃尔玛销售数据分析" [level=3] [ref=e187]
+                - paragraph [ref=e188]: 分析沃尔玛销售CSV数据，生成可视化网页报告
+            - img "right" [ref=e190]:
+              - img [ref=e191]
+          - generic [ref=e194] [cursor=pointer]:
+            - generic [ref=e195]:
+              - generic [ref=e196]: 🗄️
+              - generic [ref=e197]:
+                - heading "数据库画像与分析报告" [level=3] [ref=e198]
+                - paragraph [ref=e199]: 连接数据库后，生成数据库画像并生成可视化网页报告
+            - img "right" [ref=e201]:
+              - img [ref=e202]
+          - generic [ref=e205] [cursor=pointer]:
+            - generic [ref=e206]:
+              - generic [ref=e207]: 📈
+              - generic [ref=e208]:
+                - heading "金融财报深度分析" [level=3] [ref=e209]
+                - paragraph [ref=e210]: 分析浙江海翔药业年度报告，生成数据可视化报告
+            - img "right" [ref=e212]:
+              - img [ref=e213]
+          - generic [ref=e216] [cursor=pointer]:
+            - generic [ref=e217]:
+              - generic [ref=e218]: 🛠️
+              - generic [ref=e219]:
+                - heading "创建SQL分析技能" [level=3] [ref=e220]
+                - paragraph [ref=e221]: 使用skill-creator创建一个实用的SQL数据分析技能
+            - img "right" [ref=e223]:
+              - img [ref=e224]
+        - generic [ref=e228]:
+          - textbox "向您的数据库提问，上传CSV，或生成报告..." [ref=e229]
+          - generic [ref=e230]:
+            - generic [ref=e231]:
+              - button "plus" [ref=e232] [cursor=pointer]:
+                - img "plus" [ref=e234]:
+                  - img [ref=e235]
+              - button "thunderbolt" [ref=e238] [cursor=pointer]:
+                - img "thunderbolt" [ref=e240]:
+                  - img [ref=e241]
+              - button "book" [ref=e243] [cursor=pointer]:
+                - img "book" [ref=e245]:
+                  - img [ref=e246]
+              - button "database" [ref=e248] [cursor=pointer]:
+                - img "database" [ref=e250]:
+                  - img [ref=e251]
+              - generic [ref=e253] [cursor=pointer]:
+                - generic [ref=e254]:
+                  - combobox [ref=e256]
+                  - generic "deepseek-v4-pro" [ref=e257]:
+                    - generic [ref=e258]:
+                      - img "llm" [ref=e259]
+                      - generic [ref=e260]: deepseek-v4-pro
+                - generic:
+                  - img:
+                    - img
+            - generic [ref=e261]:
+              - img "arrow-up" [ref=e263]:
+                - img [ref=e264]
+              - button "audio" [ref=e266] [cursor=pointer]:
+                - img "audio" [ref=e268]:
+                  - img [ref=e269]
+  - alert [ref=e271]

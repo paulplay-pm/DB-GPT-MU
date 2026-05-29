@@ -40,6 +40,13 @@ class ServeRequest(BaseModel):
             "dbgpt",
         ],
     )
+    category_id: Optional[int] = Field(
+        default=None,
+        description="The category id.",
+        examples=[
+            1,
+        ],
+    )
 
     def to_dict(self, **kwargs) -> Dict[str, Any]:
         """Convert the model to a dictionary"""
@@ -129,6 +136,14 @@ class ServerResponse(BaseModel):
         examples=[
             True,
             False,
+        ],
+    )
+    category_id: Optional[int] = Field(
+        default=None,
+        description="The category id of the conversation.",
+        examples=[
+            1,
+            2,
         ],
     )
 

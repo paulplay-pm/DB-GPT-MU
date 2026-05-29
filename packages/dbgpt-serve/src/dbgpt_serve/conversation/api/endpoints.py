@@ -2,7 +2,7 @@ import io
 import json
 import uuid
 from functools import cache
-from typing import List, Literal, Optional
+from typing import List, Literal, Optional, Union
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from fastapi.security.http import HTTPAuthorizationCredentials, HTTPBearer
@@ -244,6 +244,9 @@ async def query_page(
     request: ServeRequest,
     page: Optional[int] = Query(default=1, description="current page"),
     page_size: Optional[int] = Query(default=10, description="page size"),
+    category_id: Optional[Union[int, str]] = Query(default=None, description="filter by category id (null or 'null' for uncategorized)"),
+    is_pinned: Optional[bool] = Query(default=None, description="filter by pinned status"),
+    keyword: Optional[str] = Query(default=None, description="search keyword in title and summary"),
     service: Service = Depends(get_service),
 ) -> Result[PaginationResult[ServerResponse]]:
     """Query Conversation entities
@@ -252,11 +255,30 @@ async def query_page(
         request (ServeRequest): The request
         page (int): The page number
         page_size (int): The page size
+        category_id (int/str): Filter by category id (null or 'null' for uncategorized, 'all' for all)
+        is_pinned (bool): Filter by pinned status
+        keyword (str): Search keyword in title and summary
         service (Service): The service
     Returns:
         ServerResponse: The response
     """
-    return Result.succ(service.get_list_by_page(request, page, page_size))
+    # Handle category_id: convert "null" string to None, "all" to None for no filter
+    # Keep "0" as is - it will be handled by DAO for IS NULL filter
+    if isinstance(category_id, str):
+        if category_id.lower() == "null":
+            category_id = None
+        elif category_id.lower() == "all":
+            category_id = None
+        # Don't convert "0" here - let DAO handle it for IS NULL filter
+
+    return Result.succ(
+        service.get_list_by_page(
+            request, page, page_size,
+            category_id=category_id,
+            is_pinned=is_pinned,
+            keyword=keyword
+        )
+    )
 
 
 @router.get(

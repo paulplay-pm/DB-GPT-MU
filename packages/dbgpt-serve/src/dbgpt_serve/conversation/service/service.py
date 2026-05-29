@@ -201,7 +201,10 @@ class Service(BaseService[ServeEntity, ServeRequest, ServerResponse]):
         return self.dao.get_list(query_request)
 
     def get_list_by_page(
-        self, request: ServeRequest, page: int, page_size: int
+        self, request: ServeRequest, page: int, page_size: int,
+        category_id: Optional[int] = None,
+        is_pinned: Optional[bool] = None,
+        keyword: Optional[str] = None,
     ) -> PaginationResult[ServerResponse]:
         """Get a list of Conversation entities by page
 
@@ -209,11 +212,19 @@ class Service(BaseService[ServeEntity, ServeRequest, ServerResponse]):
             request (ServeRequest): The request
             page (int): The page number
             page_size (int): The page size
+            category_id (int): Filter by category id (null for uncategorized)
+            is_pinned (bool): Filter by pinned status
+            keyword (str): Search keyword in title and summary
 
         Returns:
             List[ServerResponse]: The response
         """
-        return self.dao.get_conv_by_page(request, page, page_size)
+        return self.dao.get_conv_by_page(
+            request, page, page_size,
+            category_id=category_id,
+            is_pinned=is_pinned,
+            keyword=keyword
+        )
 
     def get_history_messages(
         self, request: Union[ServeRequest, Dict[str, Any]]

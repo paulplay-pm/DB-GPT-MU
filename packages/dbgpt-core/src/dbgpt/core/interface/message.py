@@ -879,6 +879,7 @@ class OnceConversation:
     def from_conversation(self, conversation: OnceConversation) -> None:
         """Load the conversation from the storage."""
         self.chat_mode = conversation.chat_mode
+        self.summary = conversation.summary
         self.messages = conversation.messages
         self.start_date = conversation.start_date
         self.chat_order = conversation.chat_order
@@ -1249,7 +1250,7 @@ class StorageConversation(OnceConversation, StorageItem):
             message_storage = InMemoryStorage()
         self.conv_storage = conv_storage
         self.message_storage = message_storage
-        # Load from storage
+        # Load from storage (this will overwrite summary with DB value)
         self.load_from_storage(self.conv_storage, self.message_storage)
 
     @property
@@ -1288,7 +1289,6 @@ class StorageConversation(OnceConversation, StorageItem):
             self.message_storage.save_list(messages_to_save)
         # Save conversation
         # Only set summary from the first user message if summary is currently empty
-        # (first save scenario). After that, summary is locked and won't be overwritten.
         if not self.summary:
             latest_user_message = self.get_latest_user_message()
             if latest_user_message:

@@ -9,6 +9,7 @@ from dbgpt.storage.metadata import DatabaseManager
 from dbgpt_serve.core import BaseServe
 
 from .api.endpoints import init_endpoints, router
+from .api.category_endpoints import init_category_endpoints, router as category_router
 from .config import (
     APP_NAME,
     SERVE_APP_NAME,
@@ -64,10 +65,14 @@ class Serve(BaseServe):
         self._system_app.app.include_router(
             router, prefix=self._api_prefix, tags=self._api_tags
         )
+        self._system_app.app.include_router(
+            category_router, prefix=self._api_prefix, tags=["category"]
+        )
         self._config = self._config or ServeConfig.from_app_config(
             system_app.config, SERVE_CONFIG_KEY_PREFIX
         )
         init_endpoints(self._system_app, self._config)
+        init_category_endpoints(self._system_app, self._config)
         self._app_has_initiated = True
 
     def on_init(self):
@@ -82,6 +87,9 @@ class Serve(BaseServe):
         )
         from dbgpt.storage.chat_history.chat_history_db import (  # noqa: F401
             ChatHistoryMessageEntity as _,
+        )
+        from dbgpt.storage.chat_history.conversation_category_db import (  # noqa: F401
+            ConversationCategory as _,
         )
 
     def before_start(self):

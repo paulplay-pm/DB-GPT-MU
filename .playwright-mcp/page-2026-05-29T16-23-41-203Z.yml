@@ -1,0 +1,76 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e11]: DB
+          - generic [ref=e12]: DB-GPT
+        - img "appstore" [ref=e14] [cursor=pointer]:
+          - img [ref=e15]
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: 工作区
+          - generic [ref=e20]:
+            - generic [ref=e21] [cursor=pointer]:
+              - img "message" [ref=e23]:
+                - img [ref=e24]
+              - generic [ref=e26]: 对话
+            - generic [ref=e27] [cursor=pointer]:
+              - img "file-text" [ref=e30]:
+                - img [ref=e31]
+              - generic [ref=e33]: 我的报告
+            - generic [ref=e34] [cursor=pointer]:
+              - img "star" [ref=e36]:
+                - img [ref=e37]
+              - generic [ref=e39]: 收藏夹
+        - generic [ref=e40]:
+          - generic [ref=e41]: 探索
+          - generic [ref=e42]:
+            - generic [ref=e43] [cursor=pointer]:
+              - img "appstore" [ref=e45]:
+                - img [ref=e46]
+              - generic [ref=e48]: 模板广场
+            - generic [ref=e49] [cursor=pointer]:
+              - img "team" [ref=e51]:
+                - img [ref=e52]
+              - generic [ref=e54]: 团队共享
+      - generic [ref=e60] [cursor=pointer]: "?"
+    - generic [ref=e61]:
+      - generic [ref=e62]:
+        - generic [ref=e64]: 我的报告
+        - generic [ref=e65]:
+          - img "question-circle" [ref=e66] [cursor=pointer]:
+            - img [ref=e67]
+          - img "bell" [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+          - button "plus 创建会话" [ref=e73] [cursor=pointer]:
+            - img "plus" [ref=e75]:
+              - img [ref=e76]
+            - generic [ref=e79]: 创建会话
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e83]: 会话分类
+            - img "plus" [ref=e84] [cursor=pointer]:
+              - img [ref=e85]
+          - generic [ref=e89]:
+            - generic [ref=e90] [cursor=pointer]:
+              - img "file-text" [ref=e91]:
+                - img [ref=e92]
+              - generic [ref=e94]: 全部
+            - generic [ref=e95] [cursor=pointer]:
+              - img "pushpin" [ref=e96]:
+                - img [ref=e97]
+              - generic [ref=e99]: 已置顶
+            - generic [ref=e100] [cursor=pointer]:
+              - img "unordered-list" [ref=e101]:
+                - img [ref=e102]
+              - generic [ref=e104]: 未分类
+        - generic [ref=e107]:
+          - generic [ref=e108]:
+            - img "search" [ref=e110]:
+              - img [ref=e111]
+            - textbox "搜索会话" [ref=e113]
+          - button "批量管理" [ref=e115] [cursor=pointer]
+  - img [ref=e125]
+  - alert [ref=e128]

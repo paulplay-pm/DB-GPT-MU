@@ -81,6 +81,7 @@ class ServeDao(BaseDao[ServeEntity, ServeRequest, ServerResponse]):
             gmt_created=gmt_created,
             gmt_modified=gmt_modified,
             is_pinned=entity.is_pinned,
+            category_id=entity.category_id,
         )
 
     def get_latest_message(self, conv_uid: str) -> Optional[MessageStorageItem]:
@@ -119,7 +120,10 @@ class ServeDao(BaseDao[ServeEntity, ServeRequest, ServerResponse]):
         return messages
 
     def get_conv_by_page(
-        self, req: ServeRequest, page: int, page_size: int
+        self, req: ServeRequest, page: int, page_size: int,
+        category_id: Optional[int] = None,
+        is_pinned: Optional[bool] = None,
+        keyword: Optional[str] = None,
     ) -> PaginationResult[ServerResponse]:
         """Get conversation by page
 
@@ -127,12 +131,39 @@ class ServeDao(BaseDao[ServeEntity, ServeRequest, ServerResponse]):
             req (ServeRequest): The request
             page (int): The page number
             page_size (int): The page size
+            category_id (int): Filter by category id (null for uncategorized)
+            is_pinned (bool): Filter by pinned status
+            keyword (str): Search keyword in title and summary
 
         Returns:
             List[ChatHistoryEntity]: The conversation list
         """
         with self.session(commit=False) as session:
             query = self._create_query_object(session, req)
+
+            # Apply category_id filter
+            if category_id is not None:
+                # category_id can be int 0 or str "0" for uncategorized (NULL in DB)
+                if category_id == 0 or category_id == "0":  # Special case: uncategorized
+                    query = query.filter(ServeEntity.category_id.is_(None))
+                else:
+                    query = query.filter(ServeEntity.category_id == category_id)
+
+            # Apply is_pinned filter
+            if is_pinned is not None:
+                query = query.filter(ServeEntity.is_pinned == (1 if is_pinned else 0))
+
+            # Apply keyword search
+            if keyword:
+                keyword_pattern = f"%{keyword}%"
+                from sqlalchemy import or_
+                query = query.filter(
+                    or_(
+                        ServeEntity.summary.ilike(keyword_pattern),
+                        ServeEntity.user_input.ilike(keyword_pattern),
+                    )
+                )
+
             query = query.order_by(ServeEntity.is_pinned.desc(), ServeEntity.gmt_modified.desc())
             total_count = query.count()
             items = query.offset((page - 1) * page_size).limit(page_size)
@@ -156,6 +187,7 @@ class ServeDao(BaseDao[ServeEntity, ServeRequest, ServerResponse]):
                 res_item = self.to_response(item)
                 res_item.select_param = select_param
                 res_item.model_name = model_name
+                res_item.category_id = item.category_id
                 result_items.append(res_item)
 
             result = PaginationResult(

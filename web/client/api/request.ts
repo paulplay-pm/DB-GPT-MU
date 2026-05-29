@@ -106,13 +106,33 @@ export const getDialogueList = () => {
   return GET<null, DialogueListResponse>('/api/v1/chat/dialogue/list');
 };
 export const getDialogueListPaged = (
-  data: { chat_mode?: string; user_name?: string; sys_code?: string },
+  data: {
+    chat_mode?: string;
+    user_name?: string;
+    sys_code?: string;
+    is_pinned?: boolean;
+    category_id?: number | null;
+    keyword?: string;
+  },
   page = 1,
   page_size = 20,
 ) => {
-  return POST<typeof data, PaginationResult<IChatDialogueSchema>>(
-    `/api/v1/chat/dialogue/query_page?page=${page}&page_size=${page_size}`,
-    data,
+  const params = new URLSearchParams();
+  params.append('page', String(page));
+  params.append('page_size', String(page_size));
+  if (data.is_pinned !== undefined) params.append('is_pinned', String(data.is_pinned));
+  if (data.category_id !== undefined && data.category_id !== null)
+    params.append('category_id', String(data.category_id));
+  if (data.keyword) params.append('keyword', data.keyword);
+
+  // For uncategorized (category_id=0), don't send it in body to avoid DAO filtering conflict
+  // The DAO's _create_query_object would filter by category_id==0 while get_list_by_page
+  // applies IS NULL - these conflict. Category_id in URL params is sufficient.
+  const { category_id, ...bodyData } = data;
+
+  return POST<typeof bodyData, PaginationResult<IChatDialogueSchema>>(
+    `/api/v1/chat/dialogue/query_page?${params.toString()}`,
+    bodyData,
   );
 };
 export const getUsableModels = () => {
@@ -445,4 +465,32 @@ export const delApp = (data: Record<string, string>) => {
 
 export const getSpaceConfig = () => {
   return GET<string, SpaceConfig>(`/knowledge/space/config`);
+};
+
+/** Category APIs */
+export const getCategoryList = (userName: string) => {
+  return GET<null, any[]>(`/api/v1/chat/dialogue/conversation/category/list?user_name=${userName}`);
+};
+
+export const createCategory = (data: { user_name: string; name: string; color: string }) => {
+  return POST<typeof data, any>(`/api/v1/chat/dialogue/conversation/category/create`, data);
+};
+
+export const renameCategory = (categoryId: number, data: { name: string }, userName: string) => {
+  return PUT<typeof data, any>(
+    `/api/v1/chat/dialogue/conversation/category/${categoryId}/rename?user_name=${userName}`,
+    data,
+  );
+};
+
+export const deleteCategory = (categoryId: number, userName: string) => {
+  return DELETE(`/api/v1/chat/dialogue/conversation/category/${categoryId}?user_name=${userName}`);
+};
+
+export const moveConversations = (data: { conv_uids: string[]; category_id: number | null }, userName: string) => {
+  return POST<typeof data, number>(`/api/v1/chat/dialogue/conversation/category/move?user_name=${userName}`, data);
+};
+
+export const getCategoryCounts = (userName: string) => {
+  return GET<null, Record<number, number>>(`/api/v1/chat/dialogue/conversation/category/counts?user_name=${userName}`);
 };

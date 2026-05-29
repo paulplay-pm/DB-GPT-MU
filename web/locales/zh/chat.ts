@@ -153,4 +153,31 @@ export const ChatZh: Resources['translation'] = {
   task_plan_current: '当前：{{task}}',
   update_time: '更新',
   created_at: '创建',
+  // Category panel
+  conversation_categories: '会话分类',
+  delete_category_title: '删除分类',
+  delete_category_confirm: '确定要删除此分类吗？',
+  confirm_delete: '确认删除',
+  cancel: '取消',
+  // Create category modal
+  category_name_required: '分类名称不能为空',
+  create_category: '创建分类',
+  create_category_desc: '创建新分类来整理您的会话',
+  category_name: '分类名称',
+  category_name_placeholder: '输入分类名称',
+  category_color: '颜色',
+  // System categories
+  all: '全部',
+  pinned: '已置顶',
+  uncategorized: '未分类',
+  // Custom categories
+  rename: '重命名',
+  delete: '删除',
+  // Conversation list
+  search_conversations: '搜索会话',
+  batch_management: '批量管理',
+  selected_count: '已选择 {{count}} 项',
+  move_to_category: '移动到分类',
+  pin: '置顶',
+  no_conversations_in_category: '此分类中没有会话',
 } as const;

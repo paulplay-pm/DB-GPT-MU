@@ -1,0 +1,251 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e9]: 我的报告
+      - generic [ref=e10]:
+        - img "question-circle" [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+        - img "bell" [ref=e15] [cursor=pointer]:
+          - img [ref=e16]
+        - button "plus 创建会话" [ref=e18] [cursor=pointer]:
+          - img "plus" [ref=e20]:
+            - img [ref=e21]
+          - generic [ref=e24]: 创建会话
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: 会话分类
+          - img "plus" [ref=e29] [cursor=pointer]:
+            - img [ref=e30]
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - generic [ref=e35] [cursor=pointer]:
+              - img "file-text" [ref=e36]:
+                - img [ref=e37]
+              - generic [ref=e39]: 全部
+            - generic [ref=e40] [cursor=pointer]:
+              - img "pushpin" [ref=e41]:
+                - img [ref=e42]
+              - generic [ref=e44]: 已置顶
+            - generic [ref=e45] [cursor=pointer]:
+              - img "unordered-list" [ref=e46]:
+                - img [ref=e47]
+              - generic [ref=e49]: 未分类
+          - generic [ref=e69]:
+            - generic [ref=e71] [cursor=pointer]:
+              - generic [ref=e74]: 收费系统
+              - button "more" [ref=e75]:
+                - img "more" [ref=e76]:
+                  - img [ref=e77]
+            - generic [ref=e80] [cursor=pointer]:
+              - generic [ref=e83]: 智慧运营
+              - button "more" [ref=e84]:
+                - img "more" [ref=e85]:
+                  - img [ref=e86]
+            - generic [ref=e89] [cursor=pointer]:
+              - generic [ref=e92]: 电商
+              - button "more" [ref=e93]:
+                - img "more" [ref=e94]:
+                  - img [ref=e95]
+            - generic [ref=e98] [cursor=pointer]:
+              - generic [ref=e101]: 泊界停车
+              - button "more" [ref=e102]:
+                - img "more" [ref=e103]:
+                  - img [ref=e104]
+            - generic [ref=e107] [cursor=pointer]:
+              - generic [ref=e110]: 用户画像
+              - button "more" [ref=e111]:
+                - img "more" [ref=e112]:
+                  - img [ref=e113]
+            - generic [ref=e116] [cursor=pointer]:
+              - generic [ref=e119]: 万象服务
+              - button "more" [ref=e120]:
+                - img "more" [ref=e121]:
+                  - img [ref=e122]
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - img "search" [ref=e55]:
+              - img [ref=e56]
+            - textbox "搜索会话" [ref=e58]
+          - button "批量管理" [ref=e60] [cursor=pointer]
+        - generic [ref=e126]:
+          - generic [ref=e127] [cursor=pointer]:
+            - img "message" [ref=e129]:
+              - img [ref=e130]
+            - generic [ref=e132]:
+              - generic [ref=e133]:
+                - img "pushpin" [ref=e134]:
+                  - img [ref=e135]
+                - generic [ref=e137]: 你是谁？
+              - generic [ref=e138]:
+                - generic [ref=e139]: 更新于 10 hours ago
+                - generic [ref=e140]: 创建于 2026-05-29 18:00
+          - generic [ref=e143]: 更早的会话
+          - generic [ref=e145] [cursor=pointer]:
+            - img "message" [ref=e147]:
+              - img [ref=e148]
+            - generic [ref=e150]:
+              - generic [ref=e152]: "17"
+              - generic [ref=e153]:
+                - generic [ref=e154]: 更新于 22 minutes ago
+                - generic [ref=e155]: 创建于 2026-05-30 00:26
+          - generic [ref=e156] [cursor=pointer]:
+            - img "message" [ref=e158]:
+              - img [ref=e159]
+            - generic [ref=e161]:
+              - generic [ref=e163]: "16"
+              - generic [ref=e164]:
+                - generic [ref=e165]: 更新于 22 minutes ago
+                - generic [ref=e166]: 创建于 2026-05-30 00:26
+          - generic [ref=e167] [cursor=pointer]:
+            - img "message" [ref=e169]:
+              - img [ref=e170]
+            - generic [ref=e172]:
+              - generic [ref=e174]: "16"
+              - generic [ref=e175]:
+                - generic [ref=e176]: 更新于 27 minutes ago
+                - generic [ref=e177]: 创建于 2026-05-30 00:17
+          - generic [ref=e178] [cursor=pointer]:
+            - img "message" [ref=e180]:
+              - img [ref=e181]
+            - generic [ref=e183]:
+              - generic [ref=e185]: "14"
+              - generic [ref=e186]:
+                - generic [ref=e187]: 更新于 39 minutes ago
+                - generic [ref=e188]: 创建于 2026-05-30 00:08
+          - generic [ref=e189] [cursor=pointer]:
+            - img "message" [ref=e191]:
+              - img [ref=e192]
+            - generic [ref=e194]:
+              - generic [ref=e196]: "13"
+              - generic [ref=e197]:
+                - generic [ref=e198]: 更新于 43 minutes ago
+                - generic [ref=e199]: 创建于 2026-05-30 00:04
+          - generic [ref=e200] [cursor=pointer]:
+            - img "message" [ref=e202]:
+              - img [ref=e203]
+            - generic [ref=e205]:
+              - generic [ref=e207]: "12"
+              - generic [ref=e208]:
+                - generic [ref=e209]: 更新于 an hour ago
+                - generic [ref=e210]: 创建于 2026-05-29 23:58
+          - generic [ref=e211] [cursor=pointer]:
+            - img "message" [ref=e213]:
+              - img [ref=e214]
+            - generic [ref=e216]:
+              - generic [ref=e218]: "11"
+              - generic [ref=e219]:
+                - generic [ref=e220]: 更新于 an hour ago
+                - generic [ref=e221]: 创建于 2026-05-29 23:58
+          - generic [ref=e222] [cursor=pointer]:
+            - img "message" [ref=e224]:
+              - img [ref=e225]
+            - generic [ref=e227]:
+              - generic [ref=e229]: "10"
+              - generic [ref=e230]:
+                - generic [ref=e231]: 更新于 an hour ago
+                - generic [ref=e232]: 创建于 2026-05-29 23:49
+          - generic [ref=e233] [cursor=pointer]:
+            - img "message" [ref=e235]:
+              - img [ref=e236]
+            - generic [ref=e238]:
+              - generic [ref=e240]: "9"
+              - generic [ref=e241]:
+                - generic [ref=e242]: 更新于 an hour ago
+                - generic [ref=e243]: 创建于 2026-05-29 23:48
+          - generic [ref=e244] [cursor=pointer]:
+            - img "message" [ref=e246]:
+              - img [ref=e247]
+            - generic [ref=e249]:
+              - generic [ref=e251]: "8"
+              - generic [ref=e252]:
+                - generic [ref=e253]: 更新于 an hour ago
+                - generic [ref=e254]: 创建于 2026-05-29 23:47
+          - generic [ref=e255] [cursor=pointer]:
+            - img "message" [ref=e257]:
+              - img [ref=e258]
+            - generic [ref=e260]:
+              - generic [ref=e262]: "7"
+              - generic [ref=e263]:
+                - generic [ref=e264]: 更新于 an hour ago
+                - generic [ref=e265]: 创建于 2026-05-29 23:47
+          - generic [ref=e266] [cursor=pointer]:
+            - img "message" [ref=e268]:
+              - img [ref=e269]
+            - generic [ref=e271]:
+              - generic [ref=e273]: "6"
+              - generic [ref=e274]:
+                - generic [ref=e275]: 更新于 9 hours ago
+                - generic [ref=e276]: 创建于 2026-05-29 23:46
+          - generic [ref=e277] [cursor=pointer]:
+            - img "message" [ref=e279]:
+              - img [ref=e280]
+            - generic [ref=e282]:
+              - generic [ref=e284]: "5"
+              - generic [ref=e285]:
+                - generic [ref=e286]: 更新于 9 hours ago
+                - generic [ref=e287]: 创建于 2026-05-29 23:46
+          - generic [ref=e288] [cursor=pointer]:
+            - img "message" [ref=e290]:
+              - img [ref=e291]
+            - generic [ref=e293]:
+              - generic [ref=e295]: "4"
+              - generic [ref=e296]:
+                - generic [ref=e297]: 更新于 9 hours ago
+                - generic [ref=e298]: 创建于 2026-05-29 23:45
+          - generic [ref=e299] [cursor=pointer]:
+            - img "message" [ref=e301]:
+              - img [ref=e302]
+            - generic [ref=e304]:
+              - generic [ref=e306]: "3"
+              - generic [ref=e307]:
+                - generic [ref=e308]: 更新于 9 hours ago
+                - generic [ref=e309]: 创建于 2026-05-29 23:45
+          - generic [ref=e310] [cursor=pointer]:
+            - img "message" [ref=e312]:
+              - img [ref=e313]
+            - generic [ref=e315]:
+              - generic [ref=e317]: "2"
+              - generic [ref=e318]:
+                - generic [ref=e319]: 更新于 9 hours ago
+                - generic [ref=e320]: 创建于 2026-05-29 23:44
+          - generic [ref=e321] [cursor=pointer]:
+            - img "message" [ref=e323]:
+              - img [ref=e324]
+            - generic [ref=e326]:
+              - generic [ref=e328]: "1"
+              - generic [ref=e329]:
+                - generic [ref=e330]: 更新于 9 hours ago
+                - generic [ref=e331]: 创建于 2026-05-29 23:44
+          - generic [ref=e332] [cursor=pointer]:
+            - img "message" [ref=e334]:
+              - img [ref=e335]
+            - generic [ref=e337]:
+              - generic [ref=e339]: 时间
+              - generic [ref=e340]:
+                - generic [ref=e341]: 更新于 9 hours ago
+                - generic [ref=e342]: 创建于 2026-05-29 18:38
+          - generic [ref=e343] [cursor=pointer]:
+            - img "message" [ref=e345]:
+              - img [ref=e346]
+            - generic [ref=e348]:
+              - generic [ref=e350]: hi
+              - generic [ref=e351]:
+                - generic [ref=e352]: 更新于 10 hours ago
+                - generic [ref=e353]: 创建于 2026-05-29 17:53
+        - list [ref=e355]:
+          - listitem [ref=e356]: 共 25 条
+          - listitem "上一页" [ref=e357]:
+            - button "left" [disabled] [ref=e358]:
+              - img "left" [ref=e359]:
+                - img [ref=e360]
+          - listitem "1" [ref=e362] [cursor=pointer]:
+            - generic [ref=e363]: "1"
+          - listitem "2" [ref=e364] [cursor=pointer]:
+            - generic [ref=e365]: "2"
+          - listitem "下一页" [ref=e366] [cursor=pointer]:
+            - button "right" [ref=e367]:
+              - img "right" [ref=e368]:
+                - img [ref=e369]
+  - alert [ref=e68]

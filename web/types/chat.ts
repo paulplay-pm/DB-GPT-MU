@@ -63,6 +63,7 @@ export type IChatDialogueSchema = {
     | 'chat_execution'
     | 'chat_agent'
     | 'chat_flow'
+    | 'chat_react_agent'
     | (string & {});
   select_param: string;
   app_code: string;
@@ -70,6 +71,15 @@ export type IChatDialogueSchema = {
   gmt_created?: string;
   gmt_modified?: string;
   is_pinned?: boolean;
+  category_id?: number;
+};
+
+export type CategoryItem = {
+  category_id: number;
+  user_name: string;
+  name: string;
+  color: string;
+  gmt_created?: string;
 };
 
 export type UserParam = {

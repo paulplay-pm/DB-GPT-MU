@@ -31,10 +31,12 @@ class DBStorageConversationItemAdapter(
         if not item.save_message_independent and item.messages:
             message_dict_list = [_conversation_to_dict(item)]
             messages = json.dumps(message_dict_list, ensure_ascii=False)
+        # Only auto-generate summary if summary is currently empty
         summary = item.summary
-        latest_user_message = item.get_latest_user_message()
-        if not summary and latest_user_message is not None:
-            summary = latest_user_message.last_text[:250]
+        if not summary:
+            latest_user_message = item.get_latest_user_message()
+            if latest_user_message is not None:
+                summary = latest_user_message.last_text[:250]
         return ChatHistoryEntity(
             conv_uid=item.conv_uid,
             chat_mode=item.chat_mode,

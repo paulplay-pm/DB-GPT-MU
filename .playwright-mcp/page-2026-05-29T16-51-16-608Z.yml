@@ -1,0 +1,20 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - generic [ref=e8]: DB-GPT 登录
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e16]:
+          - img "user" [ref=e18]:
+            - img [ref=e19]
+          - textbox "用户名" [ref=e21]: kk
+        - generic [ref=e27]:
+          - img "lock" [ref=e29]:
+            - img [ref=e30]
+          - textbox "密码" [ref=e32]: kk123456
+          - img "eye-invisible" [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+        - button "登 录" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: 登 录
+      - link "没有账号？立即注册" [ref=e46] [cursor=pointer]:
+        - /url: /register
+  - alert [ref=e47]: /login
