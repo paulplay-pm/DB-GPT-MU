@@ -2475,7 +2475,7 @@ const Playground: NextPage = () => {
                               'Ask a question about your database, upload a CSV, or generate a report...'
                             }
                             autoSize={{ minRows: 2, maxRows: 6 }}
-                            className='flex-1 resize-none !border-none !shadow-none !bg-transparent px-0 py-2 dark:text-white'
+                            className='flex-1 resize-none !border-none !shadow-none !bg-transparent px-0 py-2 dark:text-white focus:!border-blue-200'
                             style={{ backgroundColor: 'transparent' }}
                           />
 
@@ -2854,8 +2854,6 @@ const Playground: NextPage = () => {
                       onClick={() => handleExampleClick(example)}
                       className='group relative rounded-2xl overflow-hidden bg-white border border-gray-100 dark:border-gray-800 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-300'
                     >
-                      {/* 渐变色条 */}
-                      <div className={`h-2 w-full bg-gradient-to-r ${example.gradientColors}`} />
                       {/* 卡片内容 */}
                       <div className='p-4'>
                         <div className='flex items-start gap-3'>
@@ -2950,7 +2948,7 @@ const Playground: NextPage = () => {
                         'Ask a question about your database, upload a CSV, or generate a report...'
                       }
                       autoSize={{ minRows: 3, maxRows: 8 }}
-                      className='text-lg resize-none !border-none !shadow-none !bg-transparent px-2 py-2 mb-2 dark:text-white'
+                      className='text-lg resize-none !border-none !shadow-none !bg-transparent px-2 py-2 mb-2 dark:text-white focus:!border-blue-200'
                       style={{ backgroundColor: 'transparent' }}
                     />
 
