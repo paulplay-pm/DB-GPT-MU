@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 import json
 import logging
 import time
@@ -580,6 +581,7 @@ class MultiAgents(BaseComponent, ABC):
                     current_message.add_view_message(default_final_message)
 
                 current_message.end_current_round()
+                current_message.gmt_modified = datetime.now()
                 current_message.save_to_storage()
 
     async def agent_team_chat_new(

@@ -1,5 +1,6 @@
 import io
 import json
+from datetime import datetime
 import logging
 import os
 import re
@@ -3802,6 +3803,7 @@ Action Input: The JSON format of tool parameters
         )
         storage_conv.add_view_message(error_payload)
         storage_conv.end_current_round()
+        storage_conv.gmt_modified = datetime.now()
         storage_conv.save_to_storage()
         yield _sse_event({"type": "final", "content": err_msg})
         yield _sse_event({"type": "done"})
@@ -3870,6 +3872,7 @@ Action Input: The JSON format of tool parameters
     )
     storage_conv.add_view_message(history_payload)
     storage_conv.end_current_round()
+    storage_conv.gmt_modified = datetime.now()
     storage_conv.save_to_storage()
 
     yield _sse_event({"type": "final", "content": final_content})
