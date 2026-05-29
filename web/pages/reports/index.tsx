@@ -74,7 +74,7 @@ function ConversationsTab({
   const totalRef = useRef<{ current_page: number; total_count: number; total_pages: number }>();
 
   const { loading, run: fetchList } = useRequest(
-    async (page = 1) => await apiInterceptors(getDialogueListPaged({ chat_mode: 'chat_react_agent' }, page, PAGE_SIZE)),
+    async (page = 1) => await apiInterceptors(getDialogueListPaged({}, page, PAGE_SIZE)),
     {
       defaultParams: [1],
       onSuccess: data => {
@@ -198,7 +198,9 @@ function ConversationsTab({
                   onPinToggle={handlePinToggle}
                   onRename={handleRename}
                   onClick={() =>
-                    router.push(`/?id=${conv.conv_uid}&title=${encodeURIComponent(getTitle(conv))}&parent=reports`)
+                    router.push(
+                      `/chat?scene=${conv.chat_mode}&id=${conv.conv_uid}&title=${encodeURIComponent(getTitle(conv))}`,
+                    )
                   }
                 />
               ))}
