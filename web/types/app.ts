@@ -37,6 +37,7 @@ export type IApp = {
   owner_name?: string;
   owner_avatar_url?: string;
   published?: string;
+  user_code?: string;
   param_need: ParamNeed[];
   recommend_questions?: Record<string, any>[];
   conv_uid?: string;

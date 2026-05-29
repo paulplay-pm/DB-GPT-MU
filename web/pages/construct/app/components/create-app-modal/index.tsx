@@ -122,7 +122,7 @@ const CreateAppModal: React.FC<{
         const [error, data] = res;
         if (!error) {
           if (type === 'edit') {
-            const [, res] = await apiInterceptors(getAppList({}));
+            const [, res] = await apiInterceptors(getAppList({ ignore_user: 'false' }));
             const curApp = res?.app_list?.find(item => item.app_code === appInfo?.app_code);
             localStorage.setItem('new_app_info', JSON.stringify({ ...curApp, isEdit: true }));
             message.success(t('Update_successfully'));

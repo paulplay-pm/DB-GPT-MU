@@ -9,6 +9,7 @@ import {
   unPublishApp,
   updateAppAdmins,
 } from '@/client/api';
+import useUser from '@/hooks/use-user';
 import BlurredCard, { ChatButton, InnerDropdown } from '@/new-components/common/blurredCard';
 import ConstructLayout from '@/new-components/layout/Construct';
 import { IApp } from '@/types/app';
@@ -39,6 +40,7 @@ export default function AppContent() {
   const [curApp] = useState<IApp>();
   const [adminOpen, setAdminOpen] = useState<boolean>(false);
   const [admins, setAdmins] = useState<string[]>([]);
+  const userInfo = useUser();
   // 分页信息
   const totalRef = useRef<{
     current_page: number;
@@ -103,6 +105,7 @@ export default function AppContent() {
       const obj: any = {
         page: 1,
         page_size: 12,
+        ignore_user: 'false',
         ...params,
       };
       const [error, data] = await apiInterceptors(getAppList(obj));
@@ -111,11 +114,20 @@ export default function AppContent() {
         return;
       }
       if (!data) return;
-      setApps(data?.app_list || []);
+      const filteredApps = (data?.app_list || []).filter(app => {
+        if (app.published === 'true') {
+          return true;
+        }
+        if (!userInfo) {
+          return true;
+        }
+        return app.user_code === userInfo.user_id;
+      });
+      setApps(filteredApps);
       totalRef.current = {
         current_page: data?.current_page || 1,
-        total_count: data?.total_count || 0,
-        total_page: data?.total_page || 0,
+        total_count: filteredApps.length,
+        total_page: filteredApps.length > 0 ? 1 : 0,
       };
       setSpinning(false);
     },

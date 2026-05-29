@@ -65,6 +65,7 @@ const Playground: NextPage = () => {
       switch (activeKey) {
         case 'recommend':
           return await getHotAppList({
+            published: 'true',
             ...{ page_no, page_size },
           });
         case 'collected':
