@@ -90,9 +90,17 @@ function ConversationsTab({
   );
 
   const filteredList = useMemo(() => {
-    if (!searchKeyword.trim()) return list;
+    const sortedList = [...list].sort((a, b) => {
+      if (a.is_pinned !== b.is_pinned) {
+        return a.is_pinned ? -1 : 1;
+      }
+      const timeA = a.gmt_modified ? new Date(a.gmt_modified).getTime() : 0;
+      const timeB = b.gmt_modified ? new Date(b.gmt_modified).getTime() : 0;
+      return timeB - timeA;
+    });
+    if (!searchKeyword.trim()) return sortedList;
     const keyword = searchKeyword.toLowerCase();
-    return list.filter(conv => {
+    return sortedList.filter(conv => {
       const title = typeof conv.user_input === 'string' ? conv.user_input.toLowerCase() : '';
       return title.includes(keyword);
     });

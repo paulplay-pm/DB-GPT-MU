@@ -163,8 +163,6 @@ class Service(BaseService[ServeEntity, ServeRequest, ServerResponse]):
         """
         conv: StorageConversation = self.create_storage_conv(request)
         conv.is_pinned = True
-        # Update gmt_modified to sort pinned items by most recently pinned
-        conv.gmt_modified = datetime.now()
         conv.save_to_storage()
 
     def unpin(self, request: ServeRequest) -> None:
