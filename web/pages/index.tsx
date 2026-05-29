@@ -2475,7 +2475,7 @@ const Playground: NextPage = () => {
                               'Ask a question about your database, upload a CSV, or generate a report...'
                             }
                             autoSize={{ minRows: 2, maxRows: 6 }}
-                            className='flex-1 resize-none border border-transparent !shadow-none !bg-transparent px-0 py-2 dark:text-white focus:border-blue-200 focus:border-2'
+                            className='flex-1 resize-none !border-none !shadow-none !bg-transparent px-0 py-2 dark:text-white focus:!border-blue-200'
                             style={{ backgroundColor: 'transparent' }}
                           />
 
@@ -2948,7 +2948,7 @@ const Playground: NextPage = () => {
                         'Ask a question about your database, upload a CSV, or generate a report...'
                       }
                       autoSize={{ minRows: 3, maxRows: 8 }}
-                      className='text-lg resize-none border border-transparent !shadow-none !bg-transparent px-2 py-2 mb-2 dark:text-white focus:border-blue-200 focus:border-2'
+                      className='text-lg resize-none !border-none !shadow-none !bg-transparent px-2 py-2 mb-2 dark:text-white focus:!border-blue-200'
                       style={{ backgroundColor: 'transparent' }}
                     />
 
