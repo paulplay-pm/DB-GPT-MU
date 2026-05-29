@@ -180,6 +180,62 @@ async def clear(
 
 
 @router.post(
+    "/pin",
+    dependencies=[Depends(check_api_key)],
+)
+async def pin(
+    con_uid: str,
+    service: Service = Depends(get_service),
+):
+    """Pin a Conversation entity
+
+    Args:
+        con_uid (str): The conversation UID
+        service (Service): The service
+    """
+    service.pin(ServeRequest(conv_uid=con_uid))
+    return Result.succ(None)
+
+
+@router.post(
+    "/unpin",
+    dependencies=[Depends(check_api_key)],
+)
+async def unpin(
+    con_uid: str,
+    service: Service = Depends(get_service),
+):
+    """Unpin a Conversation entity
+
+    Args:
+        con_uid (str): The conversation UID
+        service (Service): The service
+    """
+    service.unpin(ServeRequest(conv_uid=con_uid))
+    return Result.succ(None)
+
+
+@router.post(
+    "/rename",
+    dependencies=[Depends(check_api_key)],
+)
+async def rename(
+    con_uid: str,
+    new_summary: str,
+    service: Service = Depends(get_service),
+):
+    """Rename a Conversation entity
+
+    Args:
+        con_uid (str): The conversation UID
+        new_summary (str): The new summary for the conversation
+        service (Service): The service
+    """
+    service.rename(ServeRequest(conv_uid=con_uid), new_summary)
+    return Result.succ(None)
+
+
+@router.post(
     "/query_page",
     response_model=Result[PaginationResult[ServerResponse]],
     dependencies=[Depends(check_api_key)],

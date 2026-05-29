@@ -123,6 +123,14 @@ class ServerResponse(BaseModel):
             "2023-01-07 09:00:00",
         ],
     )
+    is_pinned: Optional[bool] = Field(
+        default=False,
+        description="Whether the conversation is pinned.",
+        examples=[
+            True,
+            False,
+        ],
+    )
 
     def to_dict(self, **kwargs) -> Dict[str, Any]:
         """Convert the model to a dictionary"""

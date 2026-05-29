@@ -80,6 +80,7 @@ class ServeDao(BaseDao[ServeEntity, ServeRequest, ServerResponse]):
             sys_code=entity.sys_code,
             gmt_created=gmt_created,
             gmt_modified=gmt_modified,
+            is_pinned=entity.is_pinned,
         )
 
     def get_latest_message(self, conv_uid: str) -> Optional[MessageStorageItem]:
@@ -132,7 +133,7 @@ class ServeDao(BaseDao[ServeEntity, ServeRequest, ServerResponse]):
         """
         with self.session(commit=False) as session:
             query = self._create_query_object(session, req)
-            query = query.order_by(ServeEntity.gmt_created.desc())
+            query = query.order_by(ServeEntity.is_pinned.desc(), ServeEntity.gmt_modified.desc())
             total_count = query.count()
             items = query.offset((page - 1) * page_size).limit(page_size)
             total_pages = (total_count + page_size - 1) // page_size

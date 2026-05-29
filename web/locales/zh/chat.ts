@@ -61,7 +61,7 @@ export const ChatZh: Resources['translation'] = {
   use_knowledge: '使用知识库',
   use_database: '使用数据库',
   execution_steps: '执行步骤',
-  db_gpt_computer: 'DB-GPT 的电脑',
+  db_gpt_computer: '沙盒',
   load_skill: '加载技能',
   section_analysis_planning: '分析与规划',
   section_skill_loading: '技能加载',
@@ -151,4 +151,6 @@ export const ChatZh: Resources['translation'] = {
   task_plan_progress_summary: '共 {{total}} 个任务，已完成 {{done}} 个',
   task_plan_all_done: '{{total}} 个任务全部完成',
   task_plan_current: '当前：{{task}}',
+  update_time: '更新',
+  created_at: '创建',
 } as const;

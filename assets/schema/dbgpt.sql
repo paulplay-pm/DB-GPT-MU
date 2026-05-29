@@ -814,3 +814,9 @@ INSERT INTO sys_permission (code, name, parent_code, perm_type, sort) VALUES
 -- 修改权限码，使其与前端 permissionKey 匹配
 UPDATE sys_permission SET code = 'chat.view' WHERE code = 'explore';
 UPDATE sys_permission SET code = 'skills.view' WHERE code = 'skills';
+
+-- 添加 is_pinned 列
+ALTER TABLE `chat_history` ADD COLUMN `is_pinned` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Whether the session is pinned';
+
+-- 创建索引
+CREATE INDEX `idx_chat_history_is_pinned` ON `chat_history`(`is_pinned`);

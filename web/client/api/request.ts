@@ -177,6 +177,18 @@ export const delDialogue = (conv_uid: string) => {
   return POST(`/api/v1/chat/dialogue/delete?con_uid=${conv_uid}`);
 };
 
+export const pinDialogue = (convUid: string) => {
+  return POST(`/api/v1/chat/dialogue/pin?con_uid=${convUid}`);
+};
+
+export const unpinDialogue = (convUid: string) => {
+  return POST(`/api/v1/chat/dialogue/unpin?con_uid=${convUid}`);
+};
+
+export const renameDialogue = (convUid: string, newSummary: string) => {
+  return POST(`/api/v1/chat/dialogue/rename?con_uid=${convUid}&new_summary=${newSummary}`);
+};
+
 /** Editor */
 export const getEditorSqlRounds = (id: string) => {
   return GET<null, GetEditorSQLRoundRequest>(`/api/v1/editor/sql/rounds?con_uid=${id}`);

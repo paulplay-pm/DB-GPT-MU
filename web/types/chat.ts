@@ -69,6 +69,7 @@ export type IChatDialogueSchema = {
   param_need?: ParamNeed[];
   gmt_created?: string;
   gmt_modified?: string;
+  is_pinned?: boolean;
 };
 
 export type UserParam = {

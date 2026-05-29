@@ -1224,11 +1224,15 @@ class StorageConversation(OnceConversation, StorageItem):
         conv_storage: Optional[StorageInterface] = None,
         message_storage: Optional[StorageInterface] = None,
         load_message: bool = True,
+        is_pinned: bool = False,
+        gmt_modified: Optional[datetime] = None,
         **kwargs,
     ):
         """Create a conversation."""
         super().__init__(chat_mode, user_name, sys_code, summary, app_code, **kwargs)
         self.conv_uid = conv_uid
+        self.is_pinned = is_pinned
+        self.gmt_modified = gmt_modified
         self._message_ids = message_ids
         # Record the message index last time saved to the storage,
         # next time save messages which index is _has_stored_message_index + 1
@@ -1283,6 +1287,16 @@ class StorageConversation(OnceConversation, StorageItem):
             # Save messages independently
             self.message_storage.save_list(messages_to_save)
         # Save conversation
+        # Only set summary from the first user message if summary is currently empty
+        # (first save scenario). After that, summary is locked and won't be overwritten.
+        if not self.summary:
+            latest_user_message = self.get_latest_user_message()
+            if latest_user_message:
+                self.summary = (
+                    latest_user_message.last_text[:250]
+                    if latest_user_message.last_text
+                    else self.summary
+                )
         if self.summary is not None and len(self.summary) > 4000:
             self.summary = self.summary[0:4000]
         self.conv_storage.save_or_update(self)

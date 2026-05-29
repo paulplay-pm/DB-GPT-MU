@@ -53,6 +53,7 @@ class ChatHistoryEntity(Model):
     gmt_created = Column(DateTime, default=datetime.now, comment="Record creation time")
     gmt_modified = Column(DateTime, default=datetime.now, comment="Record update time")
     app_code = Column(String(255), nullable=True, comment="App unique code")
+    is_pinned = Column(Integer, default=0, comment="Is pinned (0/1)")
 
     Index("idx_q_user", "user_name")
     Index("idx_q_mode", "chat_mode")

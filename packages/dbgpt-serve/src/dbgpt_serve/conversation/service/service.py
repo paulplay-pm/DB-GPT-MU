@@ -155,6 +155,39 @@ class Service(BaseService[ServeEntity, ServeRequest, ServerResponse]):
         conv: StorageConversation = self.create_storage_conv(request)
         conv.clear()
 
+    def pin(self, request: ServeRequest) -> None:
+        """Pin a conversation
+
+        Args:
+            request (ServeRequest): The request
+        """
+        conv: StorageConversation = self.create_storage_conv(request)
+        conv.is_pinned = True
+        # Update gmt_modified to sort pinned items by most recently pinned
+        conv.gmt_modified = datetime.now()
+        conv.save_to_storage()
+
+    def unpin(self, request: ServeRequest) -> None:
+        """Unpin a conversation
+
+        Args:
+            request (ServeRequest): The request
+        """
+        conv: StorageConversation = self.create_storage_conv(request)
+        conv.is_pinned = False
+        conv.save_to_storage()
+
+    def rename(self, request: ServeRequest, new_summary: str) -> None:
+        """Rename a conversation
+
+        Args:
+            request (ServeRequest): The request
+            new_summary (str): The new summary for the conversation
+        """
+        conv: StorageConversation = self.create_storage_conv(request)
+        conv.summary = new_summary
+        conv.save_to_storage()
+
     def get_list(self, request: ServeRequest) -> List[ServerResponse]:
         """Get a list of Conversation entities
 

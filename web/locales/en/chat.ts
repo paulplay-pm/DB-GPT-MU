@@ -53,7 +53,7 @@ export const ChatEn = {
   use_knowledge: 'Use Knowledge Base',
   use_database: 'Use Database',
   execution_steps: 'Execution Steps',
-  db_gpt_computer: "DB-GPT's Computer",
+  db_gpt_computer: 'Sandbox',
   load_skill: 'Load Skill',
   section_analysis_planning: 'Analysis & Planning',
   section_skill_loading: 'Skill Loading',
@@ -143,4 +143,6 @@ export const ChatEn = {
   task_plan_progress_summary: '{{done}} of {{total}} tasks completed',
   task_plan_all_done: 'All {{total}} tasks completed',
   task_plan_current: 'Current: {{task}}',
+  update_time: 'Updated',
+  created_at: 'Created',
 };

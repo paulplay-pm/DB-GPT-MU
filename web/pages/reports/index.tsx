@@ -1,10 +1,17 @@
 'use client';
 
-import { apiInterceptors, delDialogue, getDialogueListPaged } from '@/client/api';
+import {
+  apiInterceptors,
+  delDialogue,
+  getDialogueListPaged,
+  pinDialogue,
+  renameDialogue,
+  unpinDialogue,
+} from '@/client/api';
 import PageHeader from '@/new-components/common/PageHeader';
 import Toolbar from '@/new-components/common/Toolbar';
 import { IChatDialogueSchema } from '@/types/chat';
-import { DeleteOutlined, MessageOutlined, SearchOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, MessageOutlined, PushpinOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import { Empty, Input, Pagination, Popconfirm, Spin, Tabs, Tooltip, message } from 'antd';
 import moment from 'moment';
@@ -91,9 +98,14 @@ function ConversationsTab({
     });
   }, [list, searchKeyword]);
 
-  const formatTime = (dateStr?: string) => {
+  const formatRelativeTime = (dateStr?: string) => {
     if (!dateStr) return '';
     return moment(dateStr).fromNow();
+  };
+
+  const formatAbsoluteTime = (dateStr?: string) => {
+    if (!dateStr) return '';
+    return moment(dateStr).format('YYYY-MM-DD HH:mm');
   };
 
   const getTitle = (conv: IChatDialogueSchema) => {
@@ -121,6 +133,27 @@ function ConversationsTab({
     [fetchList],
   );
 
+  const handlePinToggle = useCallback(async (e: React.MouseEvent, conv: IChatDialogueSchema) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const [err] = await apiInterceptors(conv.is_pinned ? unpinDialogue(conv.conv_uid) : pinDialogue(conv.conv_uid));
+    if (!err) {
+      setList(prev =>
+        prev.map(item => (item.conv_uid === conv.conv_uid ? { ...item, is_pinned: !conv.is_pinned } : item)),
+      );
+    }
+  }, []);
+
+  const handleRename = useCallback(async (convUid: string, newSummary: string) => {
+    const [err] = await apiInterceptors(renameDialogue(convUid, newSummary));
+    if (!err) {
+      setList(prev => prev.map(item => (item.conv_uid === convUid ? { ...item, user_input: newSummary } : item)));
+      message.success('重命名成功');
+      return true;
+    }
+    return false;
+  }, []);
+
   return (
     <div className='flex-1 flex flex-col overflow-hidden'>
       <div className='flex items-center gap-3 mb-4'>
@@ -146,46 +179,20 @@ function ConversationsTab({
           ) : (
             <div className='space-y-2'>
               {filteredList.map(conv => (
-                <div
+                <ConversationItem
                   key={conv.conv_uid}
+                  conv={conv}
+                  t={t}
+                  getTitle={getTitle}
+                  formatRelativeTime={formatRelativeTime}
+                  formatAbsoluteTime={formatAbsoluteTime}
+                  onDelete={handleDelete}
+                  onPinToggle={handlePinToggle}
+                  onRename={handleRename}
                   onClick={() =>
                     router.push(`/?id=${conv.conv_uid}&title=${encodeURIComponent(getTitle(conv))}&parent=reports`)
                   }
-                  className='group flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-colors hover:bg-white dark:hover:bg-gray-800 hover:shadow-sm border border-transparent hover:border-[var(--border-color)] dark:hover:border-gray-700'
-                >
-                  <div className='flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-[var(--bg-tertiary)]'>
-                    <MessageOutlined className='text-[var(--text-tertiary)] text-sm' />
-                  </div>
-                  <div className='flex-1 min-w-0'>
-                    <div className='text-sm font-medium text-[var(--text-primary)] truncate'>{getTitle(conv)}</div>
-                    {conv.gmt_created && (
-                      <div className='text-xs text-[var(--text-tertiary)] mt-0.5'>{formatTime(conv.gmt_created)}</div>
-                    )}
-                  </div>
-                  <Popconfirm
-                    title='确认删除这条会话记录吗？'
-                    onConfirm={e => handleDelete(e as React.MouseEvent, conv.conv_uid)}
-                    onCancel={e => {
-                      e?.stopPropagation();
-                      e?.preventDefault();
-                    }}
-                    okText='删除'
-                    cancelText='取消'
-                    okButtonProps={{ danger: true }}
-                  >
-                    <Tooltip title='删除'>
-                      <div
-                        className='flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-[var(--bg-hover)] rounded cursor-pointer'
-                        onClick={e => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                        }}
-                      >
-                        <DeleteOutlined className='text-[var(--text-tertiary)] hover:text-red-500' />
-                      </div>
-                    </Tooltip>
-                  </Popconfirm>
-                </div>
+                />
               ))}
             </div>
           )}
@@ -203,6 +210,165 @@ function ConversationsTab({
           />
         </div>
       )}
+    </div>
+  );
+}
+
+function ConversationItem({
+  conv,
+  t,
+  getTitle,
+  formatRelativeTime,
+  formatAbsoluteTime,
+  onDelete,
+  onPinToggle,
+  onRename,
+  onClick,
+}: {
+  conv: IChatDialogueSchema;
+  t: any;
+  getTitle: (conv: IChatDialogueSchema) => string;
+  formatRelativeTime: (dateStr?: string) => string;
+  formatAbsoluteTime: (dateStr?: string) => string;
+  onDelete: (e: React.MouseEvent, convUid: string) => void;
+  onPinToggle: (e: React.MouseEvent, conv: IChatDialogueSchema) => void;
+  onRename: (convUid: string, newSummary: string) => Promise<boolean>;
+  onClick: () => void;
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(getTitle(conv));
+  const inputRef = useRef<any>(null);
+
+  const handleStartEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setEditValue(getTitle(conv));
+    setIsEditing(true);
+    setTimeout(() => inputRef.current?.focus(), 0);
+  };
+
+  const handleConfirmEdit = async (e?: React.MouseEvent | React.KeyboardEvent) => {
+    e?.stopPropagation();
+    e?.preventDefault();
+    if (editValue.trim() && editValue !== getTitle(conv)) {
+      const success = await onRename(conv.conv_uid, editValue.trim());
+      if (success) {
+        setIsEditing(false);
+      }
+    } else {
+      setIsEditing(false);
+    }
+  };
+
+  const handleCancelEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setIsEditing(false);
+    setEditValue(getTitle(conv));
+  };
+
+  const title = getTitle(conv);
+
+  return (
+    <div
+      onClick={isEditing ? undefined : onClick}
+      className={`group flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-colors hover:bg-white dark:hover:bg-gray-800 hover:shadow-sm border border-transparent hover:border-[var(--border-color)] dark:hover:border-gray-700${conv.is_pinned ? ' bg-amber-50 dark:bg-amber-900/10 border-l-4 border-l-amber-400 dark:border-l-amber-500' : ''}`}
+    >
+      <div className='flex-shrink-0'>
+        <Tooltip title={conv.is_pinned ? '取消置顶' : '置顶'}>
+          <PushpinOutlined
+            className={`text-sm cursor-pointer transition-colors ${conv.is_pinned ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)] opacity-0 group-hover:opacity-100'} hover:text-[var(--text-primary)]`}
+            onClick={e => onPinToggle(e, conv)}
+            style={{ transform: conv.is_pinned ? 'rotate(-45deg)' : 'none' }}
+          />
+        </Tooltip>
+      </div>
+      <div className='flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-[var(--bg-tertiary)]'>
+        <MessageOutlined className='text-[var(--text-tertiary)] text-sm' />
+      </div>
+      <div className='flex-1 min-w-0'>
+        {isEditing ? (
+          <Input
+            ref={inputRef}
+            value={editValue}
+            onChange={e => setEditValue(e.target.value)}
+            onPressEnter={handleConfirmEdit}
+            onClick={e => e.stopPropagation()}
+            size='small'
+            className='mb-1'
+          />
+        ) : (
+          <div className='text-sm font-medium text-[var(--text-primary)] truncate'>{title}</div>
+        )}
+        <div className='text-xs text-[var(--text-tertiary)] space-y-0.5'>
+          {conv.gmt_modified && (
+            <div>
+              {t('update_time') || '更新'}: {formatRelativeTime(conv.gmt_modified)}
+            </div>
+          )}
+          {conv.gmt_created && (
+            <div>
+              {t('created_at') || '创建'}: {formatAbsoluteTime(conv.gmt_created)}
+            </div>
+          )}
+        </div>
+      </div>
+      <div className='flex-shrink-0 flex items-center gap-1'>
+        {isEditing ? (
+          <>
+            <Tooltip title='确认'>
+              <div
+                className='opacity-100 p-1 hover:bg-[var(--bg-hover)] rounded cursor-pointer text-blue-500'
+                onClick={handleConfirmEdit}
+              >
+                <span className='text-xs'>确认</span>
+              </div>
+            </Tooltip>
+            <Tooltip title='取消'>
+              <div
+                className='opacity-100 p-1 hover:bg-[var(--bg-hover)] rounded cursor-pointer text-gray-500'
+                onClick={handleCancelEdit}
+              >
+                <span className='text-xs'>取消</span>
+              </div>
+            </Tooltip>
+          </>
+        ) : (
+          <>
+            <Tooltip title='重命名'>
+              <div
+                className='flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-[var(--bg-hover)] rounded cursor-pointer'
+                onClick={handleStartEdit}
+              >
+                <EditOutlined className='text-[var(--text-tertiary)] hover:text-[var(--text-primary)]' />
+              </div>
+            </Tooltip>
+            <Popconfirm
+              title='确认删除这条会话记录吗？'
+              onConfirm={e => onDelete(e as React.MouseEvent, conv.conv_uid)}
+              onCancel={e => {
+                e?.stopPropagation();
+                e?.preventDefault();
+              }}
+              okText='删除'
+              cancelText='取消'
+              okButtonProps={{ danger: true }}
+            >
+              <Tooltip title='删除'>
+                <div
+                  className='flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-[var(--bg-hover)] rounded cursor-pointer'
+                  onClick={e => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                  }}
+                >
+                  <DeleteOutlined className='text-[var(--text-tertiary)] hover:text-red-500' />
+                </div>
+              </Tooltip>
+            </Popconfirm>
+          </>
+        )}
+      </div>
     </div>
   );
 }

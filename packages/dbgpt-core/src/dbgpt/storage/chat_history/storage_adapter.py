@@ -45,6 +45,8 @@ class DBStorageConversationItemAdapter(
             message_ids=message_ids,
             sys_code=item.sys_code,
             app_code=item.app_code,
+            is_pinned=1 if item.is_pinned else 0,
+            gmt_modified=item.gmt_modified,
         )
 
     def from_storage_format(self, model: ChatHistoryEntity) -> StorageConversation:
@@ -70,6 +72,8 @@ class DBStorageConversationItemAdapter(
             save_message_independent=save_message_independent,
             messages=old_messages,
             app_code=model.app_code,
+            is_pinned=bool(model.is_pinned),
+            gmt_modified=model.gmt_modified,
         )
 
     def get_query_for_identifier(
