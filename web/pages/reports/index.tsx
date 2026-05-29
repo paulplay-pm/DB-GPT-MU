@@ -199,7 +199,9 @@ function ConversationsTab({
                   onRename={handleRename}
                   onClick={() =>
                     router.push(
-                      `/chat?scene=${conv.chat_mode}&id=${conv.conv_uid}&title=${encodeURIComponent(getTitle(conv))}`,
+                      conv.chat_mode === 'chat_react_agent'
+                        ? `/?id=${conv.conv_uid}&title=${encodeURIComponent(getTitle(conv))}`
+                        : `/chat?scene=${conv.chat_mode}&id=${conv.conv_uid}&title=${encodeURIComponent(getTitle(conv))}`,
                     )
                   }
                 />
