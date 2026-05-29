@@ -79,7 +79,7 @@ const Sider: React.FC = () => {
       collapsible={true}
       collapsed={collapsed}
       trigger={null}
-      className='flex flex-1 flex-col h-full justify-between  bg-bar dark:bg-[#232734] px-4 pt-4'
+      className='flex flex-1 flex-col h-full justify-between  bg-bar dark:bg-[#232734] px-4'
     >
       {collapsed ? (
         <></>

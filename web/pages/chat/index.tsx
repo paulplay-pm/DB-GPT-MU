@@ -119,16 +119,19 @@ const Chat: React.FC = () => {
   const [knowledgeValue, setKnowledgeValue] = useState<string | null>(null);
   const [modelValue, setModelValue] = useState<string>('');
 
+  // Store handleChat in a ref to avoid circular dependency with useCallback
+  const handleChatRef = useRef<((content: UserChatContent, data?: Record<string, any>) => Promise<void>) | null>(null);
+
   // Auto-send init message if present
   useEffect(() => {
     if (initMsg && chatId && !history.length && !replyLoading) {
       // Small delay to ensure everything is loaded
       const timer = setTimeout(() => {
-        handleChat(initMsg);
+        handleChatRef.current?.(initMsg);
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [chatId, handleChat, history.length, initMsg, replyLoading]);
+  }, [chatId, history.length, initMsg, replyLoading]);
 
   useEffect(() => {
     setTemperatureValue(appInfo?.param_need?.filter(item => item.type === 'temperature')[0]?.value || 0.6);
@@ -334,6 +337,9 @@ const Chat: React.FC = () => {
     },
     [chat, chatId, history, modelValue, scene],
   );
+
+  // Update ref when handleChat changes
+  handleChatRef.current = handleChat;
 
   useAsyncEffect(async () => {
     // 如果是默认小助手，不获取历史记录

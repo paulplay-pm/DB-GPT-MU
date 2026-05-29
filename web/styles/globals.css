@@ -7,6 +7,12 @@
 @tailwind components;
 @tailwind utilities;
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: var(--joy-fontFamily-body, var(--joy-Josefin Sans, sans-serif));

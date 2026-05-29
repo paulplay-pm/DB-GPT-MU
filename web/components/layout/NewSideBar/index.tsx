@@ -236,9 +236,9 @@ export default function NewSideBar() {
 
   if (collapsed) {
     return (
-      <div className='flex flex-col h-screen w-16 min-w-16 bg-[var(--bg-secondary)] border-r border-[var(--border-color)] transition-all duration-200'>
+      <div className='flex flex-col h-full w-16 min-w-16 bg-[var(--bg-secondary)] border-r border-[var(--border-color)] transition-all duration-200 overflow-hidden'>
         {/* Expand button area */}
-        <div className='flex items-center justify-center h-16 border-b border-[var(--border-color)]'>
+        <div className='flex items-center justify-center h-16 border-b border-[var(--border-color)] border-b-[1px] bg-[var(--bg-secondary)] box-border'>
           <Tooltip title={t('expand_sidebar')} placement='right'>
             <div
               className='flex items-center justify-center w-8 h-8 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded transition-colors'
@@ -318,9 +318,9 @@ export default function NewSideBar() {
   }
 
   return (
-    <div className='flex flex-col h-screen w-60 min-w-60 bg-[var(--bg-secondary)] border-r border-[var(--border-color)] transition-all duration-200'>
+    <div className='flex flex-col h-full w-60 min-w-60 bg-[var(--bg-secondary)] border-r-0 transition-all duration-200 overflow-hidden'>
       {/* Header with logo */}
-      <div className='flex items-center justify-between h-16 px-4 border-b border-[var(--border-color)]'>
+      <div className='h-16 flex items-center justify-between px-6 border-b border-[var(--border-color)] border-b-[1px] bg-[var(--bg-secondary)] box-border overflow-hidden shrink-0'>
         <div className='flex items-center gap-3 hover:opacity-80'>
           <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
             <span className='text-white font-bold text-sm'>DB</span>

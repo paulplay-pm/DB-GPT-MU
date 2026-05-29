@@ -116,11 +116,18 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
           <meta name='viewport' content='initial-scale=1.0, width=device-width, maximum-scale=1' />
         </Head>
         {router.pathname !== '/construct/app/extra' && (
-          <div className={classNames('transition-[width]', isMenuExpand ? 'w-60' : 'w-16', 'hidden', 'md:block')}>
+          <div
+            className={classNames(
+              'h-full transition-[width] overflow-hidden shrink-0',
+              isMenuExpand ? 'w-60' : 'w-16',
+              'hidden',
+              'md:block',
+            )}
+          >
             <NewSideBar />
           </div>
         )}
-        <div className='flex flex-col flex-1 relative overflow-hidden'>
+        <div className='flex flex-col flex-1 h-full relative overflow-hidden'>
           <TopActionBar />
           {children}
         </div>

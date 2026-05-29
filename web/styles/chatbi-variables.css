@@ -1,33 +1,16 @@
 /**
  * ChatBI Design System Variables
  * Based on ChatBI design spec for consistent styling across components
+ *
+ * NOTE: Theme-related CSS variables (colors, backgrounds) are defined in theme.css
+ * under :root (light) and .dark selectors. This file contains only design tokens
+ * that are NOT theme-related (border-radius, typography).
+ *
+ * DO NOT add theme-related variables here, or dark mode switching will break.
  */
 
+/* Design tokens only - not theme-related */
 :root {
-  /* Primary Colors */
-  --primary: #1677ff;
-  --primary-light: #e6f4ff;
-  --primary-hover: #4096ff;
-
-  /* Semantic Colors */
-  --success: #52c41a;
-  --warning: #faad14;
-  --error: #ff4d4f;
-  --purple: #722ed1;
-  --cyan: #13c2c2;
-
-  /* Text Colors */
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --text-tertiary: #9ca3af;
-
-  /* Background Colors */
-  --bg-primary: #f8fafc;
-  --bg-white: #ffffff;
-
-  /* Border */
-  --border: #e5e7eb;
-
   /* Border Radius */
   --radius-card: 12px;
   --radius-button: 8px;
