@@ -1,11 +1,10 @@
 import { ChatContext } from '@/app/chat-context';
-import { apiInterceptors, getAppInfo, getChatHistory, getDialogueList } from '@/client/api';
+import { apiInterceptors, getAppInfo, getChatHistory } from '@/client/api';
 import PromptBot from '@/components/common/prompt-bot';
 import useChat, { ChatContextStatus } from '@/hooks/use-chat';
 import ChatContentContainer from '@/new-components/chat/ChatContentContainer';
 import ChatDefault from '@/new-components/chat/content/ChatDefault';
 import ChatInputPanel from '@/new-components/chat/input/ChatInputPanel';
-import ChatSider from '@/new-components/chat/sider/ChatSider';
 import { IApp } from '@/types/app';
 import { ChartData, ChatHistoryResponse, IChatDialogueSchema, UserChatContent } from '@/types/chat';
 import { getInitMessage, transformFileUrl } from '@/utils';
@@ -156,16 +155,7 @@ const Chat: React.FC = () => {
     return !chatId && !scene;
   }, [chatId, scene]);
 
-  // 获取会话列表
-  const {
-    data: dialogueList = [],
-    refresh: refreshDialogList,
-    loading: listLoading,
-  } = useRequest(async () => {
-    return await apiInterceptors(getDialogueList());
-  });
-
-  // 获取应用详情
+  // 获取会话历史记录
   const { run: queryAppInfo, refresh: refreshAppInfo } = useRequest(
     async () =>
       await apiInterceptors(
@@ -183,10 +173,10 @@ const Chat: React.FC = () => {
   );
 
   // 列表当前活跃对话
-  const currentDialogue = useMemo(() => {
-    const [, list] = dialogueList;
-    return list?.find(item => item.conv_uid === chatId) || ({} as IChatDialogueSchema);
-  }, [chatId, dialogueList]);
+  const currentDialogue = useMemo(() => ({}) as IChatDialogueSchema, []);
+
+  // refreshDialogList: 仅保留上下文接口，实际刷新逻辑由 ChatInputPanel 等组件自行管理
+  const refreshDialogList = useCallback(() => {}, []);
 
   useEffect(() => {
     const initMessage = getInitMessage();
@@ -415,13 +405,6 @@ const Chat: React.FC = () => {
     >
       <Flex flex={1}>
         <Layout className='bg-gradient-light bg-cover bg-center dark:bg-gradient-dark'>
-          <ChatSider
-            refresh={refreshDialogList}
-            dialogueList={dialogueList}
-            listLoading={listLoading}
-            historyLoading={historyLoading}
-            order={order}
-          />
           <Layout className='bg-transparent'>
             {contentRender()}
             {/* Render PromptBot at the bottom right */}

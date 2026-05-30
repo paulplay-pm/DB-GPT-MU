@@ -49,6 +49,29 @@ const ICON_MAP: Record<string, ReactNode> = {
   SafetyOutlined: <SafetyOutlined />,
 };
 
+// Icon color mapping - maps icon keys to Tailwind color classes
+const ICON_COLORS: Record<string, string> = {
+  chat: 'text-[#1677FF]', // 🔵 品牌蓝 - 对话/沟通
+  reports: 'text-[#52C41A]', // 🟢 成功绿 - 文档/报告
+  favorites: 'text-[#FAAD14]', // ⭐ 星级黄 - 收藏/重要
+  templates: 'text-[#722ED1]', // 🟣 紫色 - 应用/模板
+  team: 'text-[#13C2C2]', // 🔷 青绿 - 团队协作
+  datasources: 'text-[#FA8C16]', // 🟠 橙色 - 数据库
+  knowledge: 'text-[#8B4513]', // 🟤 棕色 - 知识/书籍
+  skills: 'text-[#597EF7]', // ⚙️ 灰蓝 - 工具/技能
+  prompts: 'text-[#F5222D]', // 🔴 红色 - 编辑/创作
+  awel_workflow: 'text-[#2F54EB]', // 🟣 紫蓝 - 流程/架构
+  app_management: 'text-[#722ED1]', // 🟣 紫色 - 应用市场
+  model_management: 'text-[#D46B08]', // 🟠 深橙 - AI 模型
+  models_evaluation: 'text-[#13C2C2]', // 🟢 青绿 - 图表/评测
+  dbgpts: 'text-[#1890FF]', // 🔵 深蓝 - 全球/社区
+  registration: 'text-[#52C41A]', // 🟢 绿色 - 添加用户
+  user: 'text-[#1677FF]', // 🔵 蓝色 - 用户管理
+  role: 'text-[#D4A017]', // 🔑 金色 - 密钥/权限
+  dept: 'text-[#2F54EB]', // 🟣 紫蓝 - 组织架构
+  permission: 'text-[#FA8C16]', // ⚠️ 橙色 - 安全/权限
+};
+
 // Item display component
 function NavMenuItem({
   item,
@@ -56,6 +79,7 @@ function NavMenuItem({
   badgeCount,
   onNavigate,
   t,
+  iconColor,
 }: {
   item: NavItem;
   isActive: boolean;
@@ -63,6 +87,7 @@ function NavMenuItem({
   onNavigate: (path: string) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   t: any;
+  iconColor?: string; // 新增：icon 颜色类名
 }) {
   const icon = ICON_MAP[item.icon] || <AppstoreOutlined />;
 
@@ -86,7 +111,7 @@ function NavMenuItem({
           'text-lg mr-3 transition-colors duration-200',
           isActive
             ? 'text-[var(--text-primary)]'
-            : 'text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]',
+            : iconColor || 'text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]',
         )}
       >
         {icon}
@@ -223,6 +248,7 @@ export default function NewSideBar() {
               badgeCount={item.key === 'registration' ? pendingCount : undefined}
               onNavigate={handleNavigate}
               t={t}
+              iconColor={ICON_COLORS[item.key]}
             />
           ))}
         </NavGroupSection>
@@ -282,7 +308,7 @@ export default function NewSideBar() {
                         <span
                           className={cls(
                             'text-xl transition-colors duration-200',
-                            isActive ? 'text-primary' : 'text-[var(--text-secondary)]',
+                            isActive ? 'text-primary' : ICON_COLORS[item.key] || 'text-[var(--text-secondary)]',
                           )}
                         >
                           {icon}
