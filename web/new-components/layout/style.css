@@ -16,4 +16,33 @@
 .ant-tabs-ink-bar {
   @apply dark:bg-white;
 }
+/* ManusRightPanel fullscreen maximize */
+.ManusRightPanel--maximized {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #f8f9fc;
+  display: flex;
+  flex-direction: column;
+  animation: ManusRightPanel__expand 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.ManusRightPanel--maximized > div {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+@keyframes ManusRightPanel__expand {
+  from {
+    transform: scale(0.96);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 /* 你可能需要添加更多的自定义样式，取决于你的需求 */

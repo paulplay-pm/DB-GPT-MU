@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CreateAppModal from '../components/create-app-modal';
-import AwelLayout from './components/AwelLayout';
+import AwelLayout from './components/AwelLayoutComponent';
 import NativeApp from './components/NativeApp';
 import RecommendQuestions from './components/RecommendQuestions';
 import AutoPlan from './components/auto-plan';

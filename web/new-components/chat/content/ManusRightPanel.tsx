@@ -25,6 +25,8 @@ import {
   FileSearchOutlined,
   FileTextOutlined,
   FolderOpenOutlined,
+  FullscreenExitOutlined,
+  FullscreenOutlined,
   LeftOutlined,
   LinkOutlined,
   LoadingOutlined,
@@ -40,6 +42,8 @@ import { GPTVis } from '@antv/gpt-vis';
 import { Button, Table, Tooltip, message } from 'antd';
 import classNames from 'classnames';
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import '@/new-components/layout/style.css';
 import { useTranslation } from 'react-i18next';
 import { ArtifactItem, StepStatus, StepType } from './ManusLeftPanel';
 
@@ -1468,11 +1472,41 @@ const ManusRightPanel: React.FC<ManusRightPanelProps> = ({
   const [internalPanelView, setInternalPanelView] = useState<PanelView>('execution');
   const [fileFilter, setFileFilter] = useState<FileFilterTab>('all');
   const htmlPreviewRef = useRef<HTMLIFrameElement>(null);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [savedScrollY, setSavedScrollY] = useState(0);
   const panelView = controlledPanelView ?? internalPanelView;
   const setPanelView = (view: PanelView) => {
     setInternalPanelView(view);
     onPanelViewChange?.(view);
   };
+
+  const handleToggleMaximize = useCallback(() => {
+    if (isAnimating) return;
+    if (isMaximized) {
+      setIsMaximized(false);
+      setIsAnimating(true);
+      setTimeout(() => setIsAnimating(false), 300);
+      window.scrollTo(0, savedScrollY);
+    } else {
+      setSavedScrollY(window.scrollY);
+      setIsMaximized(true);
+      setIsAnimating(true);
+      setTimeout(() => setIsAnimating(false), 300);
+      window.scrollTo(0, 0);
+    }
+  }, [isMaximized, isAnimating, savedScrollY]);
+
+  useEffect(() => {
+    if (!isMaximized) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleToggleMaximize();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isMaximized, handleToggleMaximize]);
 
   const handleExportPdf = () => {
     try {
@@ -1602,18 +1636,32 @@ const ManusRightPanel: React.FC<ManusRightPanelProps> = ({
     return groups;
   }, [visibleOutputs]);
 
-  return (
+  const renderContent = () => (
     <div className='relative flex flex-col h-full bg-[#f8f9fc] dark:bg-[#0d0e11]'>
       {/* Collapse button is rendered by the parent layout to avoid overflow clipping */}
 
       {/* Terminal Header */}
-      <div className='flex items-center justify-between px-5 py-3 bg-white dark:bg-[#111217] border-b border-gray-200 dark:border-gray-800'>
+      <div
+        className='flex items-center justify-between px-5 py-3 bg-white dark:bg-[#111217] border-b border-gray-200 dark:border-gray-800'
+        onDoubleClick={(e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest('.header-toolbar')) return;
+          handleToggleMaximize();
+        }}
+      >
         <div className='flex items-center gap-3'>
-          <div className='flex items-center gap-2'>
-            <div className='w-3 h-3 rounded-full bg-red-500' />
-            <div className='w-3 h-3 rounded-full bg-yellow-500' />
-            <div className='w-3 h-3 rounded-full bg-green-500' />
-          </div>
+          <Tooltip title={isMaximized ? t('restore') : t('maximize')}>
+            <button
+              onClick={handleToggleMaximize}
+              className='w-7 h-7 rounded-md flex items-center justify-center transition-all duration-150 hover:bg-green-50'
+            >
+              {isMaximized ? (
+                <FullscreenExitOutlined className='text-sm' style={{ color: '#22C55E' }} />
+              ) : (
+                <FullscreenOutlined className='text-sm' style={{ color: '#22C55E' }} />
+              )}
+            </button>
+          </Tooltip>
           <div className='flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 font-medium'>
             <DesktopOutlined className='text-gray-500' />
             <span>{terminalTitle || t('db_gpt_computer')}</span>
@@ -2245,6 +2293,41 @@ const ManusRightPanel: React.FC<ManusRightPanelProps> = ({
       </div>
     </div>
   );
+
+  const canPortal = typeof document !== 'undefined' && document.body;
+
+  if (!canPortal) {
+    return renderContent();
+  }
+
+  if (isMaximized) {
+    return createPortal(
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9999,
+          background: '#f8f9fc',
+          display: 'flex',
+          flexDirection: 'column',
+          animation: 'ManusRightPanel__expand 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
+        }}
+      >
+        <div style={{ maxWidth: 1200, width: '100%', margin: '0 auto', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+          {renderContent()}
+        </div>
+        <style>{`
+          @keyframes ManusRightPanel__expand {
+            from { transform: scale(0.96); opacity: 0.8; }
+            to { transform: scale(1); opacity: 1; }
+          }
+        `}</style>
+      </div>,
+      document.body,
+    );
+  }
+
+  return renderContent();
 };
 
 export default memo(ManusRightPanel);

@@ -5,19 +5,20 @@ import { usePermission } from '@/context/PermissionContext';
 import UserBar from '@/new-components/layout/UserBar';
 import {
   ApartmentOutlined,
+  AppstoreFilled,
   AppstoreOutlined,
-  BookOutlined,
-  DatabaseOutlined,
-  EditOutlined,
-  FileTextOutlined,
+  BookFilled,
+  DatabaseFilled,
+  EditFilled,
+  FileTextFilled,
   GlobalOutlined,
   KeyOutlined,
   LineChartOutlined,
-  MessageOutlined,
+  MessageFilled,
   SafetyOutlined,
-  StarOutlined,
+  StarFilled,
   TeamOutlined,
-  ToolOutlined,
+  ToolFilled,
   UserAddOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -28,17 +29,17 @@ import { ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NAV_GROUPS, NavItem, PERMISSION_KEYS } from './config';
 
-// Icon mapping - maps icon string names to Ant Design icon components
+// Icon mapping - maps icon string names to Ant Design icon components (filled style where available)
 const ICON_MAP: Record<string, ReactNode> = {
-  MessageOutlined: <MessageOutlined />,
-  FileTextOutlined: <FileTextOutlined />,
-  StarOutlined: <StarOutlined />,
-  AppstoreOutlined: <AppstoreOutlined />,
+  MessageOutlined: <MessageFilled />,
+  FileTextOutlined: <FileTextFilled />,
+  StarOutlined: <StarFilled />,
+  AppstoreOutlined: <AppstoreFilled />,
   TeamOutlined: <TeamOutlined />,
-  DatabaseOutlined: <DatabaseOutlined />,
-  BookOutlined: <BookOutlined />,
-  ToolOutlined: <ToolOutlined />,
-  EditOutlined: <EditOutlined />,
+  DatabaseOutlined: <DatabaseFilled />,
+  BookOutlined: <BookFilled />,
+  ToolOutlined: <ToolFilled />,
+  EditOutlined: <EditFilled />,
   ApartmentOutlined: <ApartmentOutlined />,
   LineChartOutlined: <LineChartOutlined />,
   GlobalOutlined: <GlobalOutlined />,
