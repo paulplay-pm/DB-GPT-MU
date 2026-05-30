@@ -21,6 +21,7 @@ interface ConversationCardProps {
   categoryColor?: string;
   categoryName?: string;
   onDragEnd?: () => void;
+  listSource?: 'chat' | 'reports';
 }
 
 function ConversationCard({
@@ -35,6 +36,7 @@ function ConversationCard({
   categoryColor,
   categoryName,
   onDragEnd,
+  listSource = 'chat',
 }: ConversationCardProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
@@ -63,11 +65,26 @@ function ConversationCard({
 
   const handleClick = () => {
     if (isEditing) return;
-    router.push(
+    // When from reports list, navigate to chat detail page but with from=reports
+    // so TopActionBar shows "我的报告" as breadcrumb parent
+    if (listSource === 'reports') {
+      // chat_react_agent uses simple / route, other scenes use /chat with scene param
+      if (conv.chat_mode === 'chat_react_agent') {
+        router.push(`/?id=${conv.conv_uid}&title=${encodeURIComponent(title)}&from=reports`);
+      } else {
+        router.push(
+          `/chat?scene=${conv.chat_mode}&id=${conv.conv_uid}&title=${encodeURIComponent(title)}&from=reports`,
+        );
+      }
+      return;
+    }
+    // Default behavior for chat list
+    const basePath = conv.chat_mode === 'chat_react_agent' ? '/' : '/chat';
+    const queryPart =
       conv.chat_mode === 'chat_react_agent'
-        ? `/?id=${conv.conv_uid}&title=${encodeURIComponent(title)}`
-        : `/chat?scene=${conv.chat_mode}&id=${conv.conv_uid}&title=${encodeURIComponent(title)}`,
-    );
+        ? `id=${conv.conv_uid}&title=${encodeURIComponent(title)}`
+        : `scene=${conv.chat_mode}&id=${conv.conv_uid}&title=${encodeURIComponent(title)}`;
+    router.push(`${basePath}?${queryPart}`);
   };
 
   const handleStartEdit = (e: React.MouseEvent) => {

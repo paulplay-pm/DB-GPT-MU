@@ -207,3 +207,5 @@ test_docs
 .qoder/
 .qwencode/
 .sisyphus/
+.playwright-mcp/
+.superpowers/

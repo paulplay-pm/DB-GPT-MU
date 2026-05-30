@@ -27,9 +27,15 @@ interface ConversationListProps {
   activeCategory: ActiveCategory;
   userName: string;
   onCategoriesChange: () => void;
+  listSource?: 'chat' | 'reports';
 }
 
-function ConversationList({ activeCategory, userName, onCategoriesChange }: ConversationListProps) {
+function ConversationList({
+  activeCategory,
+  userName,
+  onCategoriesChange,
+  listSource = 'chat',
+}: ConversationListProps) {
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [list, setList] = useState<IChatDialogueSchema[]>([]);
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -257,6 +263,7 @@ function ConversationList({ activeCategory, userName, onCategoriesChange }: Conv
                       onPinToggle={() => handlePinToggle(conv.conv_uid, !!conv.is_pinned)}
                       onRename={newSummary => handleRename(conv.conv_uid, newSummary)}
                       onMoveToCategory={() => handleMoveToCategory(conv.conv_uid)}
+                      listSource={listSource}
                     />
                   ))}
                   {/* Separator */}
@@ -292,6 +299,7 @@ function ConversationList({ activeCategory, userName, onCategoriesChange }: Conv
                   onPinToggle={() => handlePinToggle(conv.conv_uid, !!conv.is_pinned)}
                   onRename={newSummary => handleRename(conv.conv_uid, newSummary)}
                   onMoveToCategory={() => handleMoveToCategory(conv.conv_uid)}
+                  listSource={listSource}
                 />
               ))}
             </div>

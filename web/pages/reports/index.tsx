@@ -31,6 +31,7 @@ function ReportsPage() {
             activeCategory={activeCategory}
             userName={userName}
             onCategoriesChange={handleCategoriesChange}
+            listSource='reports'
             key={categoriesRefreshKey}
           />
         </div>

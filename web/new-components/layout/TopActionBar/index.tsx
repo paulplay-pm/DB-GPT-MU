@@ -1,8 +1,8 @@
-import { QuestionCircleOutlined, BellOutlined, PlusOutlined } from '@ant-design/icons';
+import { BellOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Modal, Tooltip } from 'antd';
-import React, { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 // Page name mapping: path -> i18n key
 const PAGE_NAME_MAP: { [key: string]: string } = {
@@ -56,25 +56,31 @@ function TopActionBar() {
 
   const breadcrumbs = useMemo(() => {
     const { pathname, query } = router;
-    const parentKey = PAGE_NAME_MAP[pathname];
 
-    // If no parent mapping, try to find by checking if pathname starts with a key
-    let resolvedParentKey = parentKey;
-    if (!resolvedParentKey) {
-      // Check for partial matches like /construct/flow vs /construct/flow/canvas
+    // Check for 'from' query param to override breadcrumb parent
+    // This is used when navigating from reports list to chat detail
+    const fromParam = query.from;
+    let parentKey = PAGE_NAME_MAP[pathname];
+
+    // If from=reports is set, use reports as parent regardless of pathname
+    if (fromParam === 'reports') {
+      parentKey = 'reports';
+    } else if (!parentKey) {
+      // If no parent mapping, try to find by checking if pathname starts with a key
       const keys = Object.keys(PAGE_NAME_MAP);
-      resolvedParentKey = keys.find(
-        k => k !== '/' && pathname.startsWith(k)
-      ) || 'chat';
+      parentKey = keys.find(k => k !== '/' && pathname.startsWith(k)) || 'chat';
     }
 
-    const parent = resolvedParentKey || 'chat';
+    const parent = parentKey || 'chat';
     const parentPath = PAGE_PATH_MAP[parent] || '/';
 
     // Get child from query if present (title takes precedence over id)
-    const child = typeof query.title === 'string'
-      ? decodeURIComponent(query.title)
-      : (typeof query.id === 'string' ? query.id : undefined);
+    const child =
+      typeof query.title === 'string'
+        ? decodeURIComponent(query.title)
+        : typeof query.id === 'string'
+          ? query.id
+          : undefined;
 
     return { parent, parentPath, child };
   }, [router.pathname, router.query]);
@@ -118,15 +124,11 @@ function TopActionBar() {
             </span>
             <span className='text-[var(--text-tertiary)]'>/</span>
             <span className='text-[var(--text-primary)] font-medium'>
-              {breadcrumbs.child.length > 20
-                ? breadcrumbs.child.substring(0, 20) + '...'
-                : breadcrumbs.child}
+              {breadcrumbs.child.length > 20 ? breadcrumbs.child.substring(0, 20) + '...' : breadcrumbs.child}
             </span>
           </>
         ) : (
-          <span className='text-[var(--text-primary)] font-medium'>
-            {t(breadcrumbs.parent)}
-          </span>
+          <span className='text-[var(--text-primary)] font-medium'>{t(breadcrumbs.parent)}</span>
         )}
       </div>
 
@@ -146,12 +148,7 @@ function TopActionBar() {
           />
         </Tooltip>
 
-        <Button
-          type='primary'
-          icon={<PlusOutlined />}
-          onClick={handleNewChat}
-          size='middle'
-        >
+        <Button type='primary' icon={<PlusOutlined />} onClick={handleNewChat} size='middle'>
           {t('new_chat') || '新建对话'}
         </Button>
       </div>
