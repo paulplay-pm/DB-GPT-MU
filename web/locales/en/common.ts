@@ -513,6 +513,7 @@ export const CommonEn = {
   role_management: 'Role Management',
   registration_review: 'Registration Review',
   permission_management: 'Permission Management',
+  system_config: 'System Config',
   // Admin table columns
   Admin_Login_Name: 'Login Name',
   Admin_Real_Name: 'Real Name',
