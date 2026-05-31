@@ -1,12 +1,13 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 export interface BrandConfig {
   logo_url: string | null;
   product_name_zh: string;
   product_name_en: string;
   slogan: string;
+  slogan_en: string;
 }
 
 interface BrandContextType {
@@ -19,6 +20,7 @@ const defaultBrandConfig: BrandConfig = {
   product_name_zh: 'DB-GPT',
   product_name_en: 'DB-GPT',
   slogan: '开口问数，预见洞察',
+  slogan_en: 'Ask Data, Find Insights',
 };
 
 const STORAGE_KEY = 'brand_config';
@@ -68,9 +70,5 @@ export function BrandProvider({ children }: { children: ReactNode }) {
     window.dispatchEvent(new Event('brand_config_updated'));
   };
 
-  return (
-    <BrandContext.Provider value={{ brandConfig, updateBrandConfig }}>
-      {children}
-    </BrandContext.Provider>
-  );
+  return <BrandContext.Provider value={{ brandConfig, updateBrandConfig }}>{children}</BrandContext.Provider>;
 }

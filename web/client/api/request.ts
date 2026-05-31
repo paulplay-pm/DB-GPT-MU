@@ -494,3 +494,28 @@ export const moveConversations = (data: { conv_uids: string[]; category_id: numb
 export const getCategoryCounts = (userName: string) => {
   return GET<null, Record<number, number>>(`/api/v1/chat/dialogue/conversation/category/counts?user_name=${userName}`);
 };
+
+/** System Config */
+export interface BrandConfig {
+  logo_url: string | null;
+  product_name_zh: string;
+  product_name_en: string;
+  slogan: string;
+  slogan_en: string;
+}
+
+export const getBrandConfig = () => {
+  return GET<null, BrandConfig>('/api/v1/system-config/brand');
+};
+
+export const updateBrandConfig = (data: Partial<BrandConfig>) => {
+  return PUT<Partial<BrandConfig>, BrandConfig>('/api/v1/system-config/brand', data);
+};
+
+export const uploadLogo = (data: FormData) => {
+  return POST<FormData, { logo_url: string }>('/api/v1/system-config/logo', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};

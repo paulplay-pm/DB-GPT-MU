@@ -1,6 +1,6 @@
 import { ChatContext } from '@/app/chat-context';
-import { useBrand } from '@/context/BrandContext';
 import ModelSelector from '@/components/chat/header/model-selector';
+import { useBrand } from '@/context/BrandContext';
 import { ColumnAnalysis, PreprocessingResult, analyzeDataset } from '@/new-components/analysis';
 import { ChartConfig, ChartType } from '@/new-components/charts';
 import ContextUsageBar from '@/new-components/chat/content/ContextUsageBar';
@@ -47,6 +47,7 @@ import {
 } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import { Button, ConfigProvider, Dropdown, Input, Popover, Tag, Tooltip, Upload, message } from 'antd';
+import i18next from 'i18next';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
@@ -2845,7 +2846,7 @@ const Playground: NextPage = () => {
               {/* Slogan Section - centered in the available space */}
               <div className='flex-1 flex flex-col items-center justify-center py-8'>
                 <h2 className='text-2xl md:text-3xl font-medium text-gray-700 dark:text-gray-200 mb-3 text-center'>
-                  {brandConfig.slogan}
+                  {i18next.language === 'en' ? brandConfig.slogan_en : brandConfig.slogan}
                 </h2>
               </div>
 

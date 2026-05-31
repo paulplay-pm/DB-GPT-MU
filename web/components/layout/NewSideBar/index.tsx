@@ -1,8 +1,8 @@
 'use client';
 
 import { ChatContext } from '@/app/chat-context';
-import { usePermission } from '@/context/PermissionContext';
 import { useBrand } from '@/context/BrandContext';
+import { usePermission } from '@/context/PermissionContext';
 import UserBar from '@/new-components/layout/UserBar';
 import {
   ApartmentOutlined,
@@ -26,6 +26,7 @@ import {
 } from '@ant-design/icons';
 import { Badge, Tooltip } from 'antd';
 import cls from 'classnames';
+import i18next from 'i18next';
 import { useRouter } from 'next/router';
 import { ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -359,12 +360,14 @@ export default function NewSideBar() {
           ) : (
             <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
               <span className='text-white font-bold text-sm'>
-                {brandConfig.product_name_zh.slice(0, 2)}
+                {i18next.language === 'en'
+                  ? brandConfig.product_name_en.slice(0, 2)
+                  : brandConfig.product_name_zh.slice(0, 2)}
               </span>
             </div>
           )}
           <span className='font-semibold text-[var(--text-primary)]'>
-            {brandConfig.product_name_zh}
+            {i18next.language === 'en' ? brandConfig.product_name_en : brandConfig.product_name_zh}
           </span>
         </div>
         <Tooltip title={t('collapse_sidebar')} placement='bottom'>

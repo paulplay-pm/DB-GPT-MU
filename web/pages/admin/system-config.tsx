@@ -88,12 +88,14 @@ export default function SystemConfigPage() {
     product_name_zh: 'DB-GPT',
     product_name_en: 'DB-GPT',
     slogan: '开口问数，预见洞察',
+    slogan_en: 'Ask Data, Find Insights',
   });
   const [originalBrandConfig, setOriginalBrandConfig] = useState<BrandConfig>({
     logo_url: null,
     product_name_zh: 'DB-GPT',
     product_name_en: 'DB-GPT',
     slogan: '开口问数，预见洞察',
+    slogan_en: 'Ask Data, Find Insights',
   });
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [logoFile, setLogoFile] = useState<FormData | null>(null);
@@ -404,15 +406,27 @@ export default function SystemConfigPage() {
 
         {/* Slogan Section */}
         <Card title='系统标语'>
-          <div>
-            <label className='block text-sm text-[var(--text-secondary)] mb-1'>标语内容</label>
-            <Input
-              value={brandConfig.slogan}
-              onChange={e => setBrandConfig({ ...brandConfig, slogan: e.target.value })}
-              placeholder='建议不超过 20 个字符'
-              maxLength={50}
-            />
-            <p className='text-xs text-[var(--text-tertiary)] mt-1'>建议不超过 20 个字符，显示在对话首页中央</p>
+          <div className='grid grid-cols-2 gap-6'>
+            <div>
+              <label className='block text-sm text-[var(--text-secondary)] mb-1'>中文标语</label>
+              <Input
+                value={brandConfig.slogan}
+                onChange={e => setBrandConfig({ ...brandConfig, slogan: e.target.value })}
+                placeholder='建议不超过 20 个字符'
+                maxLength={50}
+              />
+              <p className='text-xs text-[var(--text-tertiary)] mt-1'>显示在对话首页中央</p>
+            </div>
+            <div>
+              <label className='block text-sm text-[var(--text-secondary)] mb-1'>English Slogan</label>
+              <Input
+                value={brandConfig.slogan_en}
+                onChange={e => setBrandConfig({ ...brandConfig, slogan_en: e.target.value })}
+                placeholder='No more than 20 characters'
+                maxLength={50}
+              />
+              <p className='text-xs text-[var(--text-tertiary)] mt-1'>Displayed on chat homepage</p>
+            </div>
           </div>
         </Card>
       </div>
