@@ -1,7 +1,8 @@
-import { BellOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { ChatContext } from '@/app/chat-context';
+import { BellOutlined, MenuOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Modal, Tooltip } from 'antd';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // Page name mapping: path -> i18n key
@@ -55,6 +56,7 @@ const PAGE_PATH_MAP: { [key: string]: string } = {
 function TopActionBar() {
   const { t } = useTranslation();
   const router = useRouter();
+  const { isMenuExpand, setIsMenuExpand } = useContext(ChatContext);
 
   const breadcrumbs = useMemo(() => {
     const { pathname, query } = router;
@@ -112,9 +114,23 @@ function TopActionBar() {
     router.push(breadcrumbs.parentPath);
   };
 
+  const handleToggleSidebar = () => {
+    setIsMenuExpand(!isMenuExpand);
+  };
+
   return (
     <div className='h-16 flex items-center justify-between px-6 border-b border-[var(--border-color)] border-b-[1px] bg-[var(--bg-secondary)] box-border overflow-hidden shrink-0'>
-      {/* Left: Breadcrumb */}
+      {/* Left: Hamburger */}
+      <div className='flex items-center gap-2'>
+        <Tooltip title={t(isMenuExpand ? 'collapse_sidebar' : 'expand_sidebar')} placement='bottom'>
+          <MenuOutlined
+            className='text-lg cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors'
+            onClick={handleToggleSidebar}
+          />
+        </Tooltip>
+      </div>
+
+      {/* Center: Breadcrumb */}
       <div className='flex items-center gap-2'>
         {breadcrumbs.child ? (
           <>
