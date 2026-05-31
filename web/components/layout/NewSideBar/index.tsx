@@ -361,8 +361,8 @@ export default function NewSideBar() {
             <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
               <span className='text-white font-bold text-sm'>
                 {i18next.language === 'en'
-                  ? brandConfig.product_name_en.slice(0, 2)
-                  : brandConfig.product_name_zh.slice(0, 2)}
+                  ? brandConfig.product_name_en.slice(0, 1)
+                  : brandConfig.product_name_zh.slice(0, 1)}
               </span>
             </div>
           )}

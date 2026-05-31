@@ -212,15 +212,21 @@ export default function SystemConfigPage() {
 
   const handleSaveBrand = async () => {
     try {
+      const finalConfig = { ...brandConfig };
+
       // Upload logo first if changed
       if (logoFile) {
-        await uploadLogo(logoFile);
+        const res = await uploadLogo(logoFile);
+        if (res?.data?.logo_url) {
+          finalConfig.logo_url = res.data.logo_url;
+        }
       }
+
       // Update brand config
-      await updateBrandConfig(brandConfig);
-      setOriginalBrandConfig(brandConfig);
+      await updateBrandConfig(finalConfig);
+      setOriginalBrandConfig(finalConfig);
       message.success('配置已保存');
-      updateBrandContextConfig(brandConfig);
+      updateBrandContextConfig(finalConfig);
     } catch (e) {
       console.error('Failed to save brand config', e);
       message.error('保存失败');
