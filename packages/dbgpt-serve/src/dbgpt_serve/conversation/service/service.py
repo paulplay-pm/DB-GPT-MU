@@ -183,6 +183,10 @@ class Service(BaseService[ServeEntity, ServeRequest, ServerResponse]):
             new_summary (str): The new summary for the conversation
         """
         conv: StorageConversation = self.create_storage_conv(request)
+        # Preserve is_pinned before loading (from_conversation does not copy is_pinned)
+        current_is_pinned = conv.is_pinned
+        conv.load_from_storage(self.conv_storage, self.message_storage)
+        conv.is_pinned = current_is_pinned
         conv.summary = new_summary
         conv.save_to_storage()
 
