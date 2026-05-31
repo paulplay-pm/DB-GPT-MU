@@ -101,6 +101,12 @@ def mount_static_files(app: FastAPI, param: ApplicationConfig):
         StaticFiles(directory=STATIC_MESSAGE_IMG_PATH, html=True),
         name="static2",
     )
+    # Mount /uploads for user-uploaded files (e.g., brand logos)
+    app.mount(
+        "/uploads",
+        StaticFiles(directory="/tmp/dbgpt_uploads"),
+        name="uploads",
+    )
     app.mount(
         "/_next/static", StaticFiles(directory=static_file_path + "/_next/static")
     )
