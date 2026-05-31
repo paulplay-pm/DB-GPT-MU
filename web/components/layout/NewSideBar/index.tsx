@@ -262,24 +262,22 @@ export default function NewSideBar() {
     });
   };
 
-  // Toggle collapsed state
-  const handleToggleCollapse = useCallback(() => {
-    setIsMenuExpand?.(!isMenuExpand);
-  }, [isMenuExpand, setIsMenuExpand]);
-
   if (collapsed) {
     return (
       <div className='flex flex-col h-full w-16 min-w-16 bg-[var(--bg-secondary)] border-r border-[var(--border-color)] transition-all duration-200 overflow-hidden'>
-        {/* Expand button area */}
+        {/* Logo area when collapsed */}
         <div className='flex items-center justify-center h-16 border-b border-[var(--border-color)] border-b-[1px] bg-[var(--bg-secondary)] box-border'>
-          <Tooltip title={t('expand_sidebar')} placement='right'>
-            <div
-              className='flex items-center justify-center w-8 h-8 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded transition-colors'
-              onClick={handleToggleCollapse}
-            >
-              <AppstoreOutlined />
+          {brandConfig.logo_url ? (
+            <img src={brandConfig.logo_url} alt='logo' className='h-10 w-auto object-contain' />
+          ) : (
+            <div className='w-10 h-10 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
+              <span className='text-white font-bold text-base'>
+                {i18next.language === 'en'
+                  ? brandConfig.product_name_en.slice(0, 1)
+                  : brandConfig.product_name_zh.slice(0, 1)}
+              </span>
             </div>
-          </Tooltip>
+          )}
         </div>
 
         {/* Collapsed nav items */}
