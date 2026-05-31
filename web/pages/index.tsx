@@ -1,4 +1,5 @@
 import { ChatContext } from '@/app/chat-context';
+import { useBrand } from '@/context/BrandContext';
 import ModelSelector from '@/components/chat/header/model-selector';
 import { ColumnAnalysis, PreprocessingResult, analyzeDataset } from '@/new-components/analysis';
 import { ChartConfig, ChartType } from '@/new-components/charts';
@@ -491,6 +492,7 @@ const Playground: NextPage = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const { model, setModel } = useContext(ChatContext);
+  const { brandConfig } = useBrand();
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -2843,7 +2845,7 @@ const Playground: NextPage = () => {
               {/* Slogan Section - centered in the available space */}
               <div className='flex-1 flex flex-col items-center justify-center py-8'>
                 <h2 className='text-2xl md:text-3xl font-medium text-gray-700 dark:text-gray-200 mb-3 text-center'>
-                  {t('home_slogan')}
+                  {brandConfig.slogan}
                 </h2>
               </div>
 
