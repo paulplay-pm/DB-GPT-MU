@@ -217,16 +217,24 @@ export default function SystemConfigPage() {
       // Upload logo first if changed
       if (logoFile) {
         const res = await uploadLogo(logoFile);
+        // ctx-axios interceptor returns response.data directly
         if (res?.data?.logo_url) {
           finalConfig.logo_url = res.data.logo_url;
+        } else if ((res as any)?.logo_url) {
+          // Fallback: response is unwrapped directly
+          finalConfig.logo_url = (res as any).logo_url;
         }
       }
 
       // Update brand config
       await updateBrandConfig(finalConfig);
       setOriginalBrandConfig(finalConfig);
+      setLogoPreview(finalConfig.logo_url || '');
+      setLogoFile(null);
       message.success('配置已保存');
       updateBrandContextConfig(finalConfig);
+      // Reload to verify saved data
+      loadBrandConfig();
     } catch (e) {
       console.error('Failed to save brand config', e);
       message.error('保存失败');
