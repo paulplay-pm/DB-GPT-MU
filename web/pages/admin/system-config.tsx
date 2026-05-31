@@ -217,12 +217,9 @@ export default function SystemConfigPage() {
       // Upload logo first if changed
       if (logoFile) {
         const res = await uploadLogo(logoFile);
-        // ctx-axios interceptor returns response.data directly
-        if (res?.data?.logo_url) {
-          finalConfig.logo_url = res.data.logo_url;
-        } else if ((res as any)?.logo_url) {
-          // Fallback: response is unwrapped directly
-          finalConfig.logo_url = (res as any).logo_url;
+        // POST returns AxiosResponse, so res.data is { data: {logo_url}, success, err_code, err_msg }
+        if (res?.data?.data?.logo_url) {
+          finalConfig.logo_url = res.data.data.logo_url;
         }
       }
 
