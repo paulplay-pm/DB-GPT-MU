@@ -2,6 +2,7 @@
 
 import { ChatContext } from '@/app/chat-context';
 import { usePermission } from '@/context/PermissionContext';
+import { useBrand } from '@/context/BrandContext';
 import UserBar from '@/new-components/layout/UserBar';
 import {
   ApartmentOutlined,
@@ -16,6 +17,7 @@ import {
   LineChartOutlined,
   MessageFilled,
   SafetyOutlined,
+  SettingOutlined,
   StarFilled,
   TeamOutlined,
   ToolFilled,
@@ -47,6 +49,7 @@ const ICON_MAP: Record<string, ReactNode> = {
   UserOutlined: <UserOutlined />,
   KeyOutlined: <KeyOutlined />,
   SafetyOutlined: <SafetyOutlined />,
+  SettingOutlined: <SettingOutlined />,
 };
 
 // Icon color mapping - maps icon keys to Tailwind color classes
@@ -70,6 +73,7 @@ const ICON_COLORS: Record<string, string> = {
   role: 'text-[#D4A017]', // 🔑 金色 - 密钥/权限
   dept: 'text-[#2F54EB]', // 🟣 紫蓝 - 组织架构
   permission: 'text-[#FA8C16]', // ⚠️ 橙色 - 安全/权限
+  system_config: 'text-[#1677FF]', // 🔵 蓝色 - 系统配置
 };
 
 // Item display component
@@ -175,6 +179,7 @@ export default function NewSideBar() {
   const { pathname } = router;
   const { t } = useTranslation();
   const { hasPermission } = usePermission();
+  const { brandConfig } = useBrand();
   const { isMenuExpand, setIsMenuExpand } = useContext(ChatContext);
 
   const [pendingCount, setPendingCount] = useState(0);
@@ -349,10 +354,18 @@ export default function NewSideBar() {
       {/* Header with logo */}
       <div className='h-16 flex items-center justify-between px-6 border-b border-[var(--border-color)] border-b-[1px] bg-[var(--bg-secondary)] box-border overflow-hidden shrink-0'>
         <div className='flex items-center gap-3 hover:opacity-80'>
-          <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
-            <span className='text-white font-bold text-sm'>DB</span>
-          </div>
-          <span className='font-semibold text-[var(--text-primary)]'>DB-GPT</span>
+          {brandConfig.logo_url ? (
+            <img src={brandConfig.logo_url} className='w-8 h-8 rounded-lg object-cover' />
+          ) : (
+            <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
+              <span className='text-white font-bold text-sm'>
+                {brandConfig.product_name_zh.slice(0, 2)}
+              </span>
+            </div>
+          )}
+          <span className='font-semibold text-[var(--text-primary)]'>
+            {brandConfig.product_name_zh}
+          </span>
         </div>
         <Tooltip title={t('collapse_sidebar')} placement='bottom'>
           <div
