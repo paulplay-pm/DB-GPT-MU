@@ -10,6 +10,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import HTTPException
 
 from dbgpt.component import SystemApp
+from dbgpt.configs.model_config import BRAND_UPLOAD_PATH
 from dbgpt.storage.metadata import BaseDao
 from dbgpt_serve.core import BaseService
 from dbgpt_serve.system_config.config import ServeConfig
@@ -376,7 +377,7 @@ class ConfigService(BaseService):
                 detail="File too large. Maximum size is 5MB."
             )
 
-        upload_dir = f"/tmp/dbgpt_uploads/{sub_dir}"
+        upload_dir = f"{BRAND_UPLOAD_PATH}/{sub_dir}"
         os.makedirs(upload_dir, exist_ok=True)
 
         unique_filename = f"{uuid.uuid4()}{ext}"

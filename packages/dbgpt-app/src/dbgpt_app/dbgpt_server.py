@@ -14,6 +14,7 @@ from dbgpt.component import SystemApp
 from dbgpt.configs.model_config import (
     LOGDIR,
     STATIC_MESSAGE_IMG_PATH,
+    BRAND_UPLOAD_PATH,
 )
 from dbgpt.util.fastapi import create_app, replace_router
 from dbgpt.util.i18n_utils import _, set_default_language
@@ -104,7 +105,7 @@ def mount_static_files(app: FastAPI, param: ApplicationConfig):
     # Mount /uploads for user-uploaded files (e.g., brand logos)
     app.mount(
         "/uploads",
-        StaticFiles(directory="/tmp/dbgpt_uploads"),
+        StaticFiles(directory=BRAND_UPLOAD_PATH),
         name="uploads",
     )
     app.mount(
