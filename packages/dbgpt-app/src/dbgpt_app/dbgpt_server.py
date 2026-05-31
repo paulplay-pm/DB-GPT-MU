@@ -97,6 +97,7 @@ def mount_static_files(app: FastAPI, param: ApplicationConfig):
         static_file_path = os.path.join(package_dir, "static", "old_web")
 
     os.makedirs(STATIC_MESSAGE_IMG_PATH, exist_ok=True)
+    os.makedirs(BRAND_UPLOAD_PATH, exist_ok=True)
     app.mount(
         "/images",
         StaticFiles(directory=STATIC_MESSAGE_IMG_PATH, html=True),
