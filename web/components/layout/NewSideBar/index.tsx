@@ -353,8 +353,8 @@ export default function NewSideBar() {
   return (
     <div className='flex flex-col h-full w-60 min-w-60 bg-[var(--bg-secondary)] border-r border-[var(--border-color)] transition-all duration-200 overflow-hidden'>
       {/* Header with logo */}
-      <div className='h-16 flex items-center justify-between px-6 border-b border-[var(--border-color)] border-b-[1px] bg-[var(--bg-secondary)] box-border overflow-hidden shrink-0'>
-        <div className='flex items-center gap-3 hover:opacity-80'>
+      <div className='h-16 flex items-center px-6 border-b border-[var(--border-color)] border-b-[1px] bg-[var(--bg-secondary)] box-border overflow-hidden shrink-0'>
+        <div className='flex items-center gap-3'>
           {brandConfig.logo_url ? (
             <img src={brandConfig.logo_url} className='w-8 h-8 rounded-lg object-cover' />
           ) : (
@@ -370,14 +370,6 @@ export default function NewSideBar() {
             {i18next.language === 'en' ? brandConfig.product_name_en : brandConfig.product_name_zh}
           </span>
         </div>
-        <Tooltip title={t('collapse_sidebar')} placement='bottom'>
-          <div
-            className='flex items-center justify-center w-7 h-7 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)] rounded transition-colors'
-            onClick={handleToggleCollapse}
-          >
-            <AppstoreOutlined style={{ fontSize: 14 }} />
-          </div>
-        </Tooltip>
       </div>
 
       {/* Navigation groups */}
