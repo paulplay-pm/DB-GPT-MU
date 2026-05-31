@@ -25,6 +25,7 @@ const PAGE_NAME_MAP: { [key: string]: string } = {
   '/admin/role': 'role_management',
   '/admin/dept': 'dept_management',
   '/admin/permission': 'permission_management',
+  '/admin/system-config': 'system_config',
 };
 
 // Parent path mapping: parent key -> path
@@ -48,6 +49,7 @@ const PAGE_PATH_MAP: { [key: string]: string } = {
   role_management: '/admin/role',
   dept_management: '/admin/dept',
   permission_management: '/admin/permission',
+  system_config: '/admin/system-config',
 };
 
 function TopActionBar() {

@@ -15,6 +15,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Card, Input, InputNumber, Modal, Switch, Tabs, Upload, message } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { BrandConfig, getBrandConfig, updateBrandConfig, uploadLogo } from '@/client/api/request';
 import { useBrand } from '@/context/BrandContext';
@@ -78,6 +79,7 @@ interface SystemInfo {
 }
 
 export default function SystemConfigPage() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabKey>('brand');
 
   // Brand config state
@@ -869,8 +871,8 @@ export default function SystemConfigPage() {
 
   return (
     <div className='bg-[var(--bg-primary)] min-h-screen p-6 pb-20 overflow-auto'>
-      {/* Page Header with bilingual title */}
-      <PageHeader title='系统配置 / System Config' description='管理系统的基础参数、品牌信息和功能开关' />
+      {/* Page Header with i18n title and description */}
+      <PageHeader title={t('system_config')} description={t('system_config_description')} />
 
       {/* Tabs */}
       <Tabs

@@ -517,6 +517,7 @@ export const CommonZh: Resources['translation'] = {
   registration_review: '审核用户',
   permission_management: '权限管理',
   system_config: '系统配置',
+  system_config_description: '管理系统的基础参数、品牌信息和功能开关',
   // Admin table columns
   Admin_Login_Name: '登录名',
   Admin_Real_Name: '真实姓名',

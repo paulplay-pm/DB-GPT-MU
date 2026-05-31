@@ -514,6 +514,7 @@ export const CommonEn = {
   registration_review: 'Registration Review',
   permission_management: 'Permission Management',
   system_config: 'System Config',
+  system_config_description: 'Manage system parameters, brand info and feature switches',
   // Admin table columns
   Admin_Login_Name: 'Login Name',
   Admin_Real_Name: 'Real Name',
