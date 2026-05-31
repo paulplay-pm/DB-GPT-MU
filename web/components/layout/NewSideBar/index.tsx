@@ -181,7 +181,7 @@ export default function NewSideBar() {
   const { t } = useTranslation();
   const { hasPermission } = usePermission();
   const { brandConfig } = useBrand();
-  const { isMenuExpand, setIsMenuExpand } = useContext(ChatContext);
+  const { isMenuExpand } = useContext(ChatContext);
 
   const [pendingCount, setPendingCount] = useState(0);
   const collapsed = !isMenuExpand;
@@ -268,10 +268,10 @@ export default function NewSideBar() {
         {/* Logo area when collapsed */}
         <div className='flex items-center justify-center h-16 border-b border-[var(--border-color)] border-b-[1px] bg-[var(--bg-secondary)] box-border'>
           {brandConfig.logo_url ? (
-            <img src={brandConfig.logo_url} alt='logo' className='h-10 w-auto object-contain' />
+            <img src={brandConfig.logo_url} alt='logo' className='h-8 w-auto object-contain' />
           ) : (
-            <div className='w-10 h-10 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
-              <span className='text-white font-bold text-base'>
+            <div className='w-8 h-8 bg-gradient-to-br from-[#31afff] to-[#1677ff] rounded-lg flex items-center justify-center'>
+              <span className='text-white font-bold text-sm'>
                 {i18next.language === 'en'
                   ? brandConfig.product_name_en.slice(0, 1)
                   : brandConfig.product_name_zh.slice(0, 1)}

@@ -120,34 +120,34 @@ function TopActionBar() {
 
   return (
     <div className='h-16 flex items-center justify-between px-6 border-b border-[var(--border-color)] border-b-[1px] bg-[var(--bg-secondary)] box-border overflow-hidden shrink-0'>
-      {/* Left: Hamburger */}
-      <div className='flex items-center gap-2'>
+      {/* Left: Hamburger + Breadcrumb */}
+      <div className='flex items-center gap-3'>
         <Tooltip title={t(isMenuExpand ? 'collapse_sidebar' : 'expand_sidebar')} placement='bottom'>
-          <MenuOutlined
-            className='text-lg cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors'
+          <div
+            className='flex items-center justify-center w-7 h-7 cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)] rounded transition-colors'
             onClick={handleToggleSidebar}
-          />
+          >
+            <MenuOutlined className='text-sm' />
+          </div>
         </Tooltip>
-      </div>
-
-      {/* Center: Breadcrumb */}
-      <div className='flex items-center gap-2'>
-        {breadcrumbs.child ? (
-          <>
-            <span
-              className='text-[var(--text-secondary)] cursor-pointer hover:text-[var(--text-primary)] transition-colors'
-              onClick={handleParentClick}
-            >
-              {t(breadcrumbs.parent)}
-            </span>
-            <span className='text-[var(--text-tertiary)]'>/</span>
-            <span className='text-[var(--text-primary)] font-medium'>
-              {breadcrumbs.child.length > 20 ? breadcrumbs.child.substring(0, 20) + '...' : breadcrumbs.child}
-            </span>
-          </>
-        ) : (
-          <span className='text-[var(--text-primary)] font-medium'>{t(breadcrumbs.parent)}</span>
-        )}
+        <div className='flex items-center gap-2'>
+          {breadcrumbs.child ? (
+            <>
+              <span
+                className='text-[var(--text-secondary)] cursor-pointer hover:text-[var(--text-primary)] transition-colors'
+                onClick={handleParentClick}
+              >
+                {t(breadcrumbs.parent)}
+              </span>
+              <span className='text-[var(--text-tertiary)]'>/</span>
+              <span className='text-[var(--text-primary)] font-medium'>
+                {breadcrumbs.child.length > 20 ? breadcrumbs.child.substring(0, 20) + '...' : breadcrumbs.child}
+              </span>
+            </>
+          ) : (
+            <span className='text-[var(--text-primary)] font-medium'>{t(breadcrumbs.parent)}</span>
+          )}
+        </div>
       </div>
 
       {/* Right: Action buttons */}
