@@ -1,3 +1,4 @@
+import { BrandProvider } from '@/context/BrandContext';
 import { ChatContext, ChatContextProvider } from '@/app/chat-context';
 import NewSideBar from '@/components/layout/NewSideBar';
 import { PermissionProvider } from '@/context/PermissionContext';
@@ -155,11 +156,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChatContextProvider>
       <PermissionProvider>
-        <CssWrapper>
-          <LayoutWrapper>
-            <Component {...pageProps} />
-          </LayoutWrapper>
-        </CssWrapper>
+        <BrandProvider>
+          <CssWrapper>
+            <LayoutWrapper>
+              <Component {...pageProps} />
+            </LayoutWrapper>
+          </CssWrapper>
+        </BrandProvider>
       </PermissionProvider>
     </ChatContextProvider>
   );
