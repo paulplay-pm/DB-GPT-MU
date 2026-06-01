@@ -18,9 +18,10 @@ export type ActiveCategory = {
 interface CategoryPanelProps {
   onCategoryChange: (category: ActiveCategory) => void;
   userName: string;
+  onDropConversation: (convUid: string, categoryId: number) => void;
 }
 
-function CategoryPanel({ onCategoryChange, userName }: CategoryPanelProps) {
+function CategoryPanel({ onCategoryChange, userName, onDropConversation }: CategoryPanelProps) {
   const { t } = useTranslation();
   const [activeCategory, setActiveCategory] = useState<ActiveCategory>({
     type: 'system',
@@ -116,6 +117,7 @@ function CategoryPanel({ onCategoryChange, userName }: CategoryPanelProps) {
           onEditCancel={() => setEditingCategoryId(null)}
           onRename={handleRenameCategory}
           onDeleteStart={setDeleteConfirmId}
+          onDropConversation={onDropConversation}
         />
       </div>
 

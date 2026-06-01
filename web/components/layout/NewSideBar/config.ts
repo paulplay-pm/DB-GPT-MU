@@ -36,6 +36,7 @@ export const PERMISSION_KEYS = {
   DEPT_MANAGEMENT: 'management.dept_management',
   PERMISSION_MANAGEMENT: 'management.permission_management',
   REGISTRATION_REVIEW: 'management.registration_review',
+  SYSTEM_CONFIG: 'management.system_config',
 } as const;
 
 // Navigation groups - 5 groups
@@ -196,6 +197,13 @@ export const NAV_GROUPS: NavGroup[] = [
         icon: 'SafetyOutlined',
         path: '/admin/permission',
         permission: PERMISSION_KEYS.PERMISSION_MANAGEMENT,
+      },
+      {
+        key: 'system_config',
+        label: 'system_config',
+        icon: 'SettingOutlined',
+        path: '/admin/system-config',
+        permission: PERMISSION_KEYS.SYSTEM_CONFIG,
       },
     ],
   },

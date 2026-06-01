@@ -183,11 +183,15 @@ class Service(BaseService[ServeEntity, ServeRequest, ServerResponse]):
             new_summary (str): The new summary for the conversation
         """
         conv: StorageConversation = self.create_storage_conv(request)
-        # Load from DB first - after this, conv.is_pinned has the real value
-        # (create_storage_conv defaults is_pinned=False, but load_from_storage
-        # populates all fields including is_pinned from the DB record)
+        # Load from DB first to get all fields including is_pinned
         conv.load_from_storage(self.conv_storage, self.message_storage)
+        # Restore is_pinned that was lost during from_conversation (from_conversation
+        # does NOT copy is_pinned since OnceConversation doesn't have that field).
+        # We must reload from DB directly to get the real is_pinned value.
+        db_conv = self.conv_storage.load(conv.identifier, StorageConversation)
+        db_is_pinned = db_conv.is_pinned if db_conv else conv.is_pinned
         conv.summary = new_summary
+        conv.is_pinned = db_is_pinned
         conv.save_to_storage()
 
     def get_list(self, request: ServeRequest) -> List[ServerResponse]:

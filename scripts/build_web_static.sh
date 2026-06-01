@@ -24,9 +24,14 @@ else
   echo "Do not find .env"
 fi
 
-
 yarn install
+
+# Format code before build to avoid Prettier errors
+echo "Running format to fix Prettier issues..."
+yarn format
+
 rm -rf ../web/out/
+rm -rf .next
 yarn compile
 
 rm -rf $TARGET_DIR \

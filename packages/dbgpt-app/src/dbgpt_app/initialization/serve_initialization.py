@@ -30,6 +30,7 @@ def scan_serve_configs():
         "dbgpt_serve.prompt",
         "dbgpt_serve.rag",
         "dbgpt_serve.security",
+        "dbgpt_serve.system_config",
     ]
 
     scanner = ModelScanner[BaseServeConfig]()
@@ -323,3 +324,19 @@ def register_serve_apps(
         ),
     )
     # ################################ Security Serve Register End ####################
+
+    # ################################ System Config Serve Register Begin ############
+    from dbgpt_serve.system_config.serve import Serve as SystemConfigServe
+
+    # Register system config serve
+    system_app.register(
+        SystemConfigServe,
+        config=get_config(
+            serve_configs,
+            SystemConfigServe.name,
+            dbgpt_serve.system_config.serve.ServeConfig,
+            api_keys=global_api_keys,
+        ),
+        try_create_tables=True,
+    )
+    # ################################ System Config Serve Register End ##############

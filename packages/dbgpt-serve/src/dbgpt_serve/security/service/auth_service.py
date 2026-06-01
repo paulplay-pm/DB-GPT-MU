@@ -37,12 +37,18 @@ class AuthService:
         """
         user = self._user_service.get_user_by_login_name(login_name)
         if not user:
+            print(f"DEBUG: user not found for login_name={login_name}", flush=True)
             return None, "用户名或密码错误"
 
         if not user.is_active:
             return None, "账户已被禁用"
 
+        print(f"DEBUG: found user: login_name={user.login_name}, is_active={user.is_active}", flush=True)
+        print(f"DEBUG: password_hash from DB: {user.password_hash}", flush=True)
+        print(f"DEBUG: password to verify: {password}", flush=True)
+
         if not self.verify_password(password, user.password_hash):
+            print(f"DEBUG: password verification failed", flush=True)
             return None, "用户名或密码错误"
 
         # Capture all scalar attributes immediately

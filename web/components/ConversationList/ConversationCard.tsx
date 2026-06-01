@@ -111,19 +111,19 @@ function ConversationCard({
 
   const menuItems: MenuProps['items'] = [
     {
-      key: 'move',
-      label: '移动到分类',
-      onClick: e => {
-        e.domEvent.stopPropagation();
-        onMoveToCategory();
-      },
-    },
-    {
       key: 'pin',
       label: conv.is_pinned ? '取消置顶' : '置顶',
       onClick: e => {
         e.domEvent.stopPropagation();
         onPinToggle();
+      },
+    },
+    {
+      key: 'move',
+      label: '移动到分类',
+      onClick: e => {
+        e.domEvent.stopPropagation();
+        onMoveToCategory();
       },
     },
   ];

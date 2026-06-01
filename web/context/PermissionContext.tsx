@@ -112,7 +112,9 @@ export function PermissionProvider({ children }: { children: ReactNode }) {
     const userInfo = JSON.parse(localStorage.getItem(STORAGE_USERINFO_KEY) || '{}');
     if (userInfo.is_super_admin) return true;
     if (permissions.includes('*')) return true;
-    return permissions.includes(code);
+    // Check both state permissions and localStorage permissions
+    const localPerms = userInfo.permissions || [];
+    return permissions.includes(code) || localPerms.includes(code);
   };
 
   return (

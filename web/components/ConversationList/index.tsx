@@ -143,15 +143,24 @@ function ConversationList({
     }
   }, []);
 
-  const handleRename = useCallback(async (convUid: string, newSummary: string) => {
-    const [err] = await apiInterceptors(renameDialogue(convUid, newSummary));
-    if (!err) {
-      setList(prev => prev.map(item => (item.conv_uid === convUid ? { ...item, user_input: newSummary } : item)));
-      message.success('重命名成功');
-      return true;
-    }
-    return false;
-  }, []);
+  const handleRename = useCallback(
+    async (convUid: string, newSummary: string) => {
+      // Preserve the current pinned status before API call
+      const currentPinned = list.find(item => item.conv_uid === convUid)?.is_pinned;
+      const [err] = await apiInterceptors(renameDialogue(convUid, newSummary));
+      if (!err) {
+        setList(prev =>
+          prev.map(item =>
+            item.conv_uid === convUid ? { ...item, user_input: newSummary, is_pinned: currentPinned } : item,
+          ),
+        );
+        message.success('重命名成功');
+        return true;
+      }
+      return false;
+    },
+    [list],
+  );
 
   const handleBatchDelete = useCallback(async () => {
     const ids = Array.from(selectedIds);

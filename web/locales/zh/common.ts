@@ -379,6 +379,7 @@ export const CommonZh: Resources['translation'] = {
   app: '应用',
   please_select_resource_type: '请选择资源类型',
   models_evaluation: '模型评测',
+  model_management: '模型管理',
   create_evaluation: '创建评测',
   evaluation_dataset_info: '查看数据集详情',
   refresh_list: '刷新列表',

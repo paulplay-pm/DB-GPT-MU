@@ -17,6 +17,7 @@ interface CustomCategoriesProps {
   onEditCancel: () => void;
   onRename: (categoryId: number, newName: string) => void;
   onDeleteStart: (id: number | null) => void;
+  onDropConversation: (convUid: string, categoryId: number) => void;
 }
 
 function CustomCategories({
@@ -28,6 +29,7 @@ function CustomCategories({
   onEditCancel,
   onRename,
   onDeleteStart,
+  onDropConversation,
 }: CustomCategoriesProps) {
   const { draggingConvUid, draggingOverCategoryId, setDraggingOverCategoryId } = useDnD();
 
@@ -42,7 +44,10 @@ function CustomCategories({
     setDraggingOverCategoryId(null);
   };
 
-  const handleDrop = () => {
+  const handleDrop = (categoryId: number) => {
+    if (draggingConvUid) {
+      onDropConversation(draggingConvUid, categoryId);
+    }
     setDraggingOverCategoryId(null);
   };
 
@@ -66,7 +71,10 @@ function CustomCategories({
                 onClick={() => onSelect({ type: 'custom', id: cat.category_id })}
                 onDragOver={e => handleDragOver(e, cat.category_id)}
                 onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
+                onDrop={e => {
+                  e.preventDefault();
+                  handleDrop(cat.category_id);
+                }}
                 className={`group flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-all mb-1 ${
                   isActive
                     ? 'bg-gradient-to-r from-purple-100/50 to-transparent border-l-[3px] border-purple-500'

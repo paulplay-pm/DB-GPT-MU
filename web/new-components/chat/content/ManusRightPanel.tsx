@@ -2,6 +2,7 @@ import { CodePreview } from '@/components/chat/chat-content/code-preview';
 import markdownComponents, { markdownPlugins, preprocessLaTeX } from '@/components/chat/chat-content/config';
 import AdvancedChart, { createChartConfig } from '@/new-components/charts';
 import MarkDownContext from '@/new-components/common/MarkdownContext';
+import '@/new-components/layout/style.css';
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -43,7 +44,6 @@ import { Button, Table, Tooltip, message } from 'antd';
 import classNames from 'classnames';
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import '@/new-components/layout/style.css';
 import { useTranslation } from 'react-i18next';
 import { ArtifactItem, StepStatus, StepType } from './ManusLeftPanel';
 
@@ -1643,7 +1643,7 @@ const ManusRightPanel: React.FC<ManusRightPanelProps> = ({
       {/* Terminal Header */}
       <div
         className='flex items-center justify-between px-5 py-3 bg-white dark:bg-[#111217] border-b border-gray-200 dark:border-gray-800'
-        onDoubleClick={(e) => {
+        onDoubleClick={e => {
           const target = e.target as HTMLElement;
           if (target.closest('.header-toolbar')) return;
           handleToggleMaximize();
@@ -2313,7 +2313,17 @@ const ManusRightPanel: React.FC<ManusRightPanelProps> = ({
           animation: 'ManusRightPanel__expand 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards',
         }}
       >
-        <div style={{ maxWidth: 1200, width: '100%', margin: '0 auto', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+        <div
+          style={{
+            maxWidth: 1200,
+            width: '100%',
+            margin: '0 auto',
+            flex: 1,
+            minHeight: 0,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           {renderContent()}
         </div>
         <style>{`

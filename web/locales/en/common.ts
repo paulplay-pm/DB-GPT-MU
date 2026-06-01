@@ -374,6 +374,7 @@ export const CommonEn = {
   app: 'App',
   please_select_resource_type: 'Please select resource type',
   models_evaluation: 'Models Evaluation',
+  model_management: 'Model Management',
   create_evaluation: 'Create Evaluation',
   evaluation_dataset_info: 'Evaluation Dataset Info',
   refresh_list: 'Refresh',

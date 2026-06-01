@@ -1,6 +1,7 @@
-import { BrandProvider } from '@/context/BrandContext';
 import { ChatContext, ChatContextProvider } from '@/app/chat-context';
+import { DnDProvider } from '@/components/DndContext';
 import NewSideBar from '@/components/layout/NewSideBar';
+import { BrandProvider } from '@/context/BrandContext';
 import { PermissionProvider } from '@/context/PermissionContext';
 import TopActionBar from '@/new-components/layout/TopActionBar';
 import { STORAGE_LANG_KEY } from '@/utils/constants/index';
@@ -157,11 +158,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ChatContextProvider>
       <PermissionProvider>
         <BrandProvider>
-          <CssWrapper>
-            <LayoutWrapper>
-              <Component {...pageProps} />
-            </LayoutWrapper>
-          </CssWrapper>
+          <DnDProvider>
+            <CssWrapper>
+              <LayoutWrapper>
+                <Component {...pageProps} />
+              </LayoutWrapper>
+            </CssWrapper>
+          </DnDProvider>
         </BrandProvider>
       </PermissionProvider>
     </ChatContextProvider>
