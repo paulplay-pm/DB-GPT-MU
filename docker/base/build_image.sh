@@ -12,7 +12,7 @@ CPU_BASE_IMAGE="ubuntu:22.04"
 
 # Common mode configurations
 DEFAULT_PROXY_EXTRAS="base,proxy_openai,rag,graph_rag,storage_chromadb,dbgpts,proxy_ollama,proxy_zhipuai,proxy_anthropic,proxy_qianfan,proxy_tongyi"
-DEFAULT_CUDA_EXTRAS="${DEFAULT_PROXY_EXTRAS},cuda121,hf,quant_bnb,flash_attn,quant_awq"
+DEFAULT_CUDA_EXTRAS="${DEFAULT_PROXY_EXTRAS},cuda121,hf,quant_bnb,flash_attn"
 
 # Set default options for each installation mode
 # Default mode
